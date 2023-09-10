@@ -1,5 +1,5 @@
 import os
-
+import re
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application
 def inputCheck():
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.') 
@@ -24,20 +24,48 @@ def startPage():
     userInput = userInput.lower() #turns the user input into lower case for type checking
 
     if userInput == "random":
+        #TODO generate a random word
         print('random')
 
-    if userInput == "load":
+    elif userInput == "load":
+        #TODO run the load script
         print('load')
 
-    if userInput == "choose":
-        print('choose')
+    elif userInput == "choose":
+        chooseWord()
 
-    if userInput == "back":
+    elif userInput == "back":
         inputCheck()
     
     else:
         print('unknown command, please enter another')
         startPage()
+
+#Choose word script used if the player wants to choose their own word to base the puzzle off of
+def chooseWord():
+    
+    print('Enter an english word with atleast 7 unique letters')
+    wordInput = input()
+    wordInput = wordInput.lower() # converts the word to lower case
+    # checks if the length is atleast 7
+    if len(wordInput)<7:
+        print('Word does not contain enough letters')
+        chooseWord()
+    #Checks if word has any non english letters
+    elif not re.match("^[a-zA-Z]+$", wordInput): 
+        os.system('cls') # clears the terminal
+        print('Word contains non english letters')
+        chooseWord()
+    
+    # checks if word has exactly 7 unique letters
+    uniqueCharacters = set()
+    for i in wordInput:  
+        uniqueCharacters.add(i)
+    if len(uniqueCharacters) != 7:
+        print('your word does not contain exactly 7 unique characters')
+        chooseWord()
+    
+    #TODO needs to check if the word is in the dictionary
 
 
 
