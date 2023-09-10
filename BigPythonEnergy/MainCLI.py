@@ -58,10 +58,12 @@ def chooseWord():
         chooseWord()
     
     # checks if word has exactly 7 unique letters
+    os.system('cls')
     uniqueCharacters = set()
     for i in wordInput:  
         uniqueCharacters.add(i)
     if len(uniqueCharacters) != 7:
+        uniqueCharacters.clear()
         print('your word does not contain exactly 7 unique characters')
         chooseWord()
     
