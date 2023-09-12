@@ -11,18 +11,17 @@ class puzzle:
     currentScore = 0
     totalScore = 0
     
-    def __init__(self, letters):
-        self.letters = letters
-        self.specialLetter = random.choice(letters)
+    def __init__(self, letters=None):
+        if letters is not None:
+            self.letters = letters
+            self.specialLetter = random.choice(tuple(letters))
+        else:
+            # Handle the case when no letters are provided
+            self.letters = []
+            self.specialLetter = None
 
-        #TODO - pull words from JSON list, put them in a set, should be handled by R/W.
-        totalWords = set()
-
-        self.listOfTotalWords = totalWords
-
-    def __init__(self):
-        #TODO - for when no word is chosen. Has to pull from a random (exactly 7-letter) word for the letters.
-        return 0
+        # TODO - pull words from JSON list, put them in a set, should be handled by R/W.
+        self.listOfTotalWords = set()
 
     def getAllLetters(self):
         return self.letters
@@ -79,3 +78,17 @@ class puzzle:
     
     def getTotalWordList(self):
         return self.listOfTotalWords
+    
+    def setScore(self, score):
+        self.currentScore = score
+
+    def addScore(self, score):
+        self.currentScore += score 
+    
+    def addFoundWord(self, word):
+        self.listOfFoundWords.add(word)
+
+    def setFoundWord(self, wordList):
+        self.listOfFoundWords = wordList
+
+    
