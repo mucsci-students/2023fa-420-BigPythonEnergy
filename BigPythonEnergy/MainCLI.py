@@ -1,5 +1,7 @@
 import os
 import re
+from MainGameCLI import *
+from puzzle import *
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application
 def inputCheck():
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.') 
@@ -68,6 +70,9 @@ def chooseWord():
         chooseWord()
     
     #TODO needs to check if the word is in the dictionary
+
+    newPuzzle = puzzle(uniqueCharacters)
+    startGame(newPuzzle)
 
 
 
