@@ -72,6 +72,9 @@ def startGame(puzzle):
         pointsGained=4
     elif len(guess)>4:
         pointsGained = len(guess)
+    guessSet = set(guess)
+    if guessSet == set(puzzle.letterList):
+        pointsGained += 7
     
     puzzle.addScore(pointsGained)
     os.system('cls')
