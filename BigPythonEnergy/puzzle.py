@@ -10,11 +10,16 @@ class puzzle:
     listOfFoundWords = set()
     currentScore = 0
     totalScore = 0
+    letterList = []
     
     def __init__(self, letters=None):
         if letters is not None:
+            
             self.letters = letters
             self.specialLetter = random.choice(tuple(letters))
+            for i in letters:
+                self.letterList.append(i)
+                
         else:
             # Handle the case when no letters are provided
             self.letters = []
