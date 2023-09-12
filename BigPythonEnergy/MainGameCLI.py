@@ -26,7 +26,9 @@ def startGame(puzzle):
         exit()
 
     if guess == "/save":
-        print('save')
+        os.system('cls')
+        print('game saved')
+        startGame(puzzle)
         #TODO Add SAVE functionality
     
     if guess == "/words":
@@ -41,6 +43,8 @@ def startGame(puzzle):
 
     if guess == "/shuffle":
         random.shuffle(puzzle.letterList)
+        os.system('cls')
+        print('Letters shuffled')
         startGame(puzzle)
 
     if len(guess) < 4:
@@ -69,7 +73,7 @@ def startGame(puzzle):
     puzzle.addFoundWord(guess)
     pointsGained = 0
     if len(guess)==4:
-        pointsGained=4
+        pointsGained=1
     elif len(guess)>4:
         pointsGained = len(guess)
     
