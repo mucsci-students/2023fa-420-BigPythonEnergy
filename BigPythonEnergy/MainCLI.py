@@ -107,7 +107,6 @@ def helpPage():
     print('Use all 7 letters given = 7 extra points.')
     print('Rank thresholds are based on the total number of words possible.')
     print('---------------------------------------------------------------------------------------------------------------------')
-    print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.') 
     inputCheck()
 
 def randomWord():
