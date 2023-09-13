@@ -1,6 +1,7 @@
 import os
 import random
 import re
+import json
 from puzzle import *
 
 def startGame(puzzle):
@@ -26,6 +27,15 @@ def startGame(puzzle):
         exit()
 
     if guess == "/save":
+        save = {
+            "letters":list(puzzle.letterList),
+            "specialLetter":puzzle.specialLetter,
+            "words" : list(puzzle.getFoundWordList()),
+            "score": puzzle.getCurrentScore()
+        }
+        
+        with open("sample.json", "w") as outfile:
+            json.dump(save, outfile)
         os.system('cls')
         print('game saved')
         startGame(puzzle)

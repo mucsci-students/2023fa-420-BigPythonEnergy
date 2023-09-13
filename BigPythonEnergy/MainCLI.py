@@ -30,8 +30,22 @@ def startPage():
         print('random')
 
     elif userInput == "load":
-        #TODO run the load script
-        print('load')
+# Load the JSON data from the file
+        with open("sample.json", "r") as infile:
+            data = json.load(infile)
+
+# Access the attributes from the loaded JSON data
+        letters = data["letters"]
+        special_letter = data["specialLetter"]
+        words = data["words"]
+        score = data["score"]        
+        newPuzzle = puzzle(letters)
+        newPuzzle.currentScore = score
+        newPuzzle.listOfFoundWords = set(words)
+        newPuzzle.specialLetter = special_letter
+        os.system('cls')
+        print('Loaded save')
+        startGame(newPuzzle)
 
     elif userInput == "choose":
         chooseWord()
