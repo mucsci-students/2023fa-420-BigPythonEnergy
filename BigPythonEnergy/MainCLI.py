@@ -2,6 +2,8 @@ import os
 import re
 from MainGameCLI import *
 from puzzle import *
+import DictInterface.py
+
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application
 def inputCheck():
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.') 
@@ -27,8 +29,8 @@ def startPage():
 
     if userInput == "random":
         #TODO generate a random word
-        print('random')
-
+        randomWord()
+        
     elif userInput == "load":
         #TODO run the load script
         print('load')
@@ -70,9 +72,11 @@ def chooseWord():
         chooseWord()
     
     #TODO needs to check if the word is in the dictionary
-
-    newPuzzle = puzzle(uniqueCharacters)
-    startGame(newPuzzle)
+    if DictInterface.isValid(wordInput):
+        newPuzzle = puzzle(uniqueCharacters)
+        startGame(newPuzzle)
+    else:
+        chooseWord()
 
 
 
@@ -91,6 +95,14 @@ def helpPage():
     print('---------------------------------------------------------------------------------------------------------------------')
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.') 
     inputCheck()
+
+def randomWord():
+    word = DictInterface.randomWord()
+    uniqueCharacters = set()
+    for i in word:  
+        uniqueCharacters.add(i)
+    newPuzzle = puzzle(uniqueCharacters)
+    startGame(newPuzzle)
 
 #Start script to clear the command line so the user just sees the instructions.
 os.system('cls')

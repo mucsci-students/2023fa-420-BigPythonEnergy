@@ -1,5 +1,6 @@
 import random
 import string
+import DictInterface
 
 # Description: Handles the operations of each piece of the puzzle as well as retrieval and the like.
 # Constraints: Must have exactly 7 letters, must have a totalScore > 0, must assign a special letter.
@@ -26,7 +27,7 @@ class puzzle:
             self.specialLetter = None
 
         # TODO - pull words from JSON list, put them in a set, should be handled by R/W.
-        self.listOfTotalWords = set()
+        self.listOfTotalWords = DictInterface.findValid(self.specialLetter, self.letterList)
 
     def getAllLetters(self):
         return self.letters
