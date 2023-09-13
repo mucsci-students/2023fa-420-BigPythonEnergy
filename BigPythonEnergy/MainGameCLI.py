@@ -99,17 +99,19 @@ def startGame(puzzle):
 
 
     if DictInterface.isValid(guess):
-        puzzle.addFoundWord(guess)
-        pointsGained = 0
-        if len(guess)==4:
-            pointsGained=1
-        elif len(guess)>4:
-            pointsGained = len(guess)
-        if set(guess) == set(puzzle.getAllLetters()):
-            pointsGained += 7
+        if guess not in puzzle.getFoundWordList():
+            puzzle.addFoundWord(guess)
+            pointsGained = 0
+            if len(guess)==4:
+                pointsGained=1
+            elif len(guess)>4:
+                pointsGained = len(guess)
+            if set(guess) == set(puzzle.getAllLetters()):
+                pointsGained += 7
         
-        puzzle.addScore(pointsGained)
-        os.system('cls')
-        print('You guessed '+ guess + ' you get ' + str(pointsGained)+ ' Points')
-        
+            puzzle.addScore(pointsGained)
+            os.system('cls')
+            print('You guessed '+ guess + ', you get ' + str(pointsGained)+ ' points!')
+        else:
+            os.system('cls')
     startGame(puzzle)
