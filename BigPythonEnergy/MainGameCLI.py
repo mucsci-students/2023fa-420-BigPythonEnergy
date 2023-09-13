@@ -105,7 +105,7 @@ def startGame(puzzle):
             pointsGained=4
         elif len(guess)>4:
             pointsGained = len(guess)
-        if list(set(guess)) == puzzle.getAllLetters():
+        if set(guess) == set(puzzle.getAllLetters()):
             pointsGained += 7
         
         puzzle.addScore(pointsGained)

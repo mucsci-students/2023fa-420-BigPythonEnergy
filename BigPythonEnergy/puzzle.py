@@ -28,6 +28,7 @@ class puzzle:
 
         # TODO - pull words from JSON list, put them in a set, should be handled by R/W.
         self.listOfTotalWords = DictInterface.findValid(self.specialLetter, self.letterList)
+        self.initializeTotalScore()
 
     def getAllLetters(self):
         return self.letters
@@ -46,7 +47,7 @@ class puzzle:
     def getTotalScore(self):
         return self.totalScore
     
-    def initalizeTotalScore(self):
+    def initializeTotalScore(self):
         self.totalScore = 0
 
         for i in self.getTotalWordList():
