@@ -20,7 +20,7 @@ def startGame(puzzle):
     print('-----------------')
     print('Score:')
     print(puzzle.getCurrentScore())
-    print ('Enter Guess below, enter /words for a list of words, enter /shuffle to shuffle the letters, enter /quit to quit the program, or enter /save to save your progress')
+    print ('Enter Guess below, enter /words for a list of words, enter /shuffle to shuffle the letters, enter /rank to see your rank, enter /thresholds to see rank thresholds, enter /quit to quit the program, or enter /save to save your progress')
     guess = input()
     guess = guess.lower()
     if guess == "/quit":
@@ -42,6 +42,22 @@ def startGame(puzzle):
 
     if guess == "/shuffle":
         random.shuffle(puzzle.letterList)
+        startGame(puzzle)
+
+    if guess == "/rank":
+        print(puzzle.getCurrentScoreType())
+
+        print("press enter to return to guessing")
+        next = input()
+        os.system('cls')
+        startGame(puzzle)
+
+    if guess == "/thresholds":
+        print(puzzle.getScoreThresholds())
+
+        print("press enter to return to guessing")
+        next = input()
+        os.system('cls')
         startGame(puzzle)
 
     if len(guess) < 4:
@@ -67,6 +83,7 @@ def startGame(puzzle):
     
     #TODO Check if word is in dictionary here
 
+Dictionary-Interface
     if DictInterface.isValid(guess):
         puzzle.addFoundWord(guess)
         pointsGained = 0
