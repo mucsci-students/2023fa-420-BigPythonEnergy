@@ -2,7 +2,7 @@ import os
 import re
 from MainGameCLI import *
 from puzzle import *
-import DictInterface.py
+import DictInterface
 
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application
 def inputCheck():

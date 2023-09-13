@@ -97,7 +97,7 @@ def startGame(puzzle):
     
     #TODO Check if word is in dictionary here
 
-Dictionary-Interface
+
     if DictInterface.isValid(guess):
         puzzle.addFoundWord(guess)
         pointsGained = 0

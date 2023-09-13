@@ -27,7 +27,7 @@ def findValid(required, letters):
         words = df[column].dropna()
         for word in words:
             if required in word and all(letter in letters or letter == required for letter in word):
-                validWords.append(word)
+                validWords.add(word)
     return validWords
 
 
@@ -36,39 +36,39 @@ def isValid(guess):
     match(len(guess)):
         case 4:
             fours = df['fours'].dropna()
-            if guess in fours.values():
+            if guess in fours.values:
                 return True
         case 5:
             fives = df['fives'].dropna()
-            if guess in fives.values():
+            if guess in fives.values:
                 return True
         case 6:
             sixes = df['sixes'].dropna()
-            if guess in sixes.values():
+            if guess in sixes.values:
                 return True
         case 7:
             sevens = df['sevens'].dropna()
-            if guess in sevens.values():
+            if guess in sevens.values:
                 return True
         case 8:
             eights = df['eights'].dropna()
-            if guess in eights.values():
+            if guess in eights.values:
                 return True
         case 9:
             nines = df['nines'].dropna()
-            if guess in nines.values():
+            if guess in nines.values:
                 return True
         case 10:
             tens = df['tens'].dropna()
-            if guess in tens.values():
+            if guess in tens.values:
                 return True
         case 11:
             elevens = df['elevens'].dropna()
-            if guess in elevens.values():
+            if guess in elevens.values:
                 return True
         case 12:
             twelves = df['twelves'].dropna()
-            if guess in twelves.values():
+            if guess in twelves.values:
                 return True
         case 13:
             thirteens = df['thirteens'].dropna()
@@ -76,11 +76,11 @@ def isValid(guess):
                 return True
         case 14:
             fourteens = df['fourteens'].dropna()
-            if guess in fourteens.values():
+            if guess in fourteens.values:
                 return True
         case 15:
             fifteens = df['fifteens'].dropna()
-            if guess in fifteens.values():
+            if guess in fifteens.values:
                 return True
         case _:
             os.system('cls')
