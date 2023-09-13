@@ -1,6 +1,7 @@
 import os
 import random
 import re
+import json
 from puzzle import *
 import DictInterface 
 
@@ -27,7 +28,18 @@ def startGame(puzzle):
         exit()
 
     if guess == "/save":
-        print('save')
+        save = {
+            "letters":list(puzzle.letterList),
+            "specialLetter":puzzle.specialLetter,
+            "words" : list(puzzle.getFoundWordList()),
+            "score": puzzle.getCurrentScore()
+        }
+        
+        with open("sample.json", "w") as outfile:
+            json.dump(save, outfile)
+        os.system('cls')
+        print('game saved')
+        startGame(puzzle)
         #TODO Add SAVE functionality
     
     if guess == "/words":
@@ -42,6 +54,8 @@ def startGame(puzzle):
 
     if guess == "/shuffle":
         random.shuffle(puzzle.letterList)
+        os.system('cls')
+        print('Letters shuffled')
         startGame(puzzle)
 
     if guess == "/rank":
@@ -83,7 +97,7 @@ def startGame(puzzle):
     
     #TODO Check if word is in dictionary here
 
-Dictionary-Interface
+
     if DictInterface.isValid(guess):
         puzzle.addFoundWord(guess)
         pointsGained = 0
