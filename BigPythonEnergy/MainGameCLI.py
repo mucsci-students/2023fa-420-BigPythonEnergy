@@ -2,6 +2,7 @@ import os
 import random
 import re
 from puzzle import *
+import DictInterface 
 
 def startGame(puzzle):
     
@@ -66,14 +67,16 @@ def startGame(puzzle):
     
     #TODO Check if word is in dictionary here
 
-    puzzle.addFoundWord(guess)
-    pointsGained = 0
-    if len(guess)==4:
-        pointsGained=4
-    elif len(guess)>4:
-        pointsGained = len(guess)
-    
-    puzzle.addScore(pointsGained)
-    os.system('cls')
-    print('You guessed '+ guess + ' you get ' + str(pointsGained)+ ' Points')
+    if DictInterface.isValid(guess):
+        puzzle.addFoundWord(guess)
+        pointsGained = 0
+        if len(guess)==4:
+            pointsGained=4
+        elif len(guess)>4:
+            pointsGained = len(guess)
+        
+        puzzle.addScore(pointsGained)
+        os.system('cls')
+        print('You guessed '+ guess + ' you get ' + str(pointsGained)+ ' Points')
+        
     startGame(puzzle)
