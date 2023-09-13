@@ -3,6 +3,7 @@ import random
 import re
 import json
 from puzzle import *
+import DictInterface 
 
 def startGame(puzzle):
     
@@ -96,17 +97,17 @@ def startGame(puzzle):
     
     #TODO Check if word is in dictionary here
 
-    puzzle.addFoundWord(guess)
-    pointsGained = 0
-    if len(guess)==4:
-        pointsGained=1
-    elif len(guess)>4:
-        pointsGained = len(guess)
-    guessSet = set(guess)
-    if guessSet == set(puzzle.letterList):
-        pointsGained += 7
-    
-    puzzle.addScore(pointsGained)
-    os.system('cls')
-    print('You guessed '+ guess + ' you get ' + str(pointsGained)+ ' Points')
+Dictionary-Interface
+    if DictInterface.isValid(guess):
+        puzzle.addFoundWord(guess)
+        pointsGained = 0
+        if len(guess)==4:
+            pointsGained=4
+        elif len(guess)>4:
+            pointsGained = len(guess)
+        
+        puzzle.addScore(pointsGained)
+        os.system('cls')
+        print('You guessed '+ guess + ' you get ' + str(pointsGained)+ ' Points')
+        
     startGame(puzzle)
