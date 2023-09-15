@@ -20,9 +20,10 @@ class puzzle:
             self.specialLetter = random.choice(tuple(letters))
             for i in letters:
                 self.letterList.append(i)
-                
+        
+        # Mostly for testing purposes.
         else:
-            self.letters = []
+            self.letterList = []
             self.specialLetter = None
 
         # TODO - pull words from JSON list, put them in a set, should be handled by R/W.
@@ -42,7 +43,14 @@ class puzzle:
     # ------ Getter Methods ------
 
     def getAllLetters(self):
-        return self.letters
+        allLetters = "| "
+        for i in range(6):
+            allLetters = allLetters + self.letterList[i] + " | "
+        allLetters = allLetters + self.letterList[6] + " |"
+        return allLetters
+    
+    def getLetterList(self):
+        return self.letterList
 
     def getNormalLetters(self):
         normalLetters = self.letters

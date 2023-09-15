@@ -22,6 +22,7 @@ def inputCheck():
 
 # Start page where the user can select what type of puzzle they want, or they can go back to the main screen.
 def startPage():
+    os.system('cls')
     print('Welcome to the start page, enter "Random" to start from a random word, "Load" to start from a save file, or "Choose" to started from your own Chosen word.')
     print('Or enter "Back" to go back to the start page')
     userInput = input()
@@ -60,6 +61,8 @@ def startPage():
 
 #Choose word script used if the player wants to choose their own word to base the puzzle off of
 def chooseWord():
+
+    os.system('cls')
     
     print('Enter an english word with atleast 7 unique letters')
     wordInput = input()
@@ -98,17 +101,21 @@ def chooseWord():
 
 # Prints out the help page containing information useful to the player.
 def helpPage():
+    os.system('cls')
     print('---------------------------------------------------------------------------------------------------------------------')
-    print('Help Page:')
-    print('This is a spelling bee game, the objective of the game is to spell out at many words as possible.')
-    print('The guessed word must have atleast 4 letter, it must be a valid word, you can only use the letters given to create your words, and the middle letter must be used.')
+    print('Help Page:\n')
+    print('This is a spelling bee game, the objective of the game is to spell out at many words as possible.\n')
+    print('A word must be at least 4 words, use only letters from the 7 on screen, and contain a given special letter.')
     print('You can reuse letters as many times as you need to create your word.')
-    print('As you find more words, you will get points, and as you get enough points, you will increase in rank.')
+    print('As you find more words, you will get points which correspond to higher ranks.\n')
     print('Points:')
     print('4 Letter word = 1 point. 5 Letter word = 5 points. 6 Letter word = 6 points, and so on.')
     print('Use all 7 letters given = 7 extra points.')
     print('Rank thresholds are based on the total number of words possible.')
-    print('---------------------------------------------------------------------------------------------------------------------')
+    print('---------------------------------------------------------------------------------------------------------------------\n')
+    print('Press enter to continue!')
+    next = input()
+    os.system('cls')
     inputCheck()
 
 # Sets up the game in the case of a random word.
@@ -124,7 +131,7 @@ def randomWord():
 os.system('cls')
 print('--------------------------------')
 print('Welcome to Spelling Bee!')
-print('Created by Big Python Energy!')
+print('Created by Big Python Energy')
 print('--------------------------------')
 inputCheck()
 

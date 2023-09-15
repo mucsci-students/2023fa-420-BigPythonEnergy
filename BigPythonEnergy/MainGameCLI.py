@@ -12,18 +12,15 @@ def startGame(puzzle):
     
 
 
-    letters = ""
-    for i in puzzle.getAllLetters():
-        letters+= i+" "
 
     print('LETTERS:')
     print('-----------------')
-    print(puzzle.letterList)
+    print(puzzle.getAllLetters() + "\n")
     print('Must Contain: ' + puzzle.specialLetter)
-    print('-----------------')
+    print('-----------------\n')
     print('Score:')
     print(puzzle.getCurrentScore())
-    print ('Enter Guess below, enter /words for a list of words, enter /shuffle to shuffle the letters, enter /rank to see your rank, enter /thresholds to see rank thresholds, enter /quit to quit the program, or enter /save to save your progress')
+    print ('\nEnter your guess below!\n\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nor \nEnter /save to save your progress')
     guess = input()
     guess = guess.lower()
 
@@ -86,11 +83,11 @@ def startGame(puzzle):
     # Stops a guess when a word is too short or long
     if len(guess) < 4:
         os.system('cls')
-        print('word is too short')
+        print('Sorry, your guess must be at least 4 letters.\n')
         startGame(puzzle)
     elif len(guess)> 15:
         os.system('cls')
-        print('word is too long')
+        print('Sorry, your guess must be at most 15 letters.\n')
         startGame(puzzle)
 
     specialLetter = False
@@ -99,13 +96,13 @@ def startGame(puzzle):
     for i in guess:
         if i not in puzzle.letterList:
             os.system('cls')
-            print('word contains a letter not in the list')
+            print('Your guess contains a wrong letter, try again.')
             startGame(puzzle)
         if i+"" == (puzzle.specialLetter+""):
             specialLetter=True
     if not specialLetter:
         os.system('cls')
-        print('word does not contain special letter')
+        print('Your guess does not contain the special letter, try again.')
         startGame(puzzle)
     
     # Adds the points gained from a word.
@@ -120,16 +117,16 @@ def startGame(puzzle):
                 pointsGained=1
             elif len(guess)>4:
                 pointsGained = len(guess)
-            if set(guess) == set(puzzle.getAllLetters()):
+            if set(guess) == set(puzzle.getLetterList()):
                 pointsGained += 7
         
             puzzle.addScore(pointsGained)
             os.system('cls')
-            print('You guessed '+ guess + ', you get ' + str(pointsGained)+ ' points!')
+            print('You guessed '+ guess + ', you get ' + str(pointsGained)+ ' points!\n')
         else:
             os.system('cls')
             print("You've already guessed this word!\n")
     else:
         os.system('cls')
-        print("Sorry, this word is not a valid answer!\n")
+        print("Sorry, your guess is not valid, please try again.\n")
     startGame(puzzle)
