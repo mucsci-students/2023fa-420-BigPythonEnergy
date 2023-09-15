@@ -4,7 +4,6 @@ import DictInterface
 
 # Description: Handles the operations of each piece of the puzzle as well as retrieval and the like.
 # Constraints: Must have exactly 7 letters, must have a totalScore > 0, must assign a special letter.
-# Contributors: Rosaline Mattaboni
 class puzzle:
 
     listOfTotalWords = set()
@@ -13,6 +12,7 @@ class puzzle:
     totalScore = 0
     letterList = []
     
+    # Constructor that handles creation of the play elements of a specific puzzle.
     def __init__(self, letters=None):
         if letters is not None:
             
@@ -22,13 +22,24 @@ class puzzle:
                 self.letterList.append(i)
                 
         else:
-            # Handle the case when no letters are provided
             self.letters = []
             self.specialLetter = None
 
         # TODO - pull words from JSON list, put them in a set, should be handled by R/W.
         self.listOfTotalWords = DictInterface.findValid(self.specialLetter, self.letterList)
         self.initializeTotalScore()
+
+    # Initializes the total possible score, primarily for puzzle setup.
+    def initializeTotalScore(self):
+        self.totalScore = 0
+
+        for i in self.getTotalWordList():
+            if len(i) == 4:
+                self.totalScore += 1
+            elif len(i) > 4:
+                self.totalScore += len(i)
+
+    # ------ Getter Methods ------
 
     def getAllLetters(self):
         return self.letters
@@ -47,15 +58,6 @@ class puzzle:
     def getTotalScore(self):
         return self.totalScore
     
-    def initializeTotalScore(self):
-        self.totalScore = 0
-
-        for i in self.getTotalWordList():
-            if len(i) == 4:
-                self.totalScore += 1
-            elif len(i) > 4:
-                self.totalScore += len(i)
-
     def getCurrentScoreType(self):
         percentage = self.currentScore / self.totalScore
 
@@ -79,7 +81,7 @@ class puzzle:
             return "Good Start"
         else:
             return "Beginner"
-        
+    
     def getScoreThresholds(self):
         queenBee = "Queen Bee: " + str(self.getTotalScore())
         genius = "Genius: " + str(int((self.getTotalScore() * 0.7) + 0.99999999))
@@ -100,6 +102,9 @@ class puzzle:
     def getTotalWordList(self):
         return self.listOfTotalWords
     
+    # ------ Others ------
+    
+    # Used to set score directly in case of loading a puzzle.
     def setScore(self, score):
         self.currentScore = score
 
@@ -109,7 +114,6 @@ class puzzle:
     def addFoundWord(self, word):
         self.listOfFoundWords.add(word)
 
+    # Used to set all found words in case of loading a puzzle.
     def setFoundWord(self, wordList):
         self.listOfFoundWords = wordList
-
-    
