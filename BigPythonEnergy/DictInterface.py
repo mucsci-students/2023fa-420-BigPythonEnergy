@@ -42,7 +42,7 @@ def findValid(required, letters):
 
             # Ensure the word contains the required letter and only the other 6 acceptable letters
             if required in word and all(letter in letters or letter == required for letter in word):
-                validWords.append(word)
+                validWords.add(word)
     return validWords
 
 # Function to check that the guess entered is a valud english word
@@ -56,55 +56,55 @@ def isValid(guess):
             # Select column of 4 letter words
             fours = df['fours'].dropna()
             # search through the column to see if the guess is present
-            if guess in fours.values():
+            if guess in fours.values:
                 return True
             
         # if the guess is 5 letters
         case 5:
             fives = df['fives'].dropna()
-            if guess in fives.values():
+            if guess in fives.values:
                 return True
             
         # if the guess is 6 letters
         case 6:
             sixes = df['sixes'].dropna()
-            if guess in sixes.values():
+            if guess in sixes.values:
                 return True
         
         # if the guess is 7 letters            
         case 7:
             sevens = df['sevens'].dropna()
-            if guess in sevens.values():
+            if guess in sevens.values:
                 return True
 
         # if the guess is 8 letters
         case 8:
             eights = df['eights'].dropna()
-            if guess in eights.values():
+            if guess in eights.values:
                 return True
         
         # if the guess is 9 letters
         case 9:
             nines = df['nines'].dropna()
-            if guess in nines.values():
+            if guess in nines.values:
                 return True
             
         # if the guess is 10 letters
         case 10:
             tens = df['tens'].dropna()
-            if guess in tens.values():
+            if guess in tens.values:
                 return True
             
         # if the guess is 11 letters
         case 11:
             elevens = df['elevens'].dropna()
-            if guess in elevens.values():
+            if guess in elevens.values:
                 return True
             
         # if the guess is 12 letters
         case 12:
             twelves = df['twelves'].dropna()
-            if guess in twelves.values():
+            if guess in twelves.values:
                 return True
             
         # if the guess is 13 letters
@@ -116,14 +116,14 @@ def isValid(guess):
         # if the guess is 14 letters
         case 14:
             fourteens = df['fourteens'].dropna()
-            if guess in fourteens.values():
+            if guess in fourteens.values:
                 return True
             
 
         # if the guess is 15 letters
         case 15:
             fifteens = df['fifteens'].dropna()
-            if guess in fifteens.values():
+            if guess in fifteens.values:
                 return True
             
         # Default case: the word was too long or too short, or was not found
