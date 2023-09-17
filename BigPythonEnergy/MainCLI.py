@@ -118,7 +118,7 @@ def helpPage():
     os.system('cls')
     inputCheck()
 
-# Sets up the game in the case of a random word.
+# Function to initialize a new puzzle with a randomly selected word
 def randomWord():
     word = DictInterface.randomWord()
     uniqueCharacters = set()
