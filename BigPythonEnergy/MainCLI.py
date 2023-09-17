@@ -96,6 +96,7 @@ def helpPage():
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.') 
     inputCheck()
 
+# Function to initialize a new puzzle with a randomly selected word
 def randomWord():
     word = DictInterface.randomWord()
     uniqueCharacters = set()
