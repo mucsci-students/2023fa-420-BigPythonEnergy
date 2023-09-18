@@ -47,9 +47,10 @@ def startGame(puzzle):
     # Prints the list of found words.
     if guess == "/words":
         print ('Words found:')
-        print (puzzle.getFoundWordList())
+        for i in puzzle.getFoundWordList():
+            print (i)
 
-        print("press enter to return to guessing")
+        print("Press enter to return to guessing.")
         next = input()
         os.system('cls')
         startGame(puzzle)
@@ -66,7 +67,7 @@ def startGame(puzzle):
     if guess == "/rank":
         print(puzzle.getCurrentScoreType())
 
-        print("press enter to return to guessing")
+        print("Press enter to return to guessing.")
         next = input()
         os.system('cls')
         startGame(puzzle)
@@ -75,7 +76,7 @@ def startGame(puzzle):
     if guess == "/thresholds":
         print(puzzle.getScoreThresholds())
 
-        print("press enter to return to guessing")
+        print("Press enter to return to guessing..")
         next = input()
         os.system('cls')
         startGame(puzzle)
