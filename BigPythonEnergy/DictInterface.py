@@ -1,7 +1,14 @@
 import pandas as pd
 import random
 import os
+import platform
 
+def clearScreen():
+    system_platform = platform.system()
+    if system_platform == "Windows":
+        os.system("cls")  # Clear screen on Windows
+    else:
+        os.system("clear")  # Clear screen on macOS and Linux
 
 df = pd.read_json("words.json")
 
@@ -128,6 +135,6 @@ def isValid(guess):
             
         # Default case: the word was too long or too short, or was not found
         case _:
-            os.system('cls')
+            clearScreen()
             print("The word you entered is not in the dictionary")
             return False
