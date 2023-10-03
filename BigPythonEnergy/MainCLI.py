@@ -4,7 +4,9 @@ import tkinter as tk
 from tkinter import filedialog
 from MainGameCLI import *
 from puzzle import *
+from MainUI import *
 import DictInterface
+import sys
 
 def clearScreen():
     system_platform = platform.system()
@@ -145,7 +147,8 @@ def randomWord():
     startGame(newPuzzle)
 
 # Start script to clear the command line so the user just sees the instructions.
-
+if str(len(sys.argv) > 1 and sys.argv[1]) == "GUI":
+    exec(open("BigPythonEnergy/MainUI.py").read())
 print('--------------------------------')
 print('Welcome to Spelling Bee!')
 print('Created by Big Python Energy')
