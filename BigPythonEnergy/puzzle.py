@@ -1,6 +1,8 @@
 import random
 import string
 import DictInterface
+import os
+import platform
 
 # Description: Handles the operations of each piece of the puzzle as well as retrieval and the like.
 # Constraints: Must have exactly 7 letters, must have a totalScore > 0, must assign a special letter.
@@ -125,3 +127,10 @@ class puzzle:
     # Used to set all found words in case of loading a puzzle.
     def setFoundWord(self, wordList):
         self.listOfFoundWords = wordList
+
+    def clearScreen():
+        system_platform = platform.system()
+        if system_platform == "Windows":
+            os.system("cls")  # Clear screen on Windows
+        else:
+            os.system("clear")  # Clear screen on macOS and Linux

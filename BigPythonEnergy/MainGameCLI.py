@@ -4,6 +4,12 @@ import re
 import json
 from puzzle import *
 import DictInterface 
+def clearScreen():
+    system_platform = platform.system()
+    if system_platform == "Windows":
+        os.system("cls")  # Clear screen on Windows
+    else:
+        os.system("clear")  # Clear screen on macOS and Linux
 
 # The main game loop, which contains each action a player can make and calls upon the underlying structure.
 # Prerequesite: Must run until stopped.
@@ -31,15 +37,18 @@ def startGame(puzzle):
     # Saves the game data to the save file.
     if guess == "/save":
         save = {
-            "letters":list(puzzle.letterList),
-            "specialLetter":puzzle.specialLetter,
-            "words" : list(puzzle.getFoundWordList()),
-            "score": puzzle.getCurrentScore()
+            "baseWord":list(puzzle.letterList),
+            "foundWords" : list(puzzle.getFoundWordList()),
+            "playerPoints": puzzle.getCurrentScore(),
+            "requiredLetter":puzzle.specialLetter,
+            "maxPoints": puzzle.totalScore
         }
+        print('Enter Name for Save File:')
+        fileName = input()
         
-        with open("sample.json", "w") as outfile:
+        with open(fileName+".json", "w") as outfile:
             json.dump(save, outfile)
-        os.system('cls')
+        clearScreen()
         print('game saved')
         startGame(puzzle)
         #TODO Add SAVE functionality
@@ -52,14 +61,14 @@ def startGame(puzzle):
 
         print("Press enter to return to guessing.")
         next = input()
-        os.system('cls')
+        clearScreen()
         startGame(puzzle)
 
 
     # Shuffles the letters.
     if guess == "/shuffle":
         random.shuffle(puzzle.letterList)
-        os.system('cls')
+        clearScreen()
         print('Letters shuffled')
         startGame(puzzle)
 
@@ -69,7 +78,7 @@ def startGame(puzzle):
 
         print("Press enter to return to guessing.")
         next = input()
-        os.system('cls')
+        clearScreen()
         startGame(puzzle)
 
     # Shows all of the ranks and how many points are needed to obtain them.
@@ -78,16 +87,16 @@ def startGame(puzzle):
 
         print("Press enter to return to guessing..")
         next = input()
-        os.system('cls')
+        clearScreen()
         startGame(puzzle)
 
     # Stops a guess when a word is too short or long
     if len(guess) < 4:
-        os.system('cls')
+        clearScreen()
         print('Sorry, your guess must be at least 4 letters.\n')
         startGame(puzzle)
     elif len(guess)> 15:
-        os.system('cls')
+        clearScreen()
         print('Sorry, your guess must be at most 15 letters.\n')
         startGame(puzzle)
 
@@ -96,13 +105,13 @@ def startGame(puzzle):
     # Stops a guess when it does not contain the correct letters.
     for i in guess:
         if i not in puzzle.letterList:
-            os.system('cls')
+            clearScreen()
             print('Your guess contains a wrong letter, try again.')
             startGame(puzzle)
         if i+"" == (puzzle.specialLetter+""):
             specialLetter=True
     if not specialLetter:
-        os.system('cls')
+        clearScreen()
         print('Your guess does not contain the special letter, try again.')
         startGame(puzzle)
     
@@ -122,12 +131,12 @@ def startGame(puzzle):
                 pointsGained += 7
         
             puzzle.addScore(pointsGained)
-            os.system('cls')
+            clearScreen()
             print('You guessed '+ guess + ', you get ' + str(pointsGained)+ ' points!\n')
         else:
-            os.system('cls')
+            clearScreen()
             print("You've already guessed this word!\n")
     else:
-        os.system('cls')
+        clearScreen()
         print("Sorry, your guess is not valid, please try again.\n")
     startGame(puzzle)

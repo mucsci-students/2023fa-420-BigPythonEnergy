@@ -1,8 +1,17 @@
 import os
 import re
+import tkinter as tk
+from tkinter import filedialog
 from MainGameCLI import *
 from puzzle import *
 import DictInterface
+
+def clearScreen():
+    system_platform = platform.system()
+    if system_platform == "Windows":
+        os.system("cls")  # Clear screen on Windows
+    else:
+        os.system("clear")  # Clear screen on macOS and Linux
 
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application.
 def inputCheck():
@@ -17,13 +26,13 @@ def inputCheck():
     elif userInput == "quit":
         exit()
     else:
-        os.system('cls')
+        clearScreen()
         print('unrecognized command, please try again:')
         inputCheck()
 
 # Start page where the user can select what type of puzzle they want, or they can go back to the main screen.
 def startPage():
-    os.system('cls')
+    clearScreen()
     print('Welcome to the start page, enter "Random" to start from a random word, "Load" to start from a save file, or "Choose" to started from your own Chosen word.')
     print('Or enter "Back" to go back to the start page')
     userInput = input()
@@ -34,19 +43,26 @@ def startPage():
         
     # Load the JSON data from the file.
     elif userInput == "load":
-        with open("sample.json", "r") as infile:
+        root = tk.Tk()
+        root.withdraw()
+        file_selected = filedialog.askopenfile()
+        print("")
+        print(file_selected.name)
+        print("")
+        with open(file_selected.name, "r") as infile:
             data = json.load(infile)
 
     # Access the attributes from the loaded JSON data
-        letters = data["letters"]
-        special_letter = data["specialLetter"]
-        words = data["words"]
-        score = data["score"]        
+        letters = data["baseWord"]
+        special_letter = data["requiredLetter"]
+        words = data["foundWords"]
+        score = data["playerPoints"] 
+
         newPuzzle = puzzle(letters)
         newPuzzle.currentScore = score
         newPuzzle.listOfFoundWords = set(words)
         newPuzzle.specialLetter = special_letter
-        os.system('cls')
+        clearScreen()
         print('Loaded save')
         startGame(newPuzzle)
 
@@ -63,7 +79,7 @@ def startPage():
 #Choose word script used if the player wants to choose their own word to base the puzzle off of
 def chooseWord():
 
-    os.system('cls')
+    clearScreen()
     
     print('Enter an english word with atleast 7 unique letters')
     wordInput = input()
@@ -71,18 +87,18 @@ def chooseWord():
 
     # checks if the length is atleast 7.
     if len(wordInput)<7:
-        os.system('cls')
+        clearScreen()
         print('Word does not contain enough letters')
         chooseWord()
 
     # Checks if word has any non-English letters.
     elif not re.match("^[a-zA-Z]+$", wordInput): 
-        os.system('cls') 
+        clearScreen()
         print('Word contains non english letters')
         chooseWord()
     
     # Checks if the word has exactly 7 unique letters.
-    os.system('cls')
+    clearScreen()
     uniqueCharacters = set()
     for i in wordInput:  
         uniqueCharacters.add(i)
@@ -102,7 +118,7 @@ def chooseWord():
 
 # Prints out the help page containing information useful to the player.
 def helpPage():
-    os.system('cls')
+    clearScreen()
     print('---------------------------------------------------------------------------------------------------------------------')
     print('Help Page:\n')
     print('This is a spelling bee game, the objective of the game is to spell out at many words as possible.\n')
@@ -116,7 +132,7 @@ def helpPage():
     print('---------------------------------------------------------------------------------------------------------------------\n')
     print('Press enter to continue!')
     next = input()
-    os.system('cls')
+    clearScreen()
     inputCheck()
 
 # Function to initialize a new puzzle with a randomly selected word
@@ -129,11 +145,9 @@ def randomWord():
     startGame(newPuzzle)
 
 # Start script to clear the command line so the user just sees the instructions.
-os.system('cls')
+
 print('--------------------------------')
 print('Welcome to Spelling Bee!')
 print('Created by Big Python Energy')
 print('--------------------------------')
 inputCheck()
-
-
