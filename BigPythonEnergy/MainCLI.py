@@ -17,6 +17,7 @@ def inputCheck():
     elif userInput == "quit":
         exit()
     else:
+        os.system('cls')
         print('unrecognized command, please try again:')
         inputCheck()
 
