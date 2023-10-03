@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.uic import loadUi
 
 
-from TestWindowUI import Ui_MainWindow
+from MainWindowUI import Ui_MainWindow
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -20,24 +20,6 @@ class Window(QMainWindow, Ui_MainWindow):
         super().__init__(parent)
 
         self.setupUi(self)
-
-    def about(self):
-
-        QMessageBox.about(
-
-            self,
-
-            "About Sample Editor",
-
-            "<p>A sample text editor app built with:</p>"
-
-            "<p>- PyQt</p>"
-
-            "<p>- Qt Designer</p>"
-
-            "<p>- Python</p>",
-
-        )
 
 if __name__ == "__main__":
 
