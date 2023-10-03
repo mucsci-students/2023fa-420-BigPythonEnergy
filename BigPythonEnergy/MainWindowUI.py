@@ -9,10 +9,50 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import tkinter as tk
+from tkinter import filedialog
+from MainGameCLI import *
+from puzzle import *
+from DictInterface import *
+
 
 
 class Ui_MainWindow(object):
+    def load(self):
+        root = tk.Tk()
+        root.withdraw()
+        file_selected = filedialog.askopenfile()
+        print("")
+        print(file_selected.name)
+        print("")
+        with open(file_selected.name, "r") as infile:
+            data = json.load(infile)
+
+    # Access the attributes from the loaded JSON data
+        letters = data["baseWord"]
+        special_letter = data["requiredLetter"]
+        words = data["foundWords"]
+        score = data["playerPoints"] 
+        self.newPuzzle = puzzle(letters)
+        self.newPuzzle.currentScore = score
+        self.newPuzzle.listOfFoundWords = set(words)
+        self.newPuzzle.specialLetter = special_letter
+
+        print('here')
+        self.letter1.setText(self.newPuzzle.letterList[1])
+        self.letter2.setText(self.newPuzzle.letterList[2])
+        self.letter3.setText(self.newPuzzle.letterList[3])
+        self.letter4.setText(self.newPuzzle.letterList[4])
+        self.letter5.setText(self.newPuzzle.letterList[5])
+        self.letter6.setText(self.newPuzzle.letterList[6])
+        self.specialLetter.setText(self.newPuzzle.specialLetter)
+        words = ""
+        for i in self.newPuzzle.listOfFoundWords:
+            words = words + "," + i
+            self.foundWords.setText(words)
+
     def setupUi(self, MainWindow):
+        self.newPuzzle = None
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         MainWindow.setMinimumSize(QtCore.QSize(800, 600))
@@ -25,6 +65,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.letter6.setFont(font)
+        self.letter6.setText("")
         self.letter6.setObjectName("letter6")
         self.letter5 = QtWidgets.QPushButton(self.centralwidget)
         self.letter5.setGeometry(QtCore.QRect(170, 210, 40, 30))
@@ -81,6 +122,7 @@ class Ui_MainWindow(object):
         font.setFamily("Segoe UI")
         self.addWordButton.setFont(font)
         self.addWordButton.setObjectName("addWordButton")
+        self.addWordButton.clicked.connect(self.submit)
         self.scrollingText = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollingText.setGeometry(QtCore.QRect(380, 190, 200, 230))
         self.scrollingText.setWidgetResizable(True)
@@ -131,7 +173,9 @@ class Ui_MainWindow(object):
         MainWindow.addToolBar(QtCore.Qt.RightToolBarArea, self.toolBar)
         self.actionLoad = QtWidgets.QAction(MainWindow)
         self.actionLoad.setObjectName("actionLoad")
+        self.actionLoad.triggered.connect(self.load)
         self.actionSave = QtWidgets.QAction(MainWindow)
+        self.actionSave.triggered.connect(self.saved)
         self.actionSave.setObjectName("actionSave")
         self.actionAbout = QtWidgets.QAction(MainWindow)
         self.actionAbout.setObjectName("actionAbout")
@@ -154,6 +198,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionSave_Blank)
         self.toolBar.addAction(self.actionAbout)
         self.toolBar.addAction(self.action_Rank_Thresholds)
+
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -181,3 +226,56 @@ class Ui_MainWindow(object):
         self.action_About.setText(_translate("MainWindow", "&About"))
         self.actionSave_Blank.setText(_translate("MainWindow", "Save &Blank"))
         self.action_Rank_Thresholds.setText(_translate("MainWindow", "&Rank Thresholds"))
+
+
+
+    def saved(self):
+        save = {
+            "baseWord":list(self.newPuzzle.letterList),
+            "foundWords" : list(self.newPuzzle.getFoundWordList()),
+            "playerPoints": self.newPuzzle.getCurrentScore(),
+            "requiredLetter":self.newPuzzle.specialLetter,
+            "maxPoints": self.newPuzzle.totalScore
+        }
+        file_path = self.addWord.toPlainText() + ".json"
+        with open(file_path, "w") as outfile:
+            json.dump(save, outfile)
+        
+            
+    def submit(self):
+        if(not self.newPuzzle):
+            if len(self.addWord.toPlainText())==7 and DictInterface.isValid(self.addWord.toPlainText()):
+                uniqueCharacters=set()
+            for i in self.addWord.toPlainText():
+                uniqueCharacters.add(i)
+            self.newPuzzle = puzzle(uniqueCharacters)
+            self.letter1.setText(self.newPuzzle.letterList[1])
+            self.letter2.setText(self.newPuzzle.letterList[2])
+            self.letter3.setText(self.newPuzzle.letterList[3])
+            self.letter4.setText(self.newPuzzle.letterList[4])
+            self.letter5.setText(self.newPuzzle.letterList[5])
+            self.letter6.setText(self.newPuzzle.letterList[6])
+            self.specialLetter.setText(self.newPuzzle.specialLetter)
+        else:
+            result = self.addWord.toPlainText()
+            letterList = self.newPuzzle.getLetterList()
+            foundList = self.newPuzzle.getFoundWordList()
+            valid = True
+            if DictInterface.isValid(result) and result not in foundList:
+                for i in result:
+                    if i not in letterList:
+                        valid = False
+                if valid:
+                    print('GOod')
+                    self.newPuzzle.addFoundWord(result)
+                    self.newPuzzle.addScore(1)
+                    words = ""
+                    for i in self.newPuzzle.listOfFoundWords:
+                        words = words + "," + i
+                    self.foundWords.setText(words)
+                    self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
+                    
+    def notGood():
+        print('not Good')
+            
+            
