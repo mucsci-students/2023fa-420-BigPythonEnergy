@@ -19,6 +19,7 @@ import random as rd
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.newPuzzle = None
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         MainWindow.setMinimumSize(QtCore.QSize(800, 600))
@@ -253,45 +254,6 @@ class Ui_MainWindow(object):
         self.letter5.setText(addLetters[4])
         self.letter6.setText(addLetters[5])
 
-    def submit(self):
-        if(not self.newPuzzle):
-            if len(self.addWordLE.text())==7 and DictInterface.isValid(self.addWordLE.text()):
-                uniqueCharacters=set()
-            for i in self.addWordLE.text():
-                uniqueCharacters.add(i)
-            self.newPuzzle = puzzle(uniqueCharacters)
-            loopedLetters = self.newPuzzle.getNormalLetters()
-            addLetters = []
-            for i in loopedLetters:
-                addLetters.append(i)
-            self.letter1.setText(addLetters[0])
-            self.letter2.setText(addLetters[1])
-            self.letter3.setText(addLetters[2])
-            self.letter4.setText(addLetters[3])
-            self.letter5.setText(addLetters[4])
-            self.letter6.setText(addLetters[5])
-            self.specialLetter.setText(self.newPuzzle.specialLetter)
-        else:
-            result = self.addWordLE.text()
-            letterList = self.newPuzzle.getLetterList()
-            foundList = self.newPuzzle.getFoundWordList()
-            valid = True
-            if DictInterface.isValid(result) and result not in foundList:
-                for i in result:
-                    if i not in letterList:
-                        valid = False
-                if valid:
-                    print('Good')
-                    self.newPuzzle.addFoundWord(result)
-                    self.newPuzzle.addScore(1)
-                    words = ""
-                    for i in self.newPuzzle.listOfFoundWords:
-                        words = words + "," + i
-                    self.foundWords.setText(words)
-                    self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
-                    
-    def notGood():
-        print('Not Good')
             
     def load(self):
         root = tk.Tk()
@@ -326,3 +288,50 @@ class Ui_MainWindow(object):
             for i in self.newPuzzle.listOfFoundWords:
                 words = words + "," + i
                 self.foundWords.setText(words)
+
+    def submit(self):
+        if(not self.newPuzzle):
+            if len(self.addWordLE.text())==7 and DictInterface.isValid(self.addWordLE.text()):
+                uniqueCharacters=set()
+            for i in self.addWordLE.text():
+                uniqueCharacters.add(i)
+            self.newPuzzle = puzzle(uniqueCharacters)
+            loopedLetters = self.newPuzzle.getNormalLetters()
+            addLetters = []
+            for i in loopedLetters:
+                addLetters.append(i)
+            self.letter1.setText(addLetters[0])
+            self.letter2.setText(addLetters[1])
+            self.letter3.setText(addLetters[2])
+            self.letter4.setText(addLetters[3])
+            self.letter5.setText(addLetters[4])
+            self.letter6.setText(addLetters[5])
+            self.specialLetter.setText(self.newPuzzle.specialLetter)
+        else:
+            result = self.addWordLE.text()
+            letterList = self.newPuzzle.getLetterList()
+            foundList = self.newPuzzle.getFoundWordList()
+            valid = True
+            if DictInterface.isValid(result) and result not in foundList:
+                for i in result:
+                    if i not in letterList:
+                        valid = False
+                if valid:
+                    print('Good')
+                    self.newPuzzle.addFoundWord(result)
+                    pointsGained = 0
+                    if len(result)==4:
+                        pointsGained=1
+                    elif len(result)>4:
+                        pointsGained = len(result)
+                    if set(result) == set(self.newPuzzle.getLetterList()):
+                        pointsGained += 7
+                    self.newPuzzle.addScore(pointsGained)
+                    words = ""
+                    for i in self.newPuzzle.listOfFoundWords:
+                        words = words + "," + i
+                    self.foundWords.setText(words)
+                    self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
+                    
+    def notGood():
+        print('Not Good')

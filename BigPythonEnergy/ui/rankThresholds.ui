@@ -25,11 +25,11 @@
      <property name="font">
       <font>
        <family>Segoe UI</family>
-       <pointsize>8</pointsize>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>Placeholder</string>
+      <string>Please start a game to see the rank thresholds</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
