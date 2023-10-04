@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>400</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>400</width>
-    <height>400</height>
+    <height>300</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="helpText">
+    <widget class="QLabel" name="aboutText">
      <property name="font">
       <font>
        <family>Segoe UI</family>
@@ -29,7 +29,7 @@
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;The objective of the game is to spell out at many words as possible. A word must be at least 4 words, use only letters from the 7 on screen, and contain the middle letter. You can reuse letters as many times as you need to create your word. As you find more words, you will get points which correspond to higher ranks.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Points: 4 Letter word = 1 point. 5 Letter word = 5 points. 6 Letter word = 6 points, and so on. Use all 7 letters given = 7 extra points.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Rank thresholds are based on the total number of words possible.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This game was made by Big Python Energy of Millersville University!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Team members: Brendan LeFevre, Rosaline Mattaboni, Sean M, Vasilis B&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;We hope you enjoy, and please contact us on GitHub in case of any bugs.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>

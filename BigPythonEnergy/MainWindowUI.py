@@ -18,42 +18,7 @@ import random as rd
 
 
 class Ui_MainWindow(object):
-    def load(self):
-        root = tk.Tk()
-        root.withdraw()
-        file_selected = filedialog.askopenfile()
-        if (file_selected != None):
-            print("")
-            print(file_selected.name)
-            print("")
-            with open(file_selected.name, "r") as infile:
-                data = json.load(infile)
-
-        # Access the attributes from the loaded JSON data
-            letters = data["baseWord"]
-            special_letter = data["requiredLetter"]
-            words = data["foundWords"]
-            score = data["playerPoints"] 
-            self.newPuzzle = puzzle(letters)
-            self.newPuzzle.currentScore = score
-            self.newPuzzle.listOfFoundWords = set(words)
-            self.newPuzzle.specialLetter = special_letter
-
-            print('here')
-            self.letter1.setText(self.newPuzzle.letterList[1])
-            self.letter2.setText(self.newPuzzle.letterList[2])
-            self.letter3.setText(self.newPuzzle.letterList[3])
-            self.letter4.setText(self.newPuzzle.letterList[4])
-            self.letter5.setText(self.newPuzzle.letterList[5])
-            self.letter6.setText(self.newPuzzle.letterList[6])
-            self.specialLetter.setText(self.newPuzzle.specialLetter)
-            words = ""
-            for i in self.newPuzzle.listOfFoundWords:
-                words = words + "," + i
-                self.foundWords.setText(words)
-
     def setupUi(self, MainWindow):
-        self.newPuzzle = None
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         MainWindow.setMinimumSize(QtCore.QSize(800, 600))
@@ -127,6 +92,7 @@ class Ui_MainWindow(object):
         self.foundWords.setGeometry(QtCore.QRect(10, 10, 180, 30))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
+        font.setPointSize(12)
         self.foundWords.setFont(font)
         self.foundWords.setObjectName("foundWords")
         self.scrollingText.setWidget(self.scrollAreaWidgetContents)
@@ -137,10 +103,14 @@ class Ui_MainWindow(object):
         self.currRankLabel.setFont(font)
         self.currRankLabel.setObjectName("currRankLabel")
         self.currentRank = QtWidgets.QLabel(self.centralwidget)
-        self.currentRank.setGeometry(QtCore.QRect(380, 130, 200, 40))
+        self.currentRank.setGeometry(QtCore.QRect(370, 130, 220, 41))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
+        font.setPointSize(18)
+        font.setBold(True)
+        font.setWeight(75)
         self.currentRank.setFont(font)
+        self.currentRank.setAlignment(QtCore.Qt.AlignCenter)
         self.currentRank.setObjectName("currentRank")
         self.shuffleButton = QtWidgets.QPushButton(self.centralwidget)
         self.shuffleButton.setGeometry(QtCore.QRect(30, 100, 60, 30))
@@ -169,13 +139,19 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.toolBar = QtWidgets.QToolBar(MainWindow)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.toolBar.setFont(font)
+        self.toolBar.setMovable(True)
+        self.toolBar.setAllowedAreas(QtCore.Qt.RightToolBarArea|QtCore.Qt.TopToolBarArea)
+        self.toolBar.setOrientation(QtCore.Qt.Vertical)
+        self.toolBar.setIconSize(QtCore.QSize(30, 30))
+        self.toolBar.setFloatable(False)
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.RightToolBarArea, self.toolBar)
         self.actionLoad = QtWidgets.QAction(MainWindow)
         self.actionLoad.setObjectName("actionLoad")
-        self.actionLoad.triggered.connect(self.load)
         self.actionSave = QtWidgets.QAction(MainWindow)
-        self.actionSave.triggered.connect(self.saved)
         self.actionSave.setObjectName("actionSave")
         self.actionAbout = QtWidgets.QAction(MainWindow)
         self.actionAbout.setObjectName("actionAbout")
@@ -185,12 +161,18 @@ class Ui_MainWindow(object):
         self.actionSave_Blank.setObjectName("actionSave_Blank")
         self.action_Rank_Thresholds = QtWidgets.QAction(MainWindow)
         self.action_Rank_Thresholds.setObjectName("action_Rank_Thresholds")
+        self.action_Exit = QtWidgets.QAction(MainWindow)
+        self.action_Exit.setObjectName("action_Exit")
+        self.action_New = QtWidgets.QAction(MainWindow)
+        self.action_New.setObjectName("action_New")
+        self.menu_File.addAction(self.action_New)
         self.menu_File.addAction(self.actionLoad)
         self.menu_File.addAction(self.actionSave)
         self.menu_File.addAction(self.actionSave_Blank)
+        self.menu_File.addAction(self.action_Exit)
         self.menu_Help.addAction(self.actionAbout)
-        self.menu_Help.addAction(self.action_About)
         self.menu_Help.addAction(self.action_Rank_Thresholds)
+        self.menu_Help.addAction(self.action_About)
         self.menubar.addAction(self.menu_File.menuAction())
         self.menubar.addAction(self.menu_Help.menuAction())
         self.toolBar.addAction(self.actionLoad)
@@ -202,6 +184,9 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.shuffleButton.clicked.connect(self.shuffle)
         self.addWordButton.clicked.connect(self.submit)
+        self.actionSave.triggered.connect(self.saved)
+        self.actionSave_Blank.triggered.connect(self.savedBlank)
+        self.actionLoad.triggered.connect(self.load)
         self.addWordButton.clicked.connect(self.addWordLE.clear) # type: ignore
         self.addWordLE.returnPressed.connect(self.addWordButton.click) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -210,9 +195,9 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.addWordButton.setText(_translate("MainWindow", "Add Word"))
-        self.foundWords.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Found Words:</span></p></body></html>"))
+        self.foundWords.setText(_translate("MainWindow", "Found Words:"))
         self.currRankLabel.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Current Rank:</span></p></body></html>"))
-        self.currentRank.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">Beginner</span></p></body></html>"))
+        self.currentRank.setText(_translate("MainWindow", "Beginner"))
         self.shuffleButton.setText(_translate("MainWindow", "Shuffle"))
         self.addWordLE.setPlaceholderText(_translate("MainWindow", "Type here or click letters!"))
         self.menu_File.setTitle(_translate("MainWindow", "&File"))
@@ -224,17 +209,30 @@ class Ui_MainWindow(object):
         self.action_About.setText(_translate("MainWindow", "&About"))
         self.actionSave_Blank.setText(_translate("MainWindow", "Save &Blank"))
         self.action_Rank_Thresholds.setText(_translate("MainWindow", "&Rank Thresholds"))
+        self.action_Exit.setText(_translate("MainWindow", "&Exit"))
+        self.action_New.setText(_translate("MainWindow", "&New"))
 
 
-
+    def savedBlank(self):
+        if (self.newPuzzle != None):
+            save = {
+                "baseWord": list(self.newPuzzle.letterList),
+                "foundWords" : list(),
+                "playerPoints": 0,
+                "requiredLetter": self.newPuzzle.specialLetter,
+                "maxPoints": self.newPuzzle.totalScore
+            }
+            file_path = self.addWordLE.text() + ".json"
+            with open(file_path, "w") as outfile:
+                json.dump(save, outfile)
 
     def saved(self):
         if (self.newPuzzle != None):
             save = {
-                "baseWord":list(self.newPuzzle.letterList),
+                "baseWord": list(self.newPuzzle.letterList),
                 "foundWords" : list(self.newPuzzle.getFoundWordList()),
                 "playerPoints": self.newPuzzle.getCurrentScore(),
-                "requiredLetter":self.newPuzzle.specialLetter,
+                "requiredLetter": self.newPuzzle.specialLetter,
                 "maxPoints": self.newPuzzle.totalScore
             }
             file_path = self.addWordLE.text() + ".json"
@@ -293,6 +291,38 @@ class Ui_MainWindow(object):
                     self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
                     
     def notGood():
-        print('not Good')
+        print('Not Good')
             
-           
+    def load(self):
+        root = tk.Tk()
+        root.withdraw()
+        file_selected = filedialog.askopenfile()
+        if (file_selected != None):
+            print("")
+            print(file_selected.name)
+            print("")
+            with open(file_selected.name, "r") as infile:
+                data = json.load(infile)
+
+        # Access the attributes from the loaded JSON data
+            letters = data["baseWord"]
+            special_letter = data["requiredLetter"]
+            words = data["foundWords"]
+            score = data["playerPoints"] 
+            self.newPuzzle = puzzle(letters)
+            self.newPuzzle.currentScore = score
+            self.newPuzzle.listOfFoundWords = set(words)
+            self.newPuzzle.specialLetter = special_letter
+
+            print('here')
+            self.letter1.setText(self.newPuzzle.letterList[1])
+            self.letter2.setText(self.newPuzzle.letterList[2])
+            self.letter3.setText(self.newPuzzle.letterList[3])
+            self.letter4.setText(self.newPuzzle.letterList[4])
+            self.letter5.setText(self.newPuzzle.letterList[5])
+            self.letter6.setText(self.newPuzzle.letterList[6])
+            self.specialLetter.setText(self.newPuzzle.specialLetter)
+            words = ""
+            for i in self.newPuzzle.listOfFoundWords:
+                words = words + "," + i
+                self.foundWords.setText(words)
