@@ -105,7 +105,7 @@ class puzzle:
         goodStart = "Good Start: " + str(int((self.getTotalScore() * 0.02) + 0.99999999))
         beginner = "Beginner: 0"
 
-        return queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
+        return "Rank thresholds:\n\n" + queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
     
     def getFoundWordList(self):
         return self.listOfFoundWords
