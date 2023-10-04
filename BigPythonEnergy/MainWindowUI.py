@@ -179,8 +179,13 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.shuffleButton.clicked.connect(self.shuffle)
         self.addWordButton.clicked.connect(self.submit)
-        ##self.actionSave.triggered.connect(self.saved)
-        ##self.actionSave_Blank.triggered.connect(self.savedBlank)
+        self.letter1.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter1.text()))
+        self.letter2.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter2.text()))
+        self.letter3.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter3.text()))
+        self.letter4.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter4.text()))
+        self.letter5.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter5.text()))
+        self.letter6.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter6.text()))
+        self.specialLetter.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.specialLetter.text()))
         self.actionLoad.triggered.connect(self.load)
         self.addWordButton.clicked.connect(self.addWordLE.clear) # type: ignore
         self.addWordLE.returnPressed.connect(self.addWordButton.click) # type: ignore

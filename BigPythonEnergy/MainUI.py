@@ -60,7 +60,7 @@ class Window(QMainWindow, Ui_MainWindow):
         dialog.exec()
     
 
-    def savedBlank(self):
+    def savedBlank(self, saveName):
         if (self.newPuzzle != None):
             save = {
                 "baseWord": list(self.newPuzzle.letterList),
@@ -69,11 +69,11 @@ class Window(QMainWindow, Ui_MainWindow):
                 "requiredLetter": self.newPuzzle.specialLetter,
                 "maxPoints": self.newPuzzle.totalScore
             }
-            file_path = self.addWordLE.text() + ".json"
+            file_path = "blankSaves/" + saveName + ".json"
             with open(file_path, "w") as outfile:
                 json.dump(save, outfile)
 
-    def saved(self, newString):
+    def saved(self, saveName):
         if (self.newPuzzle != None):
             save = {
                 "baseWord": list(self.newPuzzle.letterList),
@@ -82,9 +82,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 "requiredLetter": self.newPuzzle.specialLetter,
                 "maxPoints": self.newPuzzle.totalScore
             }
-            if (newString == None):
-                newString = ""
-            file_path = newString + ".json"
+            file_path = "saves/" + saveName + ".json"
             with open(file_path, "w") as outfile:
                 json.dump(save, outfile)
         
@@ -102,7 +100,44 @@ class Window(QMainWindow, Ui_MainWindow):
         self.letter5.setText(addLetters[4])
         self.letter6.setText(addLetters[5])
 
-            
+    def random(self):
+        word = DictInterface.randomWord()
+        uniqueCharacters = set()
+        for i in word:  
+            uniqueCharacters.add(i)
+        nPuzzle = puzzle(uniqueCharacters)
+        self.newPuzzle = nPuzzle
+        loopedLetters = self.newPuzzle.getNormalLetters()
+        addLetters = []
+        for i in loopedLetters:
+            addLetters.append(i)
+        self.letter1.setText(addLetters[0])
+        self.letter2.setText(addLetters[1])
+        self.letter3.setText(addLetters[2])
+        self.letter4.setText(addLetters[3])
+        self.letter5.setText(addLetters[4])
+        self.letter6.setText(addLetters[5])
+        self.specialLetter.setText(self.newPuzzle.specialLetter)
+
+    def start(self, newWord):
+            if len(newWord)==7 and DictInterface.isValid(newWord):
+                uniqueCharacters=set()
+                for i in newWord:
+                    uniqueCharacters.add(i)
+                self.newPuzzle = puzzle(uniqueCharacters)
+                loopedLetters = self.newPuzzle.getNormalLetters()
+                addLetters = []
+                for i in loopedLetters:
+                    addLetters.append(i)
+                self.letter1.setText(addLetters[0])
+                self.letter2.setText(addLetters[1])
+                self.letter3.setText(addLetters[2])
+                self.letter4.setText(addLetters[3])
+                self.letter5.setText(addLetters[4])
+                self.letter6.setText(addLetters[5])
+                self.specialLetter.setText(self.newPuzzle.specialLetter)
+                self.foundWords.setText("Found Words:")
+
     def load(self):
         root = tk.Tk()
         root.withdraw()
@@ -119,12 +154,12 @@ class Window(QMainWindow, Ui_MainWindow):
             special_letter = data["requiredLetter"]
             words = data["foundWords"]
             score = data["playerPoints"] 
-            self.newPuzzle = puzzle(letters)
+            newerPuzzle = puzzle(letters)
+            self.newPuzzle = newerPuzzle
             self.newPuzzle.currentScore = score
             self.newPuzzle.listOfFoundWords = set(words)
             self.newPuzzle.specialLetter = special_letter
 
-            print('here')
             self.letter1.setText(self.newPuzzle.letterList[1])
             self.letter2.setText(self.newPuzzle.letterList[2])
             self.letter3.setText(self.newPuzzle.letterList[3])
@@ -138,24 +173,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.foundWords.setText(words)
 
     def submit(self):
-        if(not self.newPuzzle):
-            if len(self.addWordLE.text())==7 and DictInterface.isValid(self.addWordLE.text()):
-                uniqueCharacters=set()
-            for i in self.addWordLE.text():
-                uniqueCharacters.add(i)
-            self.newPuzzle = puzzle(uniqueCharacters)
-            loopedLetters = self.newPuzzle.getNormalLetters()
-            addLetters = []
-            for i in loopedLetters:
-                addLetters.append(i)
-            self.letter1.setText(addLetters[0])
-            self.letter2.setText(addLetters[1])
-            self.letter3.setText(addLetters[2])
-            self.letter4.setText(addLetters[3])
-            self.letter5.setText(addLetters[4])
-            self.letter6.setText(addLetters[5])
-            self.specialLetter.setText(self.newPuzzle.specialLetter)
-        else:
+        if self.newPuzzle != None:
             result = self.addWordLE.text()
             letterList = self.newPuzzle.getLetterList()
             foundList = self.newPuzzle.getFoundWordList()
@@ -164,6 +182,8 @@ class Window(QMainWindow, Ui_MainWindow):
                 for i in result:
                     if i not in letterList:
                         valid = False
+                if self.newPuzzle.getSpecialLetter() not in set(result):
+                    valid = False
                 if valid:
                     print('Good')
                     self.newPuzzle.addFoundWord(result)
@@ -198,7 +218,7 @@ class saveDialog(QDialog):
     
     def connections(self):
         print("")
-        self.saveButton.pressed.connect(win.saved(self.saveNameEdit.text()))
+        self.saveButton.pressed.connect(lambda: win.saved(self.saveNameEdit.text()))
 
 class blankSaveDialog(QDialog):
     def __init__(self, parent=None):
@@ -208,8 +228,7 @@ class blankSaveDialog(QDialog):
     
     def connections(self):
         print("")
-        ## NEEDS CONNECTED, can't figure out at all
-        # self.saveButton.clicked.connect(super().Ui_MainWindow.blankSaved(super()))
+        self.saveButton.clicked.connect(lambda: win.savedBlank(self.saveNameEdit.text()))
 
 class newGameDialog(QDialog):
     def __init__(self, parent=None):
@@ -219,9 +238,8 @@ class newGameDialog(QDialog):
     
     def connections(self):
         print("")
-        ## NEEDS CONNECTED, can't figure out at all
-        # self.randomButton.triggered.connect(self.randomStart)
-        # self.startButton.triggered.connect(self.start)
+        self.randomButton.clicked.connect(lambda: win.random)
+        self.startButton.clicked.connect(lambda: win.start(self.newWord.text()))
 
 class thresholdDialog(QDialog):
     def __init__(self, parent=None):

@@ -44,6 +44,8 @@ def startPage():
         randomWord()
         
     # Load the JSON data from the file.
+
+    ##This is broken now, please fix
     elif userInput == "load":
         root = tk.Tk()
         root.withdraw()

@@ -104,5 +104,21 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>saveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>256</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>261</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>
