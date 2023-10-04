@@ -16,14 +16,19 @@ class puzzle:
     letterList = []
     
     # Constructor that handles creation of the play elements of a specific puzzle.
-    def __init__(self, letters=None):
+    def __init__(self, letters=None, specialLetter=None):
         if letters is not None:
             
             self.letters = letters
-            self.specialLetter = random.choice(tuple(letters))
+            self.letterList = []
+            if specialLetter is not None:
+                self.specialLetter = specialLetter
+            if specialLetter is None:
+                self.specialLetter = random.choice(tuple(letters))
             for i in letters:
                 self.letterList.append(i)
-            self.normalLetters = self.letters
+            for i in letters:
+                self.normalLetters.add(i)
             self.normalLetters.remove(self.getSpecialLetter())
         
         # Mostly for testing purposes.

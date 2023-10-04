@@ -154,11 +154,10 @@ class Window(QMainWindow, Ui_MainWindow):
             special_letter = data["requiredLetter"]
             words = data["foundWords"]
             score = data["playerPoints"] 
-            newerPuzzle = puzzle(letters)
-            self.newPuzzle = newerPuzzle
+            self.newPuzzle = None
+            self.newPuzzle = puzzle(letters, special_letter)
             self.newPuzzle.currentScore = score
             self.newPuzzle.listOfFoundWords = set(words)
-            self.newPuzzle.specialLetter = special_letter
 
             self.letter1.setText(self.newPuzzle.letterList[1])
             self.letter2.setText(self.newPuzzle.letterList[2])
@@ -167,10 +166,10 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter5.setText(self.newPuzzle.letterList[5])
             self.letter6.setText(self.newPuzzle.letterList[6])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
-            words = ""
+            self.foundWords.setText("Found Words:")
             for i in self.newPuzzle.listOfFoundWords:
-                words = words + "," + i
-                self.foundWords.setText(words)
+                self.foundWords.setText(self.foundWords.text() + "\n" + i)
+                self.foundWords.adjustSize()
 
     def submit(self):
         if self.newPuzzle != None:
