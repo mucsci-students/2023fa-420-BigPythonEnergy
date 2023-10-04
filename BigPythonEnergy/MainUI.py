@@ -88,17 +88,18 @@ class Window(QMainWindow, Ui_MainWindow):
         
 
     def shuffle(self):
-        loopedLetters = self.newPuzzle.getNormalLetters()
-        addLetters = []
-        for i in loopedLetters:
-            addLetters.append(i)
-        rd.shuffle(addLetters)
-        self.letter1.setText(addLetters[0])
-        self.letter2.setText(addLetters[1])
-        self.letter3.setText(addLetters[2])
-        self.letter4.setText(addLetters[3])
-        self.letter5.setText(addLetters[4])
-        self.letter6.setText(addLetters[5])
+        if self.newPuzzle is not None:
+            loopedLetters = self.newPuzzle.getNormalLetters()
+            addLetters = []
+            for i in loopedLetters:
+                addLetters.append(i)
+            rd.shuffle(addLetters)
+            self.letter1.setText(addLetters[0])
+            self.letter2.setText(addLetters[1])
+            self.letter3.setText(addLetters[2])
+            self.letter4.setText(addLetters[3])
+            self.letter5.setText(addLetters[4])
+            self.letter6.setText(addLetters[5])
 
     def random(self):
         word = DictInterface.randomWord()
@@ -137,6 +138,9 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.letter6.setText(addLetters[5])
                 self.specialLetter.setText(self.newPuzzle.specialLetter)
                 self.foundWords.setText("Found Words:")
+                self.wrongInputLabel.setText("")
+            else:
+                self.wrongInputLabel.setText("Not a valid starting word.")
 
     def load(self):
         root = tk.Tk()
@@ -198,6 +202,13 @@ class Window(QMainWindow, Ui_MainWindow):
                     self.foundWords.setText(self.foundWords.text() + "\n" + result)
                     self.foundWords.adjustSize()
                     self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
+                    self.wrongInputLabel.setText("")
+                else:
+                    self.wrongInputLabel.setText("Not a valid word.")
+            else:
+                self.wrongInputLabel.setText("Not a valid word.")
+        else:
+            self.wrongInputLabel.setText("Start a puzzle from the 'new' menu first!")
 
 class helpDialog(QDialog):
     def __init__(self, parent=None):
