@@ -84,6 +84,7 @@ class Ui_MainWindow(object):
         self.addWordButton.setObjectName("addWordButton")
         self.scrollingText = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollingText.setGeometry(QtCore.QRect(380, 190, 200, 230))
+        self.scrollingText.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.scrollingText.setWidgetResizable(True)
         self.scrollingText.setObjectName("scrollingText")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
@@ -185,8 +186,8 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.shuffleButton.clicked.connect(self.shuffle)
         self.addWordButton.clicked.connect(self.submit)
-        self.actionSave.triggered.connect(self.saved)
-        self.actionSave_Blank.triggered.connect(self.savedBlank)
+        ##self.actionSave.triggered.connect(self.saved)
+        ##self.actionSave_Blank.triggered.connect(self.savedBlank)
         self.actionLoad.triggered.connect(self.load)
         self.addWordButton.clicked.connect(self.addWordLE.clear) # type: ignore
         self.addWordLE.returnPressed.connect(self.addWordButton.click) # type: ignore
@@ -327,10 +328,9 @@ class Ui_MainWindow(object):
                     if set(result) == set(self.newPuzzle.getLetterList()):
                         pointsGained += 7
                     self.newPuzzle.addScore(pointsGained)
-                    words = ""
-                    for i in self.newPuzzle.listOfFoundWords:
-                        words = words + "," + i
-                    self.foundWords.setText(words)
+                    print(pointsGained)
+                    self.foundWords.setText(self.foundWords.text() + "\n" + result)
+                    self.foundWords.adjustSize()
                     self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
                     
     def notGood():

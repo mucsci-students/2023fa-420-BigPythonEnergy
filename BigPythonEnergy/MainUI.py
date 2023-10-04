@@ -9,7 +9,6 @@ from PyQt5.QtWidgets import (
 
 from PyQt5.uic import loadUi
 
-
 from MainWindowUI import Ui_MainWindow
 
 
@@ -66,21 +65,42 @@ class saveDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/saveMenu.ui", self)
+        self.connections()
+    
+    def connections(self):
+        print("")
+        ## NEEDS CONNECTED, can't figure out at all
+        # self.saveButton.clicked.connect(super().Ui_MainWindow.saved(super()))
 
 class blankSaveDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/blankSaveMenu.ui", self)
+        self.connections()
+    
+    def connections(self):
+        print("")
+        ## NEEDS CONNECTED, can't figure out at all
+        # self.saveButton.clicked.connect(super().Ui_MainWindow.blankSaved(super()))
 
 class newGameDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/newGame.ui", self)
+        self.connections()
+    
+    def connections(self):
+        print("")
+        ## NEEDS CONNECTED, can't figure out at all
+        # self.randomButton.triggered.connect(self.randomStart)
+        # self.startButton.triggered.connect(self.start)
 
 class thresholdDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/rankThresholds.ui", self)
+        ## NEEDS CONNECTED, can't figure out at all
+        ## self.threshText.setText(super().newPuzzle.getScoreThresholds())
 
 if __name__ == "__main__":
 
