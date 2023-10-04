@@ -14,6 +14,7 @@ from tkinter import filedialog
 from MainGameCLI import *
 from puzzle import *
 from DictInterface import *
+import random as rd
 
 
 class Ui_MainWindow(object):
@@ -199,6 +200,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.action_Rank_Thresholds)
 
         self.retranslateUi(MainWindow)
+        self.shuffleButton.clicked.connect(self.shuffle)
         self.addWordButton.clicked.connect(self.submit)
         self.addWordButton.clicked.connect(self.addWordLE.clear) # type: ignore
         self.addWordLE.returnPressed.connect(self.addWordButton.click) # type: ignore
@@ -239,7 +241,20 @@ class Ui_MainWindow(object):
             with open(file_path, "w") as outfile:
                 json.dump(save, outfile)
         
-            
+
+    def shuffle(self):
+        loopedLetters = self.newPuzzle.getNormalLetters()
+        addLetters = []
+        for i in loopedLetters:
+            addLetters.append(i)
+        rd.shuffle(addLetters)
+        self.letter1.setText(addLetters[0])
+        self.letter2.setText(addLetters[1])
+        self.letter3.setText(addLetters[2])
+        self.letter4.setText(addLetters[3])
+        self.letter5.setText(addLetters[4])
+        self.letter6.setText(addLetters[5])
+
     def submit(self):
         if(not self.newPuzzle):
             if len(self.addWordLE.text())==7 and DictInterface.isValid(self.addWordLE.text()):
@@ -247,12 +262,16 @@ class Ui_MainWindow(object):
             for i in self.addWordLE.text():
                 uniqueCharacters.add(i)
             self.newPuzzle = puzzle(uniqueCharacters)
-            self.letter1.setText(self.newPuzzle.letterList[1])
-            self.letter2.setText(self.newPuzzle.letterList[2])
-            self.letter3.setText(self.newPuzzle.letterList[3])
-            self.letter4.setText(self.newPuzzle.letterList[4])
-            self.letter5.setText(self.newPuzzle.letterList[5])
-            self.letter6.setText(self.newPuzzle.letterList[6])
+            loopedLetters = self.newPuzzle.getNormalLetters()
+            addLetters = []
+            for i in loopedLetters:
+                addLetters.append(i)
+            self.letter1.setText(addLetters[0])
+            self.letter2.setText(addLetters[1])
+            self.letter3.setText(addLetters[2])
+            self.letter4.setText(addLetters[3])
+            self.letter5.setText(addLetters[4])
+            self.letter6.setText(addLetters[5])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
         else:
             result = self.addWordLE.text()
