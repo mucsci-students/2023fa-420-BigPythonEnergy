@@ -21,15 +21,15 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="helpText">
+    <widget class="QLabel" name="threshText">
      <property name="font">
       <font>
        <family>Segoe UI</family>
-       <pointsize>8</pointsize>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;The objective of the game is to spell out at many words as possible. A word must be at least 4 words, use only letters from the 7 on screen, and contain the middle letter. You can reuse letters as many times as you need to create your word. As you find more words, you will get points which correspond to higher ranks.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Points: 4 Letter word = 1 point. 5 Letter word = 5 points. 6 Letter word = 6 points, and so on. Use all 7 letters given = 7 extra points.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Rank thresholds are based on the total number of words possible.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Please start a game to see the rank thresholds</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
