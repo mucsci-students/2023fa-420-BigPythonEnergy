@@ -10,6 +10,7 @@ class puzzle:
 
     listOfTotalWords = set()
     listOfFoundWords = set()
+    normalLetters = set()
     currentScore = 0
     totalScore = 0
     letterList = []
@@ -22,6 +23,8 @@ class puzzle:
             self.specialLetter = random.choice(tuple(letters))
             for i in letters:
                 self.letterList.append(i)
+            self.normalLetters = self.letters
+            self.normalLetters.remove(self.getSpecialLetter())
         
         # Mostly for testing purposes.
         else:
@@ -55,9 +58,7 @@ class puzzle:
         return self.letterList
 
     def getNormalLetters(self):
-        normalLetters = self.letters
-        normalLetters.remove(self.getSpecialLetter())
-        return normalLetters
+        return self.normalLetters
     
     def getSpecialLetter(self):
         return self.specialLetter

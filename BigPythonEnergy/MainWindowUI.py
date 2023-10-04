@@ -14,7 +14,7 @@ from tkinter import filedialog
 from MainGameCLI import *
 from puzzle import *
 from DictInterface import *
-
+import random as rd
 
 
 class Ui_MainWindow(object):
@@ -22,34 +22,35 @@ class Ui_MainWindow(object):
         root = tk.Tk()
         root.withdraw()
         file_selected = filedialog.askopenfile()
-        print("")
-        print(file_selected.name)
-        print("")
-        with open(file_selected.name, "r") as infile:
-            data = json.load(infile)
+        if (file_selected != None):
+            print("")
+            print(file_selected.name)
+            print("")
+            with open(file_selected.name, "r") as infile:
+                data = json.load(infile)
 
-    # Access the attributes from the loaded JSON data
-        letters = data["baseWord"]
-        special_letter = data["requiredLetter"]
-        words = data["foundWords"]
-        score = data["playerPoints"] 
-        self.newPuzzle = puzzle(letters)
-        self.newPuzzle.currentScore = score
-        self.newPuzzle.listOfFoundWords = set(words)
-        self.newPuzzle.specialLetter = special_letter
+        # Access the attributes from the loaded JSON data
+            letters = data["baseWord"]
+            special_letter = data["requiredLetter"]
+            words = data["foundWords"]
+            score = data["playerPoints"] 
+            self.newPuzzle = puzzle(letters)
+            self.newPuzzle.currentScore = score
+            self.newPuzzle.listOfFoundWords = set(words)
+            self.newPuzzle.specialLetter = special_letter
 
-        print('here')
-        self.letter1.setText(self.newPuzzle.letterList[1])
-        self.letter2.setText(self.newPuzzle.letterList[2])
-        self.letter3.setText(self.newPuzzle.letterList[3])
-        self.letter4.setText(self.newPuzzle.letterList[4])
-        self.letter5.setText(self.newPuzzle.letterList[5])
-        self.letter6.setText(self.newPuzzle.letterList[6])
-        self.specialLetter.setText(self.newPuzzle.specialLetter)
-        words = ""
-        for i in self.newPuzzle.listOfFoundWords:
-            words = words + "," + i
-            self.foundWords.setText(words)
+            print('here')
+            self.letter1.setText(self.newPuzzle.letterList[1])
+            self.letter2.setText(self.newPuzzle.letterList[2])
+            self.letter3.setText(self.newPuzzle.letterList[3])
+            self.letter4.setText(self.newPuzzle.letterList[4])
+            self.letter5.setText(self.newPuzzle.letterList[5])
+            self.letter6.setText(self.newPuzzle.letterList[6])
+            self.specialLetter.setText(self.newPuzzle.specialLetter)
+            words = ""
+            for i in self.newPuzzle.listOfFoundWords:
+                words = words + "," + i
+                self.foundWords.setText(words)
 
     def setupUi(self, MainWindow):
         self.newPuzzle = None
@@ -109,20 +110,12 @@ class Ui_MainWindow(object):
         self.specialLetter.setFont(font)
         self.specialLetter.setText("")
         self.specialLetter.setObjectName("specialLetter")
-        self.addWord = QtWidgets.QTextEdit(self.centralwidget)
-        self.addWord.setGeometry(QtCore.QRect(120, 280, 220, 35))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        self.addWord.setFont(font)
-        self.addWord.setOverwriteMode(False)
-        self.addWord.setObjectName("addWord")
         self.addWordButton = QtWidgets.QPushButton(self.centralwidget)
         self.addWordButton.setGeometry(QtCore.QRect(180, 340, 90, 25))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.addWordButton.setFont(font)
         self.addWordButton.setObjectName("addWordButton")
-        self.addWordButton.clicked.connect(self.submit)
         self.scrollingText = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollingText.setGeometry(QtCore.QRect(380, 190, 200, 230))
         self.scrollingText.setWidgetResizable(True)
@@ -156,6 +149,13 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.shuffleButton.setFont(font)
         self.shuffleButton.setObjectName("shuffleButton")
+        self.addWordLE = QtWidgets.QLineEdit(self.centralwidget)
+        self.addWordLE.setGeometry(QtCore.QRect(115, 290, 220, 35))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(10)
+        self.addWordLE.setFont(font)
+        self.addWordLE.setObjectName("addWordLE")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
@@ -199,24 +199,22 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionAbout)
         self.toolBar.addAction(self.action_Rank_Thresholds)
 
-
         self.retranslateUi(MainWindow)
+        self.shuffleButton.clicked.connect(self.shuffle)
+        self.addWordButton.clicked.connect(self.submit)
+        self.addWordButton.clicked.connect(self.addWordLE.clear) # type: ignore
+        self.addWordLE.returnPressed.connect(self.addWordButton.click) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.letter6.setText(_translate("MainWindow", " "))
-        self.addWord.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Segoe UI\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt;\">Type here or click letters!</span></p></body></html>"))
         self.addWordButton.setText(_translate("MainWindow", "Add Word"))
         self.foundWords.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">Found Words:</span></p></body></html>"))
         self.currRankLabel.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Current Rank:</span></p></body></html>"))
         self.currentRank.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">Beginner</span></p></body></html>"))
         self.shuffleButton.setText(_translate("MainWindow", "Shuffle"))
+        self.addWordLE.setPlaceholderText(_translate("MainWindow", "Type here or click letters!"))
         self.menu_File.setTitle(_translate("MainWindow", "&File"))
         self.menu_Help.setTitle(_translate("MainWindow", "&Help"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
@@ -229,35 +227,54 @@ class Ui_MainWindow(object):
 
 
 
+
     def saved(self):
-        save = {
-            "baseWord":list(self.newPuzzle.letterList),
-            "foundWords" : list(self.newPuzzle.getFoundWordList()),
-            "playerPoints": self.newPuzzle.getCurrentScore(),
-            "requiredLetter":self.newPuzzle.specialLetter,
-            "maxPoints": self.newPuzzle.totalScore
-        }
-        file_path = self.addWord.toPlainText() + ".json"
-        with open(file_path, "w") as outfile:
-            json.dump(save, outfile)
+        if (self.newPuzzle != None):
+            save = {
+                "baseWord":list(self.newPuzzle.letterList),
+                "foundWords" : list(self.newPuzzle.getFoundWordList()),
+                "playerPoints": self.newPuzzle.getCurrentScore(),
+                "requiredLetter":self.newPuzzle.specialLetter,
+                "maxPoints": self.newPuzzle.totalScore
+            }
+            file_path = self.addWordLE.text() + ".json"
+            with open(file_path, "w") as outfile:
+                json.dump(save, outfile)
         
-            
+
+    def shuffle(self):
+        loopedLetters = self.newPuzzle.getNormalLetters()
+        addLetters = []
+        for i in loopedLetters:
+            addLetters.append(i)
+        rd.shuffle(addLetters)
+        self.letter1.setText(addLetters[0])
+        self.letter2.setText(addLetters[1])
+        self.letter3.setText(addLetters[2])
+        self.letter4.setText(addLetters[3])
+        self.letter5.setText(addLetters[4])
+        self.letter6.setText(addLetters[5])
+
     def submit(self):
         if(not self.newPuzzle):
-            if len(self.addWord.toPlainText())==7 and DictInterface.isValid(self.addWord.toPlainText()):
+            if len(self.addWordLE.text())==7 and DictInterface.isValid(self.addWordLE.text()):
                 uniqueCharacters=set()
-            for i in self.addWord.toPlainText():
+            for i in self.addWordLE.text():
                 uniqueCharacters.add(i)
             self.newPuzzle = puzzle(uniqueCharacters)
-            self.letter1.setText(self.newPuzzle.letterList[1])
-            self.letter2.setText(self.newPuzzle.letterList[2])
-            self.letter3.setText(self.newPuzzle.letterList[3])
-            self.letter4.setText(self.newPuzzle.letterList[4])
-            self.letter5.setText(self.newPuzzle.letterList[5])
-            self.letter6.setText(self.newPuzzle.letterList[6])
+            loopedLetters = self.newPuzzle.getNormalLetters()
+            addLetters = []
+            for i in loopedLetters:
+                addLetters.append(i)
+            self.letter1.setText(addLetters[0])
+            self.letter2.setText(addLetters[1])
+            self.letter3.setText(addLetters[2])
+            self.letter4.setText(addLetters[3])
+            self.letter5.setText(addLetters[4])
+            self.letter6.setText(addLetters[5])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
         else:
-            result = self.addWord.toPlainText()
+            result = self.addWordLE.text()
             letterList = self.newPuzzle.getLetterList()
             foundList = self.newPuzzle.getFoundWordList()
             valid = True
@@ -266,7 +283,7 @@ class Ui_MainWindow(object):
                     if i not in letterList:
                         valid = False
                 if valid:
-                    print('GOod')
+                    print('Good')
                     self.newPuzzle.addFoundWord(result)
                     self.newPuzzle.addScore(1)
                     words = ""
@@ -278,4 +295,4 @@ class Ui_MainWindow(object):
     def notGood():
         print('not Good')
             
-            
+           
