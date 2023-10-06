@@ -103,11 +103,12 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def random(self):
         word = DictInterface.randomWord()
-        uniqueCharacters = set()
-        for i in word:  
-            uniqueCharacters.add(i)
+        print(word)
+        uniqueCharacters = set(word)
+        print (str(uniqueCharacters))
         nPuzzle = puzzle(uniqueCharacters)
         self.newPuzzle = nPuzzle
+        print(str(self.newPuzzle.getNormalLetters()))
         loopedLetters = self.newPuzzle.getNormalLetters()
         addLetters = []
         for i in loopedLetters:
@@ -119,14 +120,18 @@ class Window(QMainWindow, Ui_MainWindow):
         self.letter5.setText(addLetters[4])
         self.letter6.setText(addLetters[5])
         self.specialLetter.setText(self.newPuzzle.specialLetter)
+        self.foundWords.setText("Found Words: ")
+        self.wrongInputLabel.setText("")
 
     def start(self, newWord):
             if len(newWord)==7 and DictInterface.isValid(newWord):
-                uniqueCharacters=set()
+                uniqueCharacters = set()
                 for i in newWord:
                     uniqueCharacters.add(i)
+                print (str(uniqueCharacters))
                 self.newPuzzle = puzzle(uniqueCharacters)
                 loopedLetters = self.newPuzzle.getNormalLetters()
+                print(str(loopedLetters))
                 addLetters = []
                 for i in loopedLetters:
                     addLetters.append(i)
@@ -153,16 +158,16 @@ class Window(QMainWindow, Ui_MainWindow):
             with open(file_selected.name, "r") as infile:
                 data = json.load(infile)
 
-        # Access the attributes from the loaded JSON data
+            # Access the attributes from the loaded JSON data
             letters = data["baseWord"]
             special_letter = data["requiredLetter"]
             words = data["foundWords"]
             score = data["playerPoints"] 
             self.newPuzzle = None
-            self.newPuzzle = puzzle(letters, special_letter)
-            self.newPuzzle.currentScore = score
+            self.newPuzzle = puzzle(set(letters), special_letter, score)
             self.newPuzzle.listOfFoundWords = set(words)
 
+            # Set each letter button to each letter.
             self.letter1.setText(self.newPuzzle.letterList[1])
             self.letter2.setText(self.newPuzzle.letterList[2])
             self.letter3.setText(self.newPuzzle.letterList[3])
@@ -188,7 +193,6 @@ class Window(QMainWindow, Ui_MainWindow):
                 if self.newPuzzle.getSpecialLetter() not in set(result):
                     valid = False
                 if valid:
-                    print('Good')
                     self.newPuzzle.addFoundWord(result)
                     pointsGained = 0
                     if len(result)==4:
@@ -248,7 +252,7 @@ class newGameDialog(QDialog):
     
     def connections(self):
         print("")
-        self.randomButton.clicked.connect(lambda: win.random)
+        self.randomButton.clicked.connect(lambda: win.random())
         self.startButton.clicked.connect(lambda: win.start(self.newWord.text()))
 
 class thresholdDialog(QDialog):

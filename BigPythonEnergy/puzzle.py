@@ -16,9 +16,11 @@ class puzzle:
     letterList = []
     
     # Constructor that handles creation of the play elements of a specific puzzle.
-    def __init__(self, letters=None, specialLetter=None):
+    def __init__(self, letters=None, specialLetter=None, currentScore=None):
         if letters is not None:
             
+            self.letters = None
+            self.letters = set()
             self.letters = letters
             self.letterList = []
             if specialLetter is not None:
@@ -27,16 +29,27 @@ class puzzle:
                 self.specialLetter = random.choice(tuple(letters))
             for i in letters:
                 self.letterList.append(i)
+            self.normalLetters = None
+            self.normalLetters = set()
             for i in letters:
                 self.normalLetters.add(i)
             self.normalLetters.remove(self.getSpecialLetter())
-        
         # Mostly for testing purposes.
         else:
             self.letterList = []
             self.specialLetter = None
 
-        # TODO - pull words from JSON list, put them in a set, should be handled by R/W.
+        # Sets current score to a new game or a loaded value.
+        if currentScore is not None:
+            self.currentScore = currentScore
+        else:
+            self.currentScore = 0
+
+        # Initializes blank sets and new total score for a new game.
+        self.listOfTotalWords = None
+        self.listOfTotalWords = set()
+        self.listOfFoundWords = None
+        self.listOfFoundWords = set()
         self.listOfTotalWords = DictInterface.findValid(self.specialLetter, self.letterList)
         self.initializeTotalScore()
 
