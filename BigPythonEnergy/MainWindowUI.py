@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/gameBox.ui'
+# Form implementation generated from reading ui file 'ui\gameBox.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -9,29 +9,29 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import tkinter as tk
-from tkinter import filedialog
-from MainGameCLI import *
-from puzzle import *
-from DictInterface import *
-import random as rd
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        self.newPuzzle = None
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         MainWindow.setMinimumSize(QtCore.QSize(800, 600))
         MainWindow.setSizeIncrement(QtCore.QSize(1, 1))
         MainWindow.setBaseSize(QtCore.QSize(800, 600))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/BeeWindow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
+        MainWindow.setAutoFillBackground(False)
+        MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setStyleSheet("")
         self.centralwidget.setObjectName("centralwidget")
         self.letter6 = QtWidgets.QPushButton(self.centralwidget)
         self.letter6.setGeometry(QtCore.QRect(250, 210, 40, 30))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.letter6.setFont(font)
+        self.letter6.setStyleSheet("background-color: rgb(232, 232, 232);")
         self.letter6.setText("")
         self.letter6.setObjectName("letter6")
         self.letter5 = QtWidgets.QPushButton(self.centralwidget)
@@ -39,6 +39,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.letter5.setFont(font)
+        self.letter5.setStyleSheet("background-color: rgb(232, 232, 232);")
         self.letter5.setText("")
         self.letter5.setObjectName("letter5")
         self.letter4 = QtWidgets.QPushButton(self.centralwidget)
@@ -46,6 +47,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.letter4.setFont(font)
+        self.letter4.setStyleSheet("background-color: rgb(232, 232, 232);")
         self.letter4.setText("")
         self.letter4.setObjectName("letter4")
         self.letter1 = QtWidgets.QPushButton(self.centralwidget)
@@ -53,6 +55,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.letter1.setFont(font)
+        self.letter1.setStyleSheet("background-color: rgb(232, 232, 232);")
         self.letter1.setText("")
         self.letter1.setObjectName("letter1")
         self.letter2 = QtWidgets.QPushButton(self.centralwidget)
@@ -60,6 +63,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.letter2.setFont(font)
+        self.letter2.setStyleSheet("background-color: rgb(232, 232, 232);")
         self.letter2.setText("")
         self.letter2.setObjectName("letter2")
         self.letter3 = QtWidgets.QPushButton(self.centralwidget)
@@ -67,6 +71,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.letter3.setFont(font)
+        self.letter3.setStyleSheet("background-color: rgb(232, 232, 232);")
         self.letter3.setText("")
         self.letter3.setObjectName("letter3")
         self.specialLetter = QtWidgets.QPushButton(self.centralwidget)
@@ -74,30 +79,22 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.specialLetter.setFont(font)
+        self.specialLetter.setStyleSheet("background-color: rgb(255, 255, 60);")
         self.specialLetter.setText("")
         self.specialLetter.setObjectName("specialLetter")
         self.addWordButton = QtWidgets.QPushButton(self.centralwidget)
-        self.addWordButton.setGeometry(QtCore.QRect(180, 340, 90, 25))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        self.addWordButton.setFont(font)
-        self.addWordButton.setObjectName("addWordButton")
-        self.scrollingText = QtWidgets.QScrollArea(self.centralwidget)
-        self.scrollingText.setGeometry(QtCore.QRect(380, 190, 200, 230))
-        self.scrollingText.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.scrollingText.setWidgetResizable(True)
-        self.scrollingText.setObjectName("scrollingText")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 198, 228))
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.foundWords = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.foundWords.setGeometry(QtCore.QRect(10, 10, 180, 30))
+        self.addWordButton.setGeometry(QtCore.QRect(210, 340, 30, 30))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(12)
-        self.foundWords.setFont(font)
-        self.foundWords.setObjectName("foundWords")
-        self.scrollingText.setWidget(self.scrollAreaWidgetContents)
+        self.addWordButton.setFont(font)
+        self.addWordButton.setStyleSheet("background-color:rgba(255, 255, 255, 0)")
+        self.addWordButton.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/AddWord.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addWordButton.setIcon(icon1)
+        self.addWordButton.setIconSize(QtCore.QSize(30, 30))
+        self.addWordButton.setObjectName("addWordButton")
         self.currRankLabel = QtWidgets.QLabel(self.centralwidget)
         self.currRankLabel.setGeometry(QtCore.QRect(380, 90, 200, 40))
         font = QtGui.QFont()
@@ -115,11 +112,17 @@ class Ui_MainWindow(object):
         self.currentRank.setAlignment(QtCore.Qt.AlignCenter)
         self.currentRank.setObjectName("currentRank")
         self.shuffleButton = QtWidgets.QPushButton(self.centralwidget)
-        self.shuffleButton.setGeometry(QtCore.QRect(30, 100, 60, 30))
+        self.shuffleButton.setGeometry(QtCore.QRect(110, 96, 40, 40))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(8)
         self.shuffleButton.setFont(font)
+        self.shuffleButton.setStyleSheet("background-color: rgba(0,0,0,0);")
+        self.shuffleButton.setText("")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/Shuffle.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.shuffleButton.setIcon(icon2)
+        self.shuffleButton.setIconSize(QtCore.QSize(40, 40))
         self.shuffleButton.setObjectName("shuffleButton")
         self.addWordLE = QtWidgets.QLineEdit(self.centralwidget)
         self.addWordLE.setGeometry(QtCore.QRect(115, 290, 220, 35))
@@ -128,6 +131,82 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.addWordLE.setFont(font)
         self.addWordLE.setObjectName("addWordLE")
+        self.foundWordsLabel = QtWidgets.QLabel(self.centralwidget)
+        self.foundWordsLabel.setGeometry(QtCore.QRect(380, 200, 200, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(12)
+        self.foundWordsLabel.setFont(font)
+        self.foundWordsLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.foundWordsLabel.setObjectName("foundWordsLabel")
+        self.pointsGainedLabel = QtWidgets.QLabel(self.centralwidget)
+        self.pointsGainedLabel.setGeometry(QtCore.QRect(390, 450, 131, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(12)
+        self.pointsGainedLabel.setFont(font)
+        self.pointsGainedLabel.setObjectName("pointsGainedLabel")
+        self.pointsGained = QtWidgets.QLabel(self.centralwidget)
+        self.pointsGained.setGeometry(QtCore.QRect(520, 450, 51, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(12)
+        self.pointsGained.setFont(font)
+        self.pointsGained.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.pointsGained.setObjectName("pointsGained")
+        self.widget = QtWidgets.QWidget(self.centralwidget)
+        self.widget.setGeometry(QtCore.QRect(0, 0, 741, 560))
+        self.widget.setStyleSheet("background-color: qconicalgradient(cx:0.308, cy:0.30, angle:0, stop:0 rgba(209, 190, 76, 255), stop:0.16 rgba(136, 106, 22, 255), stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255), stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(235, 235, 100, 255), stop:1 rgba(209, 190, 76, 255))")
+        self.widget.setObjectName("widget")
+        self.backspaceButton = QtWidgets.QPushButton(self.widget)
+        self.backspaceButton.setGeometry(QtCore.QRect(310, 96, 40, 40))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(8)
+        self.backspaceButton.setFont(font)
+        self.backspaceButton.setStyleSheet("background-color: rgba(0,0,0,0);")
+        self.backspaceButton.setText("")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/Backspace.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.backspaceButton.setIcon(icon3)
+        self.backspaceButton.setIconSize(QtCore.QSize(40, 40))
+        self.backspaceButton.setObjectName("backspaceButton")
+        self.foundWords = QtWidgets.QListWidget(self.centralwidget)
+        self.foundWords.setGeometry(QtCore.QRect(380, 240, 200, 180))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.foundWords.setFont(font)
+        self.foundWords.setObjectName("foundWords")
+        self.wrongInputLabel = QtWidgets.QLabel(self.centralwidget)
+        self.wrongInputLabel.setGeometry(QtCore.QRect(85, 400, 280, 45))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.wrongInputLabel.setFont(font)
+        self.wrongInputLabel.setText("")
+        self.wrongInputLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.wrongInputLabel.setWordWrap(True)
+        self.wrongInputLabel.setObjectName("wrongInputLabel")
+        self.widget.raise_()
+        self.letter6.raise_()
+        self.letter5.raise_()
+        self.letter4.raise_()
+        self.letter1.raise_()
+        self.letter2.raise_()
+        self.letter3.raise_()
+        self.specialLetter.raise_()
+        self.addWordButton.raise_()
+        self.currRankLabel.raise_()
+        self.currentRank.raise_()
+        self.shuffleButton.raise_()
+        self.addWordLE.raise_()
+        self.foundWordsLabel.raise_()
+        self.pointsGainedLabel.raise_()
+        self.pointsGained.raise_()
+        self.foundWords.raise_()
+        self.wrongInputLabel.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
@@ -147,26 +226,46 @@ class Ui_MainWindow(object):
         self.toolBar.setMovable(True)
         self.toolBar.setAllowedAreas(QtCore.Qt.RightToolBarArea|QtCore.Qt.TopToolBarArea)
         self.toolBar.setOrientation(QtCore.Qt.Vertical)
-        self.toolBar.setIconSize(QtCore.QSize(30, 30))
+        self.toolBar.setIconSize(QtCore.QSize(50, 50))
         self.toolBar.setFloatable(False)
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.RightToolBarArea, self.toolBar)
         self.actionLoad = QtWidgets.QAction(MainWindow)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/Save.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionLoad.setIcon(icon4)
         self.actionLoad.setObjectName("actionLoad")
         self.actionSave = QtWidgets.QAction(MainWindow)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/Load.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSave.setIcon(icon5)
         self.actionSave.setObjectName("actionSave")
         self.actionAbout = QtWidgets.QAction(MainWindow)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/Help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionAbout.setIcon(icon6)
         self.actionAbout.setObjectName("actionAbout")
         self.action_About = QtWidgets.QAction(MainWindow)
         self.action_About.setObjectName("action_About")
         self.actionSave_Blank = QtWidgets.QAction(MainWindow)
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/BlankSave.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSave_Blank.setIcon(icon7)
         self.actionSave_Blank.setObjectName("actionSave_Blank")
         self.action_Rank_Thresholds = QtWidgets.QAction(MainWindow)
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/Thresholds.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.action_Rank_Thresholds.setIcon(icon8)
         self.action_Rank_Thresholds.setObjectName("action_Rank_Thresholds")
         self.action_Exit = QtWidgets.QAction(MainWindow)
         self.action_Exit.setObjectName("action_Exit")
         self.action_New = QtWidgets.QAction(MainWindow)
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/NewGame.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.action_New.setIcon(icon9)
         self.action_New.setObjectName("action_New")
+        self.action_CC_Attributions = QtWidgets.QAction(MainWindow)
+        self.action_CC_Attributions.setObjectName("action_CC_Attributions")
         self.menu_File.addAction(self.action_New)
         self.menu_File.addAction(self.actionLoad)
         self.menu_File.addAction(self.actionSave)
@@ -175,8 +274,10 @@ class Ui_MainWindow(object):
         self.menu_Help.addAction(self.actionAbout)
         self.menu_Help.addAction(self.action_Rank_Thresholds)
         self.menu_Help.addAction(self.action_About)
+        self.menu_Help.addAction(self.action_CC_Attributions)
         self.menubar.addAction(self.menu_File.menuAction())
         self.menubar.addAction(self.menu_Help.menuAction())
+        self.toolBar.addAction(self.action_New)
         self.toolBar.addAction(self.actionLoad)
         self.toolBar.addAction(self.actionSave)
         self.toolBar.addAction(self.actionSave_Blank)
@@ -186,8 +287,14 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.shuffleButton.clicked.connect(self.shuffle)
         self.addWordButton.clicked.connect(self.submit)
-        ##self.actionSave.triggered.connect(self.saved)
-        ##self.actionSave_Blank.triggered.connect(self.savedBlank)
+        self.letter1.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter1.text()))
+        self.letter2.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter2.text()))
+        self.letter3.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter3.text()))
+        self.letter4.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter4.text()))
+        self.letter5.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter5.text()))
+        self.letter6.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter6.text()))
+        self.specialLetter.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.specialLetter.text()))
+        self.backspaceButton.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text()[:-1]))
         self.actionLoad.triggered.connect(self.load)
         self.addWordButton.clicked.connect(self.addWordLE.clear) # type: ignore
         self.addWordLE.returnPressed.connect(self.addWordButton.click) # type: ignore
@@ -195,13 +302,13 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.addWordButton.setText(_translate("MainWindow", "Add Word"))
-        self.foundWords.setText(_translate("MainWindow", "Found Words:"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Spelling Bee by Big Python Energy"))
         self.currRankLabel.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Current Rank:</span></p></body></html>"))
         self.currentRank.setText(_translate("MainWindow", "Beginner"))
-        self.shuffleButton.setText(_translate("MainWindow", "Shuffle"))
         self.addWordLE.setPlaceholderText(_translate("MainWindow", "Type here or click letters!"))
+        self.foundWordsLabel.setText(_translate("MainWindow", "Found Words:"))
+        self.pointsGainedLabel.setText(_translate("MainWindow", "Points Gained:"))
+        self.pointsGained.setText(_translate("MainWindow", "0"))
         self.menu_File.setTitle(_translate("MainWindow", "&File"))
         self.menu_Help.setTitle(_translate("MainWindow", "&Help"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
@@ -213,125 +320,4 @@ class Ui_MainWindow(object):
         self.action_Rank_Thresholds.setText(_translate("MainWindow", "&Rank Thresholds"))
         self.action_Exit.setText(_translate("MainWindow", "&Exit"))
         self.action_New.setText(_translate("MainWindow", "&New"))
-
-
-    def savedBlank(self):
-        if (self.newPuzzle != None):
-            save = {
-                "baseWord": list(self.newPuzzle.letterList),
-                "foundWords" : list(),
-                "playerPoints": 0,
-                "requiredLetter": self.newPuzzle.specialLetter,
-                "maxPoints": self.newPuzzle.totalScore
-            }
-            file_path = self.addWordLE.text() + ".json"
-            with open(file_path, "w") as outfile:
-                json.dump(save, outfile)
-
-    def saved(self):
-        if (self.newPuzzle != None):
-            save = {
-                "baseWord": list(self.newPuzzle.letterList),
-                "foundWords" : list(self.newPuzzle.getFoundWordList()),
-                "playerPoints": self.newPuzzle.getCurrentScore(),
-                "requiredLetter": self.newPuzzle.specialLetter,
-                "maxPoints": self.newPuzzle.totalScore
-            }
-            file_path = self.addWordLE.text() + ".json"
-            with open(file_path, "w") as outfile:
-                json.dump(save, outfile)
-        
-
-    def shuffle(self):
-        loopedLetters = self.newPuzzle.getNormalLetters()
-        addLetters = []
-        for i in loopedLetters:
-            addLetters.append(i)
-        rd.shuffle(addLetters)
-        self.letter1.setText(addLetters[0])
-        self.letter2.setText(addLetters[1])
-        self.letter3.setText(addLetters[2])
-        self.letter4.setText(addLetters[3])
-        self.letter5.setText(addLetters[4])
-        self.letter6.setText(addLetters[5])
-
-            
-    def load(self):
-        root = tk.Tk()
-        root.withdraw()
-        file_selected = filedialog.askopenfile()
-        if (file_selected != None):
-            print("")
-            print(file_selected.name)
-            print("")
-            with open(file_selected.name, "r") as infile:
-                data = json.load(infile)
-
-        # Access the attributes from the loaded JSON data
-            letters = data["baseWord"]
-            special_letter = data["requiredLetter"]
-            words = data["foundWords"]
-            score = data["playerPoints"] 
-            self.newPuzzle = puzzle(letters)
-            self.newPuzzle.currentScore = score
-            self.newPuzzle.listOfFoundWords = set(words)
-            self.newPuzzle.specialLetter = special_letter
-
-            print('here')
-            self.letter1.setText(self.newPuzzle.letterList[1])
-            self.letter2.setText(self.newPuzzle.letterList[2])
-            self.letter3.setText(self.newPuzzle.letterList[3])
-            self.letter4.setText(self.newPuzzle.letterList[4])
-            self.letter5.setText(self.newPuzzle.letterList[5])
-            self.letter6.setText(self.newPuzzle.letterList[6])
-            self.specialLetter.setText(self.newPuzzle.specialLetter)
-            words = ""
-            for i in self.newPuzzle.listOfFoundWords:
-                words = words + "," + i
-                self.foundWords.setText(words)
-
-    def submit(self):
-        if(not self.newPuzzle):
-            if len(self.addWordLE.text())==7 and DictInterface.isValid(self.addWordLE.text()):
-                uniqueCharacters=set()
-            for i in self.addWordLE.text():
-                uniqueCharacters.add(i)
-            self.newPuzzle = puzzle(uniqueCharacters)
-            loopedLetters = self.newPuzzle.getNormalLetters()
-            addLetters = []
-            for i in loopedLetters:
-                addLetters.append(i)
-            self.letter1.setText(addLetters[0])
-            self.letter2.setText(addLetters[1])
-            self.letter3.setText(addLetters[2])
-            self.letter4.setText(addLetters[3])
-            self.letter5.setText(addLetters[4])
-            self.letter6.setText(addLetters[5])
-            self.specialLetter.setText(self.newPuzzle.specialLetter)
-        else:
-            result = self.addWordLE.text()
-            letterList = self.newPuzzle.getLetterList()
-            foundList = self.newPuzzle.getFoundWordList()
-            valid = True
-            if DictInterface.isValid(result) and result not in foundList:
-                for i in result:
-                    if i not in letterList:
-                        valid = False
-                if valid:
-                    print('Good')
-                    self.newPuzzle.addFoundWord(result)
-                    pointsGained = 0
-                    if len(result)==4:
-                        pointsGained=1
-                    elif len(result)>4:
-                        pointsGained = len(result)
-                    if set(result) == set(self.newPuzzle.getLetterList()):
-                        pointsGained += 7
-                    self.newPuzzle.addScore(pointsGained)
-                    print(pointsGained)
-                    self.foundWords.setText(self.foundWords.text() + "\n" + result)
-                    self.foundWords.adjustSize()
-                    self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
-                    
-    def notGood():
-        print('Not Good')
+        self.action_CC_Attributions.setText(_translate("MainWindow", "&CC Attributions"))

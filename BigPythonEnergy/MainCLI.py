@@ -44,6 +44,8 @@ def startPage():
         randomWord()
         
     # Load the JSON data from the file.
+
+    ##This is broken now, please fix
     elif userInput == "load":
         root = tk.Tk()
         root.withdraw()
@@ -147,7 +149,7 @@ def randomWord():
     startGame(newPuzzle)
 
 # Start script to clear the command line so the user just sees the instructions.
-if str(len(sys.argv) > 1 and sys.argv[1]) == "GUI":
+if str(len(sys.argv) > 1 and sys.argv[1]) == "--gui":
     exec(open("BigPythonEnergy/MainUI.py").read())
 print('--------------------------------')
 print('Welcome to Spelling Bee!')

@@ -16,22 +16,40 @@ class puzzle:
     letterList = []
     
     # Constructor that handles creation of the play elements of a specific puzzle.
-    def __init__(self, letters=None):
+    def __init__(self, letters=None, specialLetter=None, currentScore=None):
         if letters is not None:
             
+            self.letters = None
+            self.letters = set()
             self.letters = letters
-            self.specialLetter = random.choice(tuple(letters))
+            self.letterList = []
+            if specialLetter is not None:
+                self.specialLetter = specialLetter
+            if specialLetter is None:
+                self.specialLetter = random.choice(tuple(letters))
             for i in letters:
                 self.letterList.append(i)
-            self.normalLetters = self.letters
+            self.normalLetters = None
+            self.normalLetters = set()
+            for i in letters:
+                self.normalLetters.add(i)
             self.normalLetters.remove(self.getSpecialLetter())
-        
         # Mostly for testing purposes.
         else:
             self.letterList = []
             self.specialLetter = None
 
-        # TODO - pull words from JSON list, put them in a set, should be handled by R/W.
+        # Sets current score to a new game or a loaded value.
+        if currentScore is not None:
+            self.currentScore = currentScore
+        else:
+            self.currentScore = 0
+
+        # Initializes blank sets and new total score for a new game.
+        self.listOfTotalWords = None
+        self.listOfTotalWords = set()
+        self.listOfFoundWords = None
+        self.listOfFoundWords = set()
         self.listOfTotalWords = DictInterface.findValid(self.specialLetter, self.letterList)
         self.initializeTotalScore()
 
@@ -105,7 +123,7 @@ class puzzle:
         goodStart = "Good Start: " + str(int((self.getTotalScore() * 0.02) + 0.99999999))
         beginner = "Beginner: 0"
 
-        return queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
+        return "Rank thresholds:\n\n" + queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
     
     def getFoundWordList(self):
         return self.listOfFoundWords
