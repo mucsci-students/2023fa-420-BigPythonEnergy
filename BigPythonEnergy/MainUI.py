@@ -34,6 +34,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.actionSave.triggered.connect(self.saveMenu)
         self.actionSave_Blank.triggered.connect(self.blankSaveMenu)
         self.action_Rank_Thresholds.triggered.connect(self.thresholdMenu)
+        self.action_CC_Attributions.triggered.connect(self.ccMenu)
 
     def helpMenu(self):
         dialog = helpDialog(self)
@@ -57,6 +58,10 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def thresholdMenu(self):
         dialog = thresholdDialog(self)
+        dialog.exec()
+    
+    def ccMenu(self):
+        dialog = ccDialog(self)
         dialog.exec()
 
     def setCurrentPoints(self):
@@ -273,6 +278,11 @@ class thresholdDialog(QDialog):
         loadUi("BigPythonEnergy/ui/rankThresholds.ui", self)
         if(win.newPuzzle != None):
             self.threshText.setText(win.newPuzzle.getScoreThresholds())
+
+class ccDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loadUi("BigPythonEnergy/ui/ccAttributions.ui", self)
 
 if __name__ == "__main__":
 
