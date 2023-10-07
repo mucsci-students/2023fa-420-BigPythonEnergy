@@ -224,57 +224,6 @@
      </size>
     </property>
    </widget>
-   <widget class="QScrollArea" name="scrollingText">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>239</y>
-      <width>200</width>
-      <height>180</height>
-     </rect>
-    </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOn</enum>
-    </property>
-    <property name="sizeAdjustPolicy">
-     <enum>QAbstractScrollArea::AdjustToContents</enum>
-    </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>177</width>
-       <height>178</height>
-      </rect>
-     </property>
-     <widget class="QLabel" name="foundWords">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>200</width>
-        <height>180</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-      </property>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QLabel" name="currRankLabel">
     <property name="geometry">
      <rect>
@@ -476,6 +425,48 @@
      </property>
     </widget>
    </widget>
+   <widget class="QListWidget" name="foundWords">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>240</y>
+      <width>200</width>
+      <height>180</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QLabel" name="wrongInputLabel">
+    <property name="geometry">
+     <rect>
+      <x>85</x>
+      <y>400</y>
+      <width>280</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>widget</zorder>
    <zorder>letter6</zorder>
    <zorder>letter5</zorder>
@@ -485,7 +476,6 @@
    <zorder>letter3</zorder>
    <zorder>specialLetter</zorder>
    <zorder>addWordButton</zorder>
-   <zorder>scrollingText</zorder>
    <zorder>currRankLabel</zorder>
    <zorder>currentRank</zorder>
    <zorder>shuffleButton</zorder>
@@ -493,6 +483,8 @@
    <zorder>foundWordsLabel</zorder>
    <zorder>pointsGainedLabel</zorder>
    <zorder>pointsGained</zorder>
+   <zorder>foundWords</zorder>
+   <zorder>wrongInputLabel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -636,9 +628,7 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>addWordButton</sender>

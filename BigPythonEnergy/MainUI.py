@@ -8,9 +8,10 @@ from puzzle import *
 from DictInterface import *
 import random as rd
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
 
-    QApplication, QDialog, QMainWindow, QMessageBox
+    QApplication, QDialog, QMainWindow
 
 )
 
@@ -110,6 +111,21 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter5.setText(addLetters[4])
             self.letter6.setText(addLetters[5])
 
+    def addFoundWords(self, text):
+        
+        item = QtWidgets.QListWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignVCenter)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(12)
+        item.setFont(font)
+        self.foundWords.addItem(item)
+        item.setText(text)
+        self.foundWords.sortItems()
+
+    def remFoundWords(self):
+        self.foundWords.clear()
+
     def random(self):
         word = DictInterface.randomWord()
         print(word)
@@ -130,9 +146,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.letter5.setText(addLetters[4])
         self.letter6.setText(addLetters[5])
         self.specialLetter.setText(self.newPuzzle.specialLetter)
-        self.foundWords.setText("")
         self.wrongInputLabel.setText("")
         self.setCurrentPoints()
+        self.remFoundWords()
 
     def start(self, newWord):
         if len(newWord)==7 and DictInterface.isValid(newWord):
@@ -154,9 +170,9 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter5.setText(addLetters[4])
             self.letter6.setText(addLetters[5])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
-            self.foundWords.setText("")
             self.wrongInputLabel.setText("")
             self.setCurrentPoints()
+            self.remFoundWords()
         else:
             self.wrongInputLabel.setText("Not a valid starting word.")
 
@@ -189,12 +205,11 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter5.setText(self.newPuzzle.letterList[5])
             self.letter6.setText(self.newPuzzle.letterList[6])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
-            self.foundWords.setText("")
             self.setCurrentPoints()
             self.wrongInputLabel.setText("")
+            self.remFoundWords()
             for i in self.newPuzzle.listOfFoundWords:
-                self.foundWords.setText(self.foundWords.text() + i + "\n")
-                self.foundWords.adjustSize()
+                self.addFoundWords(i)
 
     def submit(self):
         if self.newPuzzle != None:
@@ -219,8 +234,7 @@ class Window(QMainWindow, Ui_MainWindow):
                         pointsGained += 7
                     self.newPuzzle.addScore(pointsGained)
                     print(pointsGained)
-                    self.foundWords.setText(self.foundWords.text() + result + "\n")
-                    self.foundWords.adjustSize()
+                    self.addFoundWords(result)
                     self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
                     self.setCurrentPoints()
                     self.wrongInputLabel.setText("You just gained " + str(pointsGained) + " points!")
