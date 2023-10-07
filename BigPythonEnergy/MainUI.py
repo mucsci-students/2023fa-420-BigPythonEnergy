@@ -59,6 +59,9 @@ class Window(QMainWindow, Ui_MainWindow):
         dialog = thresholdDialog(self)
         dialog.exec()
 
+    def setCurrentPoints(self):
+        self.pointsGained.setText(str(self.newPuzzle.getCurrentScore()))
+
     def savedBlank(self, saveName):
         if (self.newPuzzle != None):
             save = {
@@ -71,6 +74,7 @@ class Window(QMainWindow, Ui_MainWindow):
             file_path = "blankSaves/" + saveName + ".json"
             with open(file_path, "w") as outfile:
                 json.dump(save, outfile)
+            self.wrongInputLabel.setText("Saved successfully!")
 
     def saved(self, saveName):
         if (self.newPuzzle != None):
@@ -84,6 +88,7 @@ class Window(QMainWindow, Ui_MainWindow):
             file_path = "saves/" + saveName + ".json"
             with open(file_path, "w") as outfile:
                 json.dump(save, outfile)
+            self.wrongInputLabel.setText("Saved successfully!")
         
 
     def shuffle(self):
@@ -112,6 +117,7 @@ class Window(QMainWindow, Ui_MainWindow):
         addLetters = []
         for i in loopedLetters:
             addLetters.append(i)
+        self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
         self.letter1.setText(addLetters[0])
         self.letter2.setText(addLetters[1])
         self.letter3.setText(addLetters[2])
@@ -119,8 +125,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.letter5.setText(addLetters[4])
         self.letter6.setText(addLetters[5])
         self.specialLetter.setText(self.newPuzzle.specialLetter)
-        self.foundWords.setText("Found Words: ")
+        self.foundWords.setText("")
         self.wrongInputLabel.setText("")
+        self.setCurrentPoints()
 
     def start(self, newWord):
         if len(newWord)==7 and DictInterface.isValid(newWord):
@@ -134,6 +141,7 @@ class Window(QMainWindow, Ui_MainWindow):
             addLetters = []
             for i in loopedLetters:
                 addLetters.append(i)
+            self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
             self.letter1.setText(addLetters[0])
             self.letter2.setText(addLetters[1])
             self.letter3.setText(addLetters[2])
@@ -141,8 +149,9 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter5.setText(addLetters[4])
             self.letter6.setText(addLetters[5])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
-            self.foundWords.setText("Found Words:")
+            self.foundWords.setText("")
             self.wrongInputLabel.setText("")
+            self.setCurrentPoints()
         else:
             self.wrongInputLabel.setText("Not a valid starting word.")
 
@@ -166,7 +175,8 @@ class Window(QMainWindow, Ui_MainWindow):
             self.newPuzzle = puzzle(set(letters), special_letter, score)
             self.newPuzzle.listOfFoundWords = set(words)
 
-            # Set each letter button to each letter.
+            # Set text elements.
+            self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
             self.letter1.setText(self.newPuzzle.letterList[1])
             self.letter2.setText(self.newPuzzle.letterList[2])
             self.letter3.setText(self.newPuzzle.letterList[3])
@@ -174,9 +184,11 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter5.setText(self.newPuzzle.letterList[5])
             self.letter6.setText(self.newPuzzle.letterList[6])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
-            self.foundWords.setText("Found Words:")
+            self.foundWords.setText("")
+            self.setCurrentPoints()
+            self.wrongInputLabel.setText("")
             for i in self.newPuzzle.listOfFoundWords:
-                self.foundWords.setText(self.foundWords.text() + "\n" + i)
+                self.foundWords.setText(self.foundWords.text() + i + "\n")
                 self.foundWords.adjustSize()
 
     def submit(self):
@@ -202,10 +214,11 @@ class Window(QMainWindow, Ui_MainWindow):
                         pointsGained += 7
                     self.newPuzzle.addScore(pointsGained)
                     print(pointsGained)
-                    self.foundWords.setText(self.foundWords.text() + "\n" + result)
+                    self.foundWords.setText(self.foundWords.text() + result + "\n")
                     self.foundWords.adjustSize()
                     self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
-                    self.wrongInputLabel.setText("")
+                    self.setCurrentPoints()
+                    self.wrongInputLabel.setText("You just gained " + str(pointsGained) + " points!")
                 else:
                     self.wrongInputLabel.setText("Not a valid word.")
             else:
