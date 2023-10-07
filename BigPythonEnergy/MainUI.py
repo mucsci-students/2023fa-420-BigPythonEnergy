@@ -58,7 +58,6 @@ class Window(QMainWindow, Ui_MainWindow):
     def thresholdMenu(self):
         dialog = thresholdDialog(self)
         dialog.exec()
-    
 
     def savedBlank(self, saveName):
         if (self.newPuzzle != None):
@@ -124,28 +123,28 @@ class Window(QMainWindow, Ui_MainWindow):
         self.wrongInputLabel.setText("")
 
     def start(self, newWord):
-            if len(newWord)==7 and DictInterface.isValid(newWord):
-                uniqueCharacters = set()
-                for i in newWord:
-                    uniqueCharacters.add(i)
-                print (str(uniqueCharacters))
-                self.newPuzzle = puzzle(uniqueCharacters)
-                loopedLetters = self.newPuzzle.getNormalLetters()
-                print(str(loopedLetters))
-                addLetters = []
-                for i in loopedLetters:
-                    addLetters.append(i)
-                self.letter1.setText(addLetters[0])
-                self.letter2.setText(addLetters[1])
-                self.letter3.setText(addLetters[2])
-                self.letter4.setText(addLetters[3])
-                self.letter5.setText(addLetters[4])
-                self.letter6.setText(addLetters[5])
-                self.specialLetter.setText(self.newPuzzle.specialLetter)
-                self.foundWords.setText("Found Words:")
-                self.wrongInputLabel.setText("")
-            else:
-                self.wrongInputLabel.setText("Not a valid starting word.")
+        if len(newWord)==7 and DictInterface.isValid(newWord):
+            uniqueCharacters = set()
+            for i in newWord:
+                uniqueCharacters.add(i)
+            print (str(uniqueCharacters))
+            self.newPuzzle = puzzle(uniqueCharacters)
+            loopedLetters = self.newPuzzle.getNormalLetters()
+            print(str(loopedLetters))
+            addLetters = []
+            for i in loopedLetters:
+                addLetters.append(i)
+            self.letter1.setText(addLetters[0])
+            self.letter2.setText(addLetters[1])
+            self.letter3.setText(addLetters[2])
+            self.letter4.setText(addLetters[3])
+            self.letter5.setText(addLetters[4])
+            self.letter6.setText(addLetters[5])
+            self.specialLetter.setText(self.newPuzzle.specialLetter)
+            self.foundWords.setText("Found Words:")
+            self.wrongInputLabel.setText("")
+        else:
+            self.wrongInputLabel.setText("Not a valid starting word.")
 
     def load(self):
         root = tk.Tk()

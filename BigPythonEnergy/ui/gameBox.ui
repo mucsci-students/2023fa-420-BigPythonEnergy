@@ -180,9 +180,9 @@
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>190</y>
+      <y>239</y>
       <width>200</width>
-      <height>230</height>
+      <height>180</height>
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
@@ -200,7 +200,7 @@
        <x>0</x>
        <y>0</y>
        <width>198</width>
-       <height>228</height>
+       <height>178</height>
       </rect>
      </property>
      <widget class="QLabel" name="foundWords">
@@ -219,7 +219,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Found Words:</string>
+       <string/>
       </property>
      </widget>
     </widget>
@@ -304,6 +304,69 @@
      <string>Type here or click letters!</string>
     </property>
    </widget>
+   <widget class="QLabel" name="foundWordsLabel">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>200</y>
+      <width>200</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Found Words:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="pointsGainedLabel">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>450</y>
+      <width>131</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Points Gained:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="pointsGained">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>450</y>
+      <width>51</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -369,6 +432,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_New"/>
    <addaction name="actionLoad"/>
    <addaction name="actionSave"/>
    <addaction name="actionSave_Blank"/>
