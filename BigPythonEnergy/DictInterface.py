@@ -14,7 +14,7 @@ df = pd.read_json("words.json")
 
 # Simple helper function to ensure 7 unique characters
 def has_7_unique_letters(word):
-    return len(set(word)) == 7
+    return len(set(word)) >= 7
 
 # Function to choose a random word for the user
 def randomWord():
@@ -52,7 +52,7 @@ def findValid(required, letters):
                 validWords.add(word)
     return validWords
 
-# Function to check that the guess entered is a valud english word
+# Function to check that the guess entered is a valid english word
 # Required letter and acceptable letter checking is done in the calle function
 def isValid(guess):
     # switch case operating based on the length of the entered word
