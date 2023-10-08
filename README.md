@@ -31,10 +31,10 @@ Instructions for setting up the build system:
 
     4. Now your virtual environment is open and setup with the proper dependancies and you are ready to play the game. 
         To play in the command line:
-            > python BigPythonEnergy/MainCLI.py
+            > python BigPythonEnergy/execute66.py --cli
 
         To play using the GUI:
-            > python BigPythonEnergy/MainCLI.py --gui
+            > python BigPythonEnergy/execute66.py
     
 
     5. When you have completed the game to your satisfaction and want to close the virtual environment, simply run a "deactivate" command to return to your native environment:
