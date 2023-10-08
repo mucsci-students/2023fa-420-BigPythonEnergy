@@ -139,7 +139,7 @@ def helpPage():
     print('---------------------------------------------------------------------------------------------------------------------')
     print('Help Page:\n')
     print('This is a spelling bee game, the objective of the game is to spell out at many words as possible.\n')
-    print('A word must be at least 4 words, use only letters from the 7 on screen, and contain a given special letter.')
+    print('A word must be at least 4 and at most 15 letters, use only letters from the 7 on screen, and contain a given special letter.')
     print('You can reuse letters as many times as you need to create your word.')
     print('As you find more words, you will get points which correspond to higher ranks.\n')
     print('Points:')
