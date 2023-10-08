@@ -16,9 +16,9 @@ import os
 import random
 import re
 import json
-from puzzle import *
+from Puzzle import *
 import DictInterface
-from viewCLI import *
+from ViewCLI import *
 
 # The main game loop, which contains each action a player can make and calls upon the underlying structure.
 # Prerequesite: Must run until stopped.

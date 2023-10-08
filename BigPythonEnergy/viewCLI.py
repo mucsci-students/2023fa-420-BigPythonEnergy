@@ -1,5 +1,6 @@
 import os
-from puzzle import *
+from Puzzle import *
+import sys
 
 def clearScreen():
     system_platform = platform.system()

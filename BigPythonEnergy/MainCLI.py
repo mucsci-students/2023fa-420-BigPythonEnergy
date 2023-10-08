@@ -16,11 +16,11 @@ import re
 import tkinter as tk
 from tkinter import filedialog
 from MainGameCLI import *
-from puzzle import *
+from Puzzle import *
 from MainUI import *
 import DictInterface
 import sys
-from viewCLI import *
+from ViewCLI import *
 
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application.
 def inputCheck():

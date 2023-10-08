@@ -18,7 +18,7 @@ import time
 import tkinter as tk
 from tkinter import filedialog
 from MainGameCLI import *
-from puzzle import *
+from Puzzle import *
 from DictInterface import *
 import random as rd
 
