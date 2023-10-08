@@ -17,30 +17,14 @@ import random
 import re
 import json
 from puzzle import *
-import DictInterface 
-def clearScreen():
-    system_platform = platform.system()
-    if system_platform == "Windows":
-        os.system("cls")  # Clear screen on Windows
-    else:
-        os.system("clear")  # Clear screen on macOS and Linux
+import DictInterface
+from viewCLI import *
 
 # The main game loop, which contains each action a player can make and calls upon the underlying structure.
 # Prerequesite: Must run until stopped.
 def startGame(puzzle):
     
-    
-
-
-
-    print('LETTERS:')
-    print('-----------------')
-    print(puzzle.getAllLetters() + "\n")
-    print('Must Contain: ' + puzzle.specialLetter)
-    print('-----------------\n')
-    print('Score:')
-    print(puzzle.getCurrentScore())
-    print ('\nEnter your guess below!\n\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nor \nEnter /save to save your progress')
+    mainGameDisplay(puzzle)
     guess = input()
     guess = guess.lower()
 
@@ -69,11 +53,8 @@ def startGame(puzzle):
     
     # Prints the list of found words.
     if guess == "/words":
-        print ('Words found:')
-        for i in puzzle.getFoundWordList():
-            print (i)
-
-        print("Press enter to return to guessing.")
+        getWords(puzzle)
+        returnGuessing()
         next = input()
         clearScreen()
         startGame(puzzle)
@@ -90,7 +71,7 @@ def startGame(puzzle):
     if guess == "/rank":
         print(puzzle.getCurrentScoreType())
 
-        print("Press enter to return to guessing.")
+        returnGuessing()
         next = input()
         clearScreen()
         startGame(puzzle)
@@ -99,7 +80,7 @@ def startGame(puzzle):
     if guess == "/thresholds":
         print(puzzle.getScoreThresholds())
 
-        print("Press enter to return to guessing..")
+        returnGuessing()
         next = input()
         clearScreen()
         startGame(puzzle)
