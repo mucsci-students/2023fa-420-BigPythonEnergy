@@ -1,3 +1,10 @@
+"""
+This script determines if the current system supports a graphical user interface (GUI).
+It checks the operating system (Windows, Linux, or macOS) and the availability of GUI libraries.
+If GUI is supported, it can execute different Python scripts based on command line arguments.
+Use "--cli" to run the command-line interface (CLI) and "--gui" to run the graphical user interface (GUI).
+If neither argument is provided, it defaults to running the GUI.
+"""
 import sys
 import platform
 
@@ -31,5 +38,3 @@ if is_gui_supported():
     exec(open("BigPythonEnergy/MainUI.py").read())
 
 exec(open("BigPythonEnergy/MainCLI.py").read())
-
-

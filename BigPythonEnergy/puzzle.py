@@ -1,3 +1,18 @@
+"""
+This script defines a `puzzle` class that represents a game puzzle in a Spelling Bee game application. The class handles various aspects of the puzzle, including letter management, scoring, word validation, and rank calculations. Additionally, it provides getter methods to retrieve game-related information.
+
+- `puzzle` class: Represents a game puzzle and includes methods for initializing, managing, and retrieving game-related data.
+  - Constructor (`__init__`): Initializes the puzzle with 7 letters, a special letter, and an optional current score.
+  - `initializeTotalScore()`: Initializes the total possible score based on the puzzle's word list.
+  - Getter methods for various game attributes like letters, scores, and found words.
+  - Methods for adding and updating the player's score and found words.
+  - `getCurrentScoreType()`: Calculates and returns the player's rank based on their current score as a percentage of the total score.
+  - `getScoreThresholds()`: Returns rank thresholds and the corresponding total scores.
+  - Static methods `clearScreen()`: Clears the command line screen based on the platform.
+
+Overall, this script provides the core functionality for managing game puzzles, tracking player progress, and calculating ranks in the Spelling Bee game.
+"""
+
 import random
 import string
 import DictInterface
