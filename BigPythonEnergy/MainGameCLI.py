@@ -1,3 +1,17 @@
+"""
+This script is the core of a Spelling Bee game application, handling the main game loop and player interactions.
+
+- `clearScreen()`: A helper function to clear the CLI screen.
+- `startGame(puzzle)`: The main game loop where players enter guesses, manage the game, and interact with various game commands.
+    - Allows players to guess words, save their progress, view found words, shuffle letters, check their rank, and see rank thresholds.
+    - Validates guesses based on length, letter availability, and the presence of a special letter.
+    - Awards points for valid guesses and updates the game state accordingly.
+    - Handles various in-game commands like quitting, saving, and displaying information.
+    - Provides feedback on the correctness of guesses and updates the player's score.
+
+This script integrates game logic with player interactions, making it the central component of the Spelling Bee game.
+"""
+
 import os
 import random
 import re

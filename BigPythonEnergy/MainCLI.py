@@ -1,3 +1,16 @@
+"""
+This script is the main entry point for a Spelling Bee game application. It provides various functions and interfaces for users to interact with the game, including selecting game modes (random, load, or choose), starting the game, and displaying a help page.
+
+- `clearScreen()`: A helper function to clear the CLI screen.
+- `inputCheck()`: The main loop for navigating the application, allowing users to start a game, access the help page, or quit.
+- `startPage()`: The screen where users can choose game modes (random, load, choose) or go back to the main screen.
+- `randomWord()`: Initializes a new puzzle with a randomly selected word.
+- `chooseWord()`: Allows the player to input their own word for the game.
+- `helpPage()`: Displays a help page with game instructions and scoring details.
+
+This script acts as the user interface for the Spelling Bee game and coordinates interactions with other modules and game logic.
+"""
+
 import os
 import re
 import tkinter as tk

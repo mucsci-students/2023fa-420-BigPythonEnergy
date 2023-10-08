@@ -1,3 +1,17 @@
+"""
+This script is the graphical user interface (GUI) component of a Spelling Bee game application. It provides a visual interface for players to interact with the game, including starting new games, saving progress, submitting words, shuffling letters, and viewing various game-related information.
+
+- `clearScreen()`: A helper function to clear the CLI screen.
+- `Window`: The main GUI window class, which extends QMainWindow and incorporates the game's visual elements and interactions.
+    - Handles menu actions like starting new games, displaying help and about dialogs, saving progress, shuffling letters, and more.
+    - Manages UI elements for displaying current game state, letters, special letter, and found words.
+    - Connects UI elements to corresponding actions and functions.
+- Dialog classes (`helpDialog`, `aboutDialog`, `saveDialog`, `blankSaveDialog`, `newGameDialog`, `thresholdDialog`, `ccDialog`): These classes define various dialogs for displaying help, about, save, and other information to the player.
+- GUI initialization (`if __name__ == "__main__"`): Sets up the GUI application, creates the main window, and starts the event loop.
+
+This script integrates the graphical interface with the Spelling Bee game logic and provides an interactive experience for players.
+"""
+
 import sys
 import time
 
