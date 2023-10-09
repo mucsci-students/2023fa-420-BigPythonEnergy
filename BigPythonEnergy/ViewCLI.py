@@ -45,9 +45,8 @@ def startMenuDisplay():
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.')
 
 def newGameDisplay():
-    clearScreen()
-    print('Welcome to the start page, enter "Random" to start from a random word, "Load" to start from a save file, or "Choose" to started from your own Chosen word.')
-    print('Or enter "Back" to go back to the start page')
+    print('Welcome to the start page, enter "Random" to start from a random word, "Load" to start from a normal save file, "Blank Load" to load from a blank save file, or "Choose" to get started from your own chosen word.')
+    print('You may also enter "Back" to go back to the start page')
 
 def unrecognizedCommand():
     clearScreen()
