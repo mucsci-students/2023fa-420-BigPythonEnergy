@@ -1,7 +1,7 @@
 """
 This script is the core of a Spelling Bee game application, handling the main game loop and player interactions.
 
-- `startGame(puzzle)`: The main game loop where players enter guesses, manage the game, and interact with various game commands.
+    - `startGame(puzzle)`: The main game loop where players enter guesses, manage the game, and interact with various game commands.
     - Allows players to guess words, save their progress, view found words, shuffle letters, check their rank, and see rank thresholds.
     - Validates guesses based on length, letter availability, and the presence of a special letter.
     - Awards points for valid guesses and updates the game state accordingly.
