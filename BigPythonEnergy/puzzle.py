@@ -156,7 +156,8 @@ class puzzle:
         self.currentScore += score 
     
     def addFoundWord(self, word):
-        self.listOfFoundWords.add(word)
+        if(word != ""):
+            self.listOfFoundWords.add(word)
 
     # Used to set all found words in case of loading a puzzle.
     def setFoundWord(self, wordList):

@@ -68,14 +68,59 @@ class TestPuzzle(unittest.TestCase):
         self.assertIn("Good Start:", thresholds)
         self.assertIn("Beginner:", thresholds)
 
+    def test_letter_display(self):
+        self.assertEquals(self.test_puzzle.getAllLetters, "| a | b | c | d | e | f | g |")
+
     def test_found_words(self):
         # Check if found words are added and retrieved correctly.
         self.test_puzzle.addFoundWord("bad")
         self.test_puzzle.addFoundWord("cab")
+        self.test_puzzle.addFoundWord("")
         found_words = self.test_puzzle.getFoundWordList()
         self.assertIn("bad", found_words)
         self.assertIn("cab", found_words)
         self.assertNotIn("dog", found_words)
+        self.assertNotIn("", found_words)
+
+    def test_puzzle_override(self):
+        # Check if a puzzle can be overwritten successfully.
+        self.test_puzzle = puzzle(letters={'c', 'd', 'e', 'g', 'r', 'p', 'z'}, specialLetter='r', currentScore=10)
+        self.test_puzzle_old = puzzle(letters={'a', 'b', 'c', 'd', 'e', 'f', 'g'}, specialLetter='a', currentScore=0)
+        self.assertEqual(self.test_puzzle.getLetterList(), ['c', 'd', 'e', 'g', 'r', 'p', 'z'])
+        self.assertEqual(self.test_puzzle.getSpecialLetter(), 'r')
+        self.assertEqual(self.test_puzzle.getCurrentScore(), 10)
+        self.assertGreater(self.test_puzzle.getTotalScore(), 0)
+        self.assertNotEqual(self.test_puzzle.getTotalScore(), self.test_puzzle_old.getTotalScore())
+
+        self.assertIn(self.test_puzzle.getNormalLetters(), 'c')
+        self.assertIn(self.test_puzzle.getNormalLetters(), 'd')
+        self.assertIn(self.test_puzzle.getNormalLetters(), 'e')
+        self.assertIn(self.test_puzzle.getNormalLetters(), 'g')
+        self.assertIn(self.test_puzzle.getNormalLetters(), 'p')
+        self.assertIn(self.test_puzzle.getNormalLetters(), 'z')
+        self.assertNotIn(self.test_puzzle.getNormalLetters(), 'r')
+        self.assertNotIn(self.test_puzzle.getNormalLetters(), 'b')
+
+        self.assertIn(self.test_puzzle.letters, 'c')
+        self.assertIn(self.test_puzzle.letters, 'd')
+        self.assertIn(self.test_puzzle.letters, 'e')
+        self.assertIn(self.test_puzzle.letters, 'g')
+        self.assertIn(self.test_puzzle.letters, 'p')
+        self.assertIn(self.test_puzzle.letters, 'z')
+        self.assertNotIn(self.test_puzzle.letters, 'r')
+        self.assertNotIn(self.test_puzzle.letters, 'b')
+
+        self.assertEqual(self.test_puzzle.getFoundWordList(), set())
+
+    def test_blank_puzzle(self):
+        self.blank_puzzle = puzzle()
+        self.assertEqual(self.blank_puzzle.getLetterList(), [])
+        self.assertEqual(self.blank_puzzle.getSpecialLetter(), None)
+        self.assertEqual(self.blank_puzzle.getCurrentScore(), 0)
+        self.assertEqual(self.blank_puzzle.getTotalScore(), 0)
+        self.assertEqual(self.blank_puzzle.getNormalLetters(), set())
+        self.assertEqual(self.blank_puzzle.letters, set())
+        self.assertEqual(self.blank_puzzle.getFoundWordList(), set())
 
 if __name__ == '__main__':
     unittest.main()
