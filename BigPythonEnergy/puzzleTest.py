@@ -27,7 +27,7 @@ To execute the tests, run this script as the main program. If all tests pass suc
 Note: Ensure that the 'puzzle' class implementation in the 'puzzle.py' file remains consistent with the expectations defined in these tests to maintain game integrity.
 """
 import unittest
-from puzzle import puzzle
+from Puzzle import puzzle
 
 class TestPuzzle(unittest.TestCase):
     

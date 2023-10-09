@@ -16,21 +16,15 @@ import re
 import tkinter as tk
 from tkinter import filedialog
 from MainGameCLI import *
-from puzzle import *
+from Puzzle import *
 from MainUI import *
 import DictInterface
 import sys
-
-def clearScreen():
-    system_platform = platform.system()
-    if system_platform == "Windows":
-        os.system("cls")  # Clear screen on Windows
-    else:
-        os.system("clear")  # Clear screen on macOS and Linux
+from ViewCLI import *
 
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application.
 def inputCheck():
-    print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.') 
+    startMenuDisplay() 
     userInput = input()
     userInput = userInput.lower() # Turns the user input into lower case for easy checking.
     
@@ -42,14 +36,13 @@ def inputCheck():
         exit()
     else:
         clearScreen()
-        print('unrecognized command, please try again:')
+        unrecognizedCommand()
         inputCheck()
 
 # Start page where the user can select what type of puzzle they want, or they can go back to the main screen.
 def startPage():
     clearScreen()
-    print('Welcome to the start page, enter "Random" to start from a random word, "Load" to start from a save file, or "Choose" to started from your own Chosen word.')
-    print('Or enter "Back" to go back to the start page')
+    newGameDisplay()
     userInput = input()
     userInput = userInput.lower() # Turns the user input into lower case for easy checking.
 
@@ -135,19 +128,7 @@ def chooseWord():
 
 # Prints out the help page containing information useful to the player.
 def helpPage():
-    clearScreen()
-    print('---------------------------------------------------------------------------------------------------------------------')
-    print('Help Page:\n')
-    print('This is a spelling bee game, the objective of the game is to spell out at many words as possible.\n')
-    print('A word must be at least 4 and at most 15 letters, use only letters from the 7 on screen, and contain a given special letter.')
-    print('You can reuse letters as many times as you need to create your word.')
-    print('As you find more words, you will get points which correspond to higher ranks.\n')
-    print('Points:')
-    print('4 Letter word = 1 point. 5 Letter word = 5 points. 6 Letter word = 6 points, and so on.')
-    print('Use all 7 letters given = 7 extra points.')
-    print('Rank thresholds are based on the total number of words possible.')
-    print('---------------------------------------------------------------------------------------------------------------------\n')
-    print('Press enter to continue!')
+    helpMenuDisplay()
     next = input()
     clearScreen()
     inputCheck()
@@ -164,8 +145,5 @@ def randomWord():
 # Start script to clear the command line so the user just sees the instructions.
 if str(len(sys.argv) > 1 and sys.argv[1]) == "--gui":
     exec(open("BigPythonEnergy/MainUI.py").read())
-print('--------------------------------')
-print('Welcome to Spelling Bee!')
-print('Created by Big Python Energy')
-print('--------------------------------')
+entryDisplay()
 inputCheck()
