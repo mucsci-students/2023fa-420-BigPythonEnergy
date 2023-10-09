@@ -91,7 +91,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 "requiredLetter": self.newPuzzle.specialLetter,
                 "maxPoints": self.newPuzzle.totalScore
             }
-            file_path = "blankSaves/" + saveName + ".json"
+            file_path = "BigPythonEnergy/blankSaves/" + saveName + ".json"
             with open(file_path, "w") as outfile:
                 json.dump(save, outfile)
             self.wrongInputLabel.setText("Saved successfully!")
@@ -105,7 +105,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 "requiredLetter": self.newPuzzle.specialLetter,
                 "maxPoints": self.newPuzzle.totalScore
             }
-            file_path = "saves/" + saveName + ".json"
+            file_path = "BigPythonEnergy/saves/" + saveName + ".json"
             with open(file_path, "w") as outfile:
                 json.dump(save, outfile)
             self.wrongInputLabel.setText("Saved successfully!")
@@ -142,12 +142,9 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def random(self):
         word = DictInterface.randomWord()
-        print(word)
         uniqueCharacters = set(word)
-        print (str(uniqueCharacters))
         nPuzzle = puzzle(uniqueCharacters)
         self.newPuzzle = nPuzzle
-        print(str(self.newPuzzle.getNormalLetters()))
         loopedLetters = self.newPuzzle.getNormalLetters()
         addLetters = []
         for i in loopedLetters:
@@ -160,19 +157,17 @@ class Window(QMainWindow, Ui_MainWindow):
         self.letter5.setText(addLetters[4])
         self.letter6.setText(addLetters[5])
         self.specialLetter.setText(self.newPuzzle.specialLetter)
-        self.wrongInputLabel.setText("")
+        self.wrongInputLabel.setText("New random game started! Have fun!")
         self.setCurrentPoints()
         self.remFoundWords()
 
     def start(self, newWord):
-        if len(newWord)==7 and DictInterface.isValid(newWord):
+        if DictInterface.has_7_unique_letters(newWord) and DictInterface.isValid(newWord):
             uniqueCharacters = set()
             for i in newWord:
                 uniqueCharacters.add(i)
-            print (str(uniqueCharacters))
             self.newPuzzle = puzzle(uniqueCharacters)
             loopedLetters = self.newPuzzle.getNormalLetters()
-            print(str(loopedLetters))
             addLetters = []
             for i in loopedLetters:
                 addLetters.append(i)
@@ -184,7 +179,7 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter5.setText(addLetters[4])
             self.letter6.setText(addLetters[5])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
-            self.wrongInputLabel.setText("")
+            self.wrongInputLabel.setText("New game set! Have fun!")
             self.setCurrentPoints()
             self.remFoundWords()
         else:
@@ -195,9 +190,6 @@ class Window(QMainWindow, Ui_MainWindow):
         root.withdraw()
         file_selected = filedialog.askopenfile()
         if (file_selected != None):
-            print("")
-            print(file_selected.name)
-            print("")
             with open(file_selected.name, "r") as infile:
                 data = json.load(infile)
 
@@ -220,7 +212,7 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter6.setText(self.newPuzzle.letterList[6])
             self.specialLetter.setText(self.newPuzzle.specialLetter)
             self.setCurrentPoints()
-            self.wrongInputLabel.setText("")
+            self.wrongInputLabel.setText("Game loaded successfully!")
             self.remFoundWords()
             for i in self.newPuzzle.listOfFoundWords:
                 self.addFoundWords(i)
@@ -247,7 +239,6 @@ class Window(QMainWindow, Ui_MainWindow):
                     if set(result) == set(self.newPuzzle.getLetterList()):
                         pointsGained += 7
                     self.newPuzzle.addScore(pointsGained)
-                    print(pointsGained)
                     self.addFoundWords(result)
                     self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
                     self.setCurrentPoints()
@@ -276,7 +267,6 @@ class saveDialog(QDialog):
         self.connections()
     
     def connections(self):
-        print("")
         self.saveButton.pressed.connect(lambda: win.saved(self.saveNameEdit.text()))
 
 class blankSaveDialog(QDialog):
@@ -286,7 +276,6 @@ class blankSaveDialog(QDialog):
         self.connections()
     
     def connections(self):
-        print("")
         self.saveButton.clicked.connect(lambda: win.savedBlank(self.saveNameEdit.text()))
 
 class newGameDialog(QDialog):
@@ -296,7 +285,6 @@ class newGameDialog(QDialog):
         self.connections()
     
     def connections(self):
-        print("")
         self.randomButton.clicked.connect(lambda: win.random())
         self.startButton.clicked.connect(lambda: win.start(self.newWord.text()))
 
