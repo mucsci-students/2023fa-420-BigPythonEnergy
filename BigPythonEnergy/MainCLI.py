@@ -28,6 +28,7 @@ def inputCheck():
     userInput = userInput.lower() # Turns the user input into lower case for easy checking.
     
     if userInput == "start":
+        clearScreen()
         startPage()
     elif userInput == "help":
         helpPage()
@@ -40,7 +41,6 @@ def inputCheck():
 
 # Start page where the user can select what type of puzzle they want, or they can go back to the main screen.
 def startPage():
-    clearScreen()
     newGameDisplay()
     userInput = input()
     userInput = userInput.lower() # Turns the user input into lower case for easy checking.
@@ -48,37 +48,69 @@ def startPage():
     if userInput == "random":
         randomWord()
         
-    # Load the JSON data from the file.
+    # Load the JSON data from the save file.
 
-    ##This is broken now, please fix
     elif userInput == "load":
-        root = tk.Tk()
-        root.withdraw()
-        file_selected = filedialog.askopenfile()
-        print("")
-        print(file_selected.name)
-        print("")
-        with open(file_selected.name, "r") as infile:
-            data = json.load(infile)
+        print("Please enter the save name to load: ")
+        file_selected = input()
+        file_path = "BigPythonEnergy/saves/" + file_selected + ".json"
+        try:
+            with open(file_path, "r") as infile:
+                data = json.load(infile)
+        except:
+            clearScreen()
+            print("Not a correct filename, try again!")
+            startPage()
 
-    # Access the attributes from the loaded JSON data
-        letters = data["baseWord"]
-        special_letter = data["requiredLetter"]
-        words = data["foundWords"]
-        score = data["playerPoints"] 
+        else:
+            # Access the attributes from the loaded JSON data
+            letters = data["baseWord"]
+            special_letter = data["requiredLetter"]
+            words = data["foundWords"]
+            score = data["playerPoints"] 
 
-        newPuzzle = puzzle(letters)
-        newPuzzle.currentScore = score
-        newPuzzle.listOfFoundWords = set(words)
-        newPuzzle.specialLetter = special_letter
-        clearScreen()
-        print('Loaded save')
-        startGame(newPuzzle)
+            newPuzzle = puzzle(letters)
+            newPuzzle.currentScore = score
+            newPuzzle.listOfFoundWords = set(words)
+            newPuzzle.specialLetter = special_letter
+            clearScreen()
+            print('Loaded save')
+            startGame(newPuzzle)
+
+    # Load the JSON data from the blank save file.
+
+    elif userInput == "blank load":
+        print("Please enter the save name of the blank save to load: ")
+        file_selected = input()
+        file_path = "BigPythonEnergy/blankSaves/" + file_selected + ".json"
+        try:
+            with open(file_path, "r") as infile:
+                data = json.load(infile)
+        except:
+            print("Not a correct filename, try again!")
+            clearScreen()
+            startPage()
+
+        else:
+            # Access the attributes from the loaded JSON data
+            letters = data["baseWord"]
+            special_letter = data["requiredLetter"]
+            words = data["foundWords"]
+            score = data["playerPoints"] 
+
+            newPuzzle = puzzle(letters)
+            newPuzzle.currentScore = score
+            newPuzzle.listOfFoundWords = set(words)
+            newPuzzle.specialLetter = special_letter
+            clearScreen()
+            print('Loaded save')
+            startGame(newPuzzle)
 
     elif userInput == "choose":
         chooseWord()
 
     elif userInput == "back":
+        clearScreen()
         inputCheck()
     
     else:
