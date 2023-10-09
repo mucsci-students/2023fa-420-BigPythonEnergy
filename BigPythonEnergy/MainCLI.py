@@ -1,7 +1,6 @@
 """
 This script is the main entry point for a Spelling Bee game application. It provides various functions and interfaces for users to interact with the game, including selecting game modes (random, load, or choose), starting the game, and displaying a help page.
 
-- `clearScreen()`: A helper function to clear the CLI screen.
 - `inputCheck()`: The main loop for navigating the application, allowing users to start a game, access the help page, or quit.
 - `startPage()`: The screen where users can choose game modes (random, load, choose) or go back to the main screen.
 - `randomWord()`: Initializes a new puzzle with a randomly selected word.
@@ -83,7 +82,7 @@ def startPage():
         inputCheck()
     
     else:
-        print('unknown command, please enter another')
+        unrecognizedCommand()
         startPage()
 
 #Choose word script used if the player wants to choose their own word to base the puzzle off of

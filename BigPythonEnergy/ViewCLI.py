@@ -1,3 +1,19 @@
+"""
+This script is the view portion of the MVC for the command line interface. It pushes major groups of text or reused text to the controller for output.
+
+- `clearScreen()`: A helper function to clear the CLI screen.
+- `entryDisplay()`: Shows the entry text displaying who made the game.
+- `mainGameDisplay()`: Shows the display for the main game, giving the puzzle letters, score, and commands.
+- `startMenuDisplay()`: Showcases commands for the starting menu.
+- `newGameDisplay()`: Gives options to start a game when the start command is given.
+- `unrecognizedCommand()`: For when a command is not recognized.
+- `helpMenuDisplay()`: Displays the help menu in its entirety.
+- `returnGuessing()`: Tells players to press a key to return to guessing after using a command.
+- `getWords()`: Prints a list of all found words.
+
+This script acts as the user interface for the Spelling Bee game and coordinates interactions with other modules and game logic.
+"""
+
 import os
 from Puzzle import *
 import sys
