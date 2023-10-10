@@ -1,68 +1,126 @@
+"""
+This script is the main entry point for a Spelling Bee game application. It provides various functions and interfaces for users to interact with the game, including selecting game modes (random, load, or choose), starting the game, and displaying a help page.
+
+- `inputCheck()`: The main loop for navigating the application, allowing users to start a game, access the help page, or quit.
+- `startPage()`: The screen where users can choose game modes (random, load, choose) or go back to the main screen.
+- `randomWord()`: Initializes a new puzzle with a randomly selected word.
+- `chooseWord()`: Allows the player to input their own word for the game.
+- `helpPage()`: Displays a help page with game instructions and scoring details.
+
+This script acts as the user interface for the Spelling Bee game and coordinates interactions with other modules and game logic.
+"""
+
 import os
 import re
+import tkinter as tk
+from tkinter import filedialog
 from MainGameCLI import *
-from puzzle import *
+from Puzzle import *
+from MainUI import *
 import DictInterface
+import sys
+from ViewCLI import *
 
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application.
 def inputCheck():
-    print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.') 
+    startMenuDisplay() 
     userInput = input()
     userInput = userInput.lower() # Turns the user input into lower case for easy checking.
     
     if userInput == "start":
+        clearScreen()
         startPage()
     elif userInput == "help":
         helpPage()
     elif userInput == "quit":
         exit()
     else:
-        print('unrecognized command, please try again:')
+        clearScreen()
+        unrecognizedCommand()
         inputCheck()
 
 # Start page where the user can select what type of puzzle they want, or they can go back to the main screen.
 def startPage():
-    os.system('cls')
-    print('Welcome to the start page, enter "Random" to start from a random word, "Load" to start from a save file, or "Choose" to started from your own Chosen word.')
-    print('Or enter "Back" to go back to the start page')
+    newGameDisplay()
     userInput = input()
     userInput = userInput.lower() # Turns the user input into lower case for easy checking.
 
     if userInput == "random":
         randomWord()
         
-    # Load the JSON data from the file.
-    elif userInput == "load":
-        with open("sample.json", "r") as infile:
-            data = json.load(infile)
+    # Load the JSON data from the save file.
 
-    # Access the attributes from the loaded JSON data
-        letters = data["letters"]
-        special_letter = data["specialLetter"]
-        words = data["words"]
-        score = data["score"]        
-        newPuzzle = puzzle(letters)
-        newPuzzle.currentScore = score
-        newPuzzle.listOfFoundWords = set(words)
-        newPuzzle.specialLetter = special_letter
-        os.system('cls')
-        print('Loaded save')
-        startGame(newPuzzle)
+    elif userInput == "load":
+        print("Please enter the save name to load: ")
+        file_selected = input()
+        file_path = "BigPythonEnergy/saves/" + file_selected + ".json"
+        try:
+            with open(file_path, "r") as infile:
+                data = json.load(infile)
+        except:
+            clearScreen()
+            print("Not a correct filename, try again!")
+            startPage()
+
+        else:
+            # Access the attributes from the loaded JSON data
+            letters = data["baseWord"]
+            special_letter = data["requiredLetter"]
+            words = data["foundWords"]
+            score = data["playerPoints"] 
+
+            newPuzzle = puzzle(letters)
+            newPuzzle.currentScore = score
+            newPuzzle.listOfFoundWords = set(words)
+            newPuzzle.specialLetter = special_letter
+            clearScreen()
+            print('Loaded save')
+            startGame(newPuzzle)
+
+    # Load the JSON data from the blank save file.
+
+    elif userInput == "blank load":
+        print("Please enter the save name of the blank save to load: ")
+        file_selected = input()
+        file_path = "BigPythonEnergy/blankSaves/" + file_selected + ".json"
+        try:
+            with open(file_path, "r") as infile:
+                data = json.load(infile)
+        except:
+            print("Not a correct filename, try again!")
+            clearScreen()
+            startPage()
+
+        else:
+            # Access the attributes from the loaded JSON data
+            letters = data["baseWord"]
+            special_letter = data["requiredLetter"]
+            words = data["foundWords"]
+            score = data["playerPoints"] 
+
+            newPuzzle = puzzle(letters)
+            newPuzzle.currentScore = score
+            newPuzzle.listOfFoundWords = set(words)
+            newPuzzle.specialLetter = special_letter
+            clearScreen()
+            print('Loaded save')
+            startGame(newPuzzle)
 
     elif userInput == "choose":
         chooseWord()
 
     elif userInput == "back":
+        clearScreen()
         inputCheck()
     
     else:
-        print('unknown command, please enter another')
+        unrecognizedCommand()
         startPage()
 
 #Choose word script used if the player wants to choose their own word to base the puzzle off of
 def chooseWord():
 
-    os.system('cls')
+    clearScreen()
     
     print('Enter an english word with atleast 7 unique letters')
     wordInput = input()
@@ -70,18 +128,18 @@ def chooseWord():
 
     # checks if the length is atleast 7.
     if len(wordInput)<7:
-        os.system('cls')
+        clearScreen()
         print('Word does not contain enough letters')
         chooseWord()
 
     # Checks if word has any non-English letters.
     elif not re.match("^[a-zA-Z]+$", wordInput): 
-        os.system('cls') 
+        clearScreen()
         print('Word contains non english letters')
         chooseWord()
     
     # Checks if the word has exactly 7 unique letters.
-    os.system('cls')
+    clearScreen()
     uniqueCharacters = set()
     for i in wordInput:  
         uniqueCharacters.add(i)
@@ -101,21 +159,9 @@ def chooseWord():
 
 # Prints out the help page containing information useful to the player.
 def helpPage():
-    os.system('cls')
-    print('---------------------------------------------------------------------------------------------------------------------')
-    print('Help Page:\n')
-    print('This is a spelling bee game, the objective of the game is to spell out at many words as possible.\n')
-    print('A word must be at least 4 words, use only letters from the 7 on screen, and contain a given special letter.')
-    print('You can reuse letters as many times as you need to create your word.')
-    print('As you find more words, you will get points which correspond to higher ranks.\n')
-    print('Points:')
-    print('4 Letter word = 1 point. 5 Letter word = 5 points. 6 Letter word = 6 points, and so on.')
-    print('Use all 7 letters given = 7 extra points.')
-    print('Rank thresholds are based on the total number of words possible.')
-    print('---------------------------------------------------------------------------------------------------------------------\n')
-    print('Press enter to continue!')
+    helpMenuDisplay()
     next = input()
-    os.system('cls')
+    clearScreen()
     inputCheck()
 
 # Function to initialize a new puzzle with a randomly selected word
@@ -128,11 +174,7 @@ def randomWord():
     startGame(newPuzzle)
 
 # Start script to clear the command line so the user just sees the instructions.
-os.system('cls')
-print('--------------------------------')
-print('Welcome to Spelling Bee!')
-print('Created by Big Python Energy')
-print('--------------------------------')
+if str(len(sys.argv) > 1 and sys.argv[1]) == "--gui":
+    exec(open("BigPythonEnergy/MainUI.py").read())
+entryDisplay()
 inputCheck()
-
-

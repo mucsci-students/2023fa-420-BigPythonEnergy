@@ -1,13 +1,40 @@
+"""
+This script provides a set of functions and utilities for working with English words and dictionaries.
+
+- `clearScreen()`: A helper function to clear the command-line interface (CLI) screen based on the operating system.
+
+- `df`: A Pandas DataFrame containing words from a JSON file.
+
+- `has_7_unique_letters(word)`: A function that checks if a word has at least 7 unique characters.
+
+- `randomWord()`: A function that selects a random word from the dictionary that meets the 7 unique character criteria.
+
+- `findValid(required, letters)`: A function that finds words composed of the required letter and 6 other acceptable letters.
+
+- `isValid(guess)`: A function that checks if a guessed word is a valid English word of varying lengths (4 to 15 letters).
+
+The script is intended for word-related tasks and games, including word guessing games, word selection, and word validation.
+"""
+
+
 import pandas as pd
 import random
 import os
+import platform
 
+# Helper function for clearing the CLI Screen.
+def clearScreen():
+    system_platform = platform.system()
+    if system_platform == "Windows":
+        os.system("cls")  # Clear screen on Windows
+    else:
+        os.system("clear")  # Clear screen on macOS and Linux
 
 df = pd.read_json("words.json")
 
 # Simple helper function to ensure 7 unique characters
 def has_7_unique_letters(word):
-    return len(set(word)) == 7
+    return len(set(word)) >= 7
 
 # Function to choose a random word for the user
 def randomWord():
@@ -45,7 +72,7 @@ def findValid(required, letters):
                 validWords.add(word)
     return validWords
 
-# Function to check that the guess entered is a valud english word
+# Function to check that the guess entered is a valid english word
 # Required letter and acceptable letter checking is done in the calle function
 def isValid(guess):
     # switch case operating based on the length of the entered word
@@ -128,6 +155,6 @@ def isValid(guess):
             
         # Default case: the word was too long or too short, or was not found
         case _:
-            os.system('cls')
+            clearScreen()
             print("The word you entered is not in the dictionary")
             return False
