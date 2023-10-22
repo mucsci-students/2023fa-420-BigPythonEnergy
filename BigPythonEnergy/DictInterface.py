@@ -176,7 +176,6 @@ def findStartingWith(tup, letters, required):
             # Ensure the word contains the required letter, starts with tup, and contains only the other 6 acceptable letters
             if required in word and word[:2] == tup and all(letter in letters or letter == required for letter in word):
                 validWords.add(word)
-
     return len(validWords)
 
 # populate function responsible for driving the population of the bingo sheet
@@ -337,3 +336,4 @@ def bingoHint(required, letters):
     bingo = populateSigma(temp)
 
     return bingo
+
