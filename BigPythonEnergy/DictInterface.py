@@ -158,8 +158,30 @@ def isValid(guess):
             clearScreen()
             print("The word you entered is not in the dictionary")
             return False
+        
 
-# driver helper function to populate the bingo sheet with the apropriate values
+# tup is the starting letters we want to look for
+# letters are the valid letters for the puzzle
+# required is the required letter for the puzzle
+def findStartingWith(tup, letters, required):    
+    validWords = set()
+
+    # check each column
+    for column in  df.columns:
+        words = df[column].dropna()
+
+        # Search through each word in every column
+        for word in words:
+
+            # Ensure the word contains the required letter, starts with tup, and contains only the other 6 acceptable letters
+            if required in word and word[:2] == tup and all(letter in letters or letter == required for letter in word):
+                validWords.add(word)
+
+    return len(validWords)
+
+# populate function responsible for driving the population of the bingo sheet
+# A while loop running on the size of the words
+# A switch case to know what column to get into
 def populateBingo(bingoSheet, required, letters):
     size = 4
     while size <= 15:
@@ -269,27 +291,28 @@ def popHelper(row, starter, required, letters):
 
     return len(validWords)
         
+# This function is responsible for caluculating and placing all sigma values
 def populateSigma(bingo):
-    rowSum = 0
-    columnSum = 0
-    i = 1
-    j = 1
-    while i <= 12:
-        rowSum += bingo[j][i]
-        while j <= 8:
-            columnSum += bingo[j][i]
-            j += 1
-        i += 1
+    # Calculate the sum for each row
+    for row in bingo[1:]:
+        row[13] = sum(row[1:13])
 
+    # Calculate the sum for each column
+    for j in range(1, 8):
+        bingo[8][j] = sum(row[j] for row in bingo[1:])
+    
+    row_sum = sum(row[13] for row in bingo[1:])
+    column_sum = sum(bingo[8][j] for j in range(1, 8))
+    bingo[8][13] = row_sum
+        
+    return bingo
 
-
-# required is the required letter for the puzzle
-# letters contains the valid letters for the puzzle
-# This function sets up a 2 demensional array and sets it up to be 
-#   populated with the appropriate values
-# A function is then called to find and place those values
+# This is the main and only bingo Hint call
+# All that is required is the required letter and the acceptable letters
+# NOTE: It is important that 'letters' contains no duplicate values
+#           otherwise the bingo sheet will not be correct
 def bingoHint(required, letters):
-    bingoSheet = [[None for _ in range(14)] for _ in range(9)]
+    bingoSheet = [[0 for _ in range(14)] for _ in range(9)]
     
     # Initialize the numbers in the first row
     for i in range(13):
@@ -312,4 +335,5 @@ def bingoHint(required, letters):
     
     temp = populateBingo(bingoSheet, required, letters)
     bingo = populateSigma(temp)
+
     return bingo
