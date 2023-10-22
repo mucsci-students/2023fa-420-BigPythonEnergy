@@ -158,3 +158,23 @@ def isValid(guess):
             clearScreen()
             print("The word you entered is not in the dictionary")
             return False
+        
+
+# tup is the starting letters we want to look for
+# letters are the valid letters for the puzzle
+# required is the required letter for the puzzle
+def findStartingWith(tup, letters, required):    
+    validWords = set()
+
+    # check each column
+    for column in  df.columns:
+        words = df[column].dropna()
+
+        # Search through each word in every column
+        for word in words:
+
+            # Ensure the word contains the required letter, starts with tup, and contains only the other 6 acceptable letters
+            if required in word and word[:2] == tup and all(letter in letters or letter == required for letter in word):
+                validWords.add(word)
+
+    return validWords     
