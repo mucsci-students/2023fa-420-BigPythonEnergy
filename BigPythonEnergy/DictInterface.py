@@ -159,6 +159,130 @@ def isValid(guess):
             print("The word you entered is not in the dictionary")
             return False
 
+# driver helper function to populate the bingo sheet with the apropriate values
+def populateBingo(bingoSheet, required, letters):
+    size = 4
+    while size <= 15:
+        match(size):
+
+            case 4:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][1] = popHelper("fours", letter, required, letters)
+                    i += 1
+                size = 5
+
+            case 5:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][2] = popHelper("fives", letter, required, letters)
+                    i += 1
+                size = 6
+                
+            case 6:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][3] = popHelper("sixes", letter, required, letters)
+                    i += 1
+                size = 7
+                
+            case 7:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][4] = popHelper("sevens", letter, required, letters)
+                    i += 1
+                size = 8
+                
+            case 8:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][5] = popHelper("eights", letter, required, letters)
+                    i += 1
+                size = 9
+
+            case 9:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][6] = popHelper("nines", letter, required, letters)
+                    i += 1
+                size = 10
+
+            case 10:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][7] = popHelper("tens", letter, required, letters)
+                    i += 1
+                size = 11
+
+            case 11:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][8] = popHelper("elevens", letter, required, letters)
+                    i += 1
+                size = 12
+
+            case 12:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][9] = popHelper("twelves", letter, required, letters)
+                    i += 1
+                size = 13
+
+            case 13:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][10] = popHelper("thirteens", letter, required, letters)
+                    i += 1
+                size = 14
+
+            case 14:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][11] = popHelper("fourteens", letter, required, letters)
+                    i += 1
+                size = 15
+
+            case 15:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][12] = popHelper("fifteens", letter, required, letters)
+                    i += 1
+                size += 1
+                
+    return bingoSheet
+
+
+
+# provide the length, starting letter, required letter, and acceptable letters
+# and this function will tell you how many valid words there are of the length
+# provided and starting with the letter provided
+def popHelper(row, starter, required, letters):
+    validWords = set()
+    words = df[row].dropna()
+
+    # Search through each word in every column
+    for word in words:
+
+        # Ensure the word contains the required letter, starts with tup, and contains only the other 6 acceptable letters
+        if required in word and word[:1] == starter and all(letter in letters or letter == required for letter in word):
+            validWords.add(word)
+
+    return len(validWords)
+        
+def populateSigma(bingo):
+    rowSum = 0
+    columnSum = 0
+    i = 1
+    j = 1
+    while i <= 12:
+        rowSum += bingo[j][i]
+        while j <= 8:
+            columnSum += bingo[j][i]
+            j += 1
+        i += 1
+
+
+
 # required is the required letter for the puzzle
 # letters contains the valid letters for the puzzle
 # This function sets up a 2 demensional array and sets it up to be 
@@ -185,21 +309,7 @@ def bingoHint(required, letters):
     sigma_symbol = '\u03A3'
     bingoSheet[0][13] = sigma_symbol
     bingoSheet[8][0] = sigma_symbol
-    bingo = populateBingo(bingoSheet, required, letters)
-    return bingo
-
-def populateBingo(bingoSheet, required, letters):
     
-
-def popHelper(row, starter, required, letters):
-    words = set()
-    words = df[row].dropna()
-
-    # Search through each word in every column
-    for word in words:
-
-        # Ensure the word contains the required letter, starts with tup, and contains only the other 6 acceptable letters
-        if required in word and word[:1] == starter and all(letter in letters or letter == required for letter in word):
-            words.add(word)
-
-    return len(words)
+    temp = populateBingo(bingoSheet, required, letters)
+    bingo = populateSigma(temp)
+    return bingo
