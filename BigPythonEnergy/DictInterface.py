@@ -158,3 +158,48 @@ def isValid(guess):
             clearScreen()
             print("The word you entered is not in the dictionary")
             return False
+
+# required is the required letter for the puzzle
+# letters contains the valid letters for the puzzle
+# This function sets up a 2 demensional array and sets it up to be 
+#   populated with the appropriate values
+# A function is then called to find and place those values
+def bingoHint(required, letters):
+    bingoSheet = [[None for _ in range(14)] for _ in range(9)]
+    
+    # Initialize the numbers in the first row
+    for i in range(13):
+        bingoSheet[0][i] = i + 3
+
+    s = 1
+    i = 1  # Start at the second row
+    while s < 9:
+        for letter in letters:
+            bingoSheet[i][0] = letter
+            s += 1
+            i += 1
+            if s >= 9:
+                break
+                
+    bingoSheet[0][0] = ''
+    sigma_symbol = '\u03A3'
+    bingoSheet[0][13] = sigma_symbol
+    bingoSheet[8][0] = sigma_symbol
+    bingo = populateBingo(bingoSheet, required, letters)
+    return bingo
+
+def populateBingo(bingoSheet, required, letters):
+    
+
+def popHelper(row, starter, required, letters):
+    words = set()
+    words = df[row].dropna()
+
+    # Search through each word in every column
+    for word in words:
+
+        # Ensure the word contains the required letter, starts with tup, and contains only the other 6 acceptable letters
+        if required in word and word[:1] == starter and all(letter in letters or letter == required for letter in word):
+            words.add(word)
+
+    return len(words)
