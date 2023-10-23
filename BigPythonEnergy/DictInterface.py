@@ -176,5 +176,164 @@ def findStartingWith(tup, letters, required):
             # Ensure the word contains the required letter, starts with tup, and contains only the other 6 acceptable letters
             if required in word and word[:2] == tup and all(letter in letters or letter == required for letter in word):
                 validWords.add(word)
+    return len(validWords)
 
-    return validWords     
+# populate function responsible for driving the population of the bingo sheet
+# A while loop running on the size of the words
+# A switch case to know what column to get into
+def populateBingo(bingoSheet, required, letters):
+    size = 4
+    while size <= 15:
+        match(size):
+
+            case 4:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][1] = popHelper("fours", letter, required, letters)
+                    i += 1
+                size = 5
+
+            case 5:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][2] = popHelper("fives", letter, required, letters)
+                    i += 1
+                size = 6
+                
+            case 6:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][3] = popHelper("sixes", letter, required, letters)
+                    i += 1
+                size = 7
+                
+            case 7:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][4] = popHelper("sevens", letter, required, letters)
+                    i += 1
+                size = 8
+                
+            case 8:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][5] = popHelper("eights", letter, required, letters)
+                    i += 1
+                size = 9
+
+            case 9:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][6] = popHelper("nines", letter, required, letters)
+                    i += 1
+                size = 10
+
+            case 10:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][7] = popHelper("tens", letter, required, letters)
+                    i += 1
+                size = 11
+
+            case 11:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][8] = popHelper("elevens", letter, required, letters)
+                    i += 1
+                size = 12
+
+            case 12:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][9] = popHelper("twelves", letter, required, letters)
+                    i += 1
+                size = 13
+
+            case 13:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][10] = popHelper("thirteens", letter, required, letters)
+                    i += 1
+                size = 14
+
+            case 14:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][11] = popHelper("fourteens", letter, required, letters)
+                    i += 1
+                size = 15
+
+            case 15:
+                i = 1
+                for letter in letters:
+                    bingoSheet[i][12] = popHelper("fifteens", letter, required, letters)
+                    i += 1
+                size += 1
+                
+    return bingoSheet
+
+
+
+# provide the length, starting letter, required letter, and acceptable letters
+# and this function will tell you how many valid words there are of the length
+# provided and starting with the letter provided
+def popHelper(row, starter, required, letters):
+    validWords = set()
+    words = df[row].dropna()
+
+    # Search through each word in every column
+    for word in words:
+
+        # Ensure the word contains the required letter, starts with tup, and contains only the other 6 acceptable letters
+        if required in word and word[:1] == starter and all(letter in letters or letter == required for letter in word):
+            validWords.add(word)
+
+    return len(validWords)
+        
+# This function is responsible for caluculating and placing all sigma values
+def populateSigma(bingo):
+    # Calculate the sum for each row
+    for row in bingo[1:]:
+        row[13] = sum(row[1:13])
+
+    # Calculate the sum for each column
+    for j in range(1, 8):
+        bingo[8][j] = sum(row[j] for row in bingo[1:])
+    
+    row_sum = sum(row[13] for row in bingo[1:])
+    column_sum = sum(bingo[8][j] for j in range(1, 8))
+    bingo[8][13] = row_sum
+        
+    return bingo
+
+# This is the main and only bingo Hint call
+# All that is required is the required letter and the acceptable letters
+# NOTE: It is important that 'letters' contains no duplicate values
+#           otherwise the bingo sheet will not be correct
+def bingoHint(required, letters):
+    bingoSheet = [[0 for _ in range(14)] for _ in range(9)]
+    
+    # Initialize the numbers in the first row
+    for i in range(13):
+        bingoSheet[0][i] = i + 3
+
+    s = 1
+    i = 1  # Start at the second row
+    while s < 9:
+        for letter in letters:
+            bingoSheet[i][0] = letter
+            s += 1
+            i += 1
+            if s >= 9:
+                break
+                
+    bingoSheet[0][0] = ''
+    sigma_symbol = '\u03A3'
+    bingoSheet[0][13] = sigma_symbol
+    bingoSheet[8][0] = sigma_symbol
+    
+    temp = populateBingo(bingoSheet, required, letters)
+    bingo = populateSigma(temp)
+
+    return bingo
+
