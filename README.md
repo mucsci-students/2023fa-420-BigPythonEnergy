@@ -9,7 +9,8 @@ Vasilis B
 Use our build system to run the game!
 
 Instructions for setting up the build system:
-    1. After pulling the repository from git hub, navigate to the main project directory in a command line terminal. The main directory containins 'venv', 'BigPythonEnergy', 'requirements.txt', etc...
+    1. After pulling the repository from GitHub, navigate to the main project directory in a command line terminal. The main directory contains 'BigPythonEnergy', 'requirements.txt', etc... Now the first step is to set up a virtual environment (if you do not already have one set up). To do this, simply run
+        > python -m venv venv
 
 
     2. The next step is to activate the virtual environment (venv). To do this run an activate command. There are several ways to do this:
