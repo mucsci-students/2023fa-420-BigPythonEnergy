@@ -94,7 +94,7 @@ def startGame(puzzle):
         points = puzzle.getTotalScore()
 
         clearScreen()
-        print("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount))
+        print("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount) + "\n")
 
         for row in bingo:
             print("  ".join(str(item).rjust(width) for item, width in zip(row, column_widths)))
