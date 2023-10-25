@@ -39,7 +39,7 @@ def mainGameDisplay(puzzle):
     print('-----------------\n')
     print('Score:')
     print(puzzle.getCurrentScore())
-    print ('\nEnter your guess below!\n\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nor \nEnter /save to save your progress')
+    print ('\nEnter your guess below!\n\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nEnter /save to save your progress, \nor \nEnter /hints to display all puzzle hints')
 
 def startMenuDisplay():
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.')
