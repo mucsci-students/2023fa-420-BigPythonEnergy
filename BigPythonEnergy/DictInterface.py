@@ -337,3 +337,19 @@ def bingoHint(required, letters):
 
     return bingo
 
+# helper function to check if a given word is a pangram of the letters passed
+def isPangram(word, letters):
+    if word is None or letters is None:
+        return False
+    return set(word).issuperset(set(letters))
+
+# driver function to iterate through valid words, 
+# checking if they are pangrams and return the number of pangrams
+def countPangram(required, letters):
+    count = 0
+    validWords = findValid(required, letters)
+    for word in validWords:
+        if (isPangram(word, letters)):
+            count += 1
+    
+    return count

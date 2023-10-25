@@ -84,6 +84,38 @@ def startGame(puzzle):
         clearScreen()
         startGame(puzzle)
 
+    if guess == "/hints":
+        letters = puzzle.getLetters()
+        required = puzzle.getSpecialLetter()
+        bingo = DictInterface.bingoHint(required, letters)
+        column_widths = [max(len(str(item)) for item in col) for col in zip(*bingo)]
+        totalWords = bingo[8][13]
+        pangramCount = DictInterface.countPangram(required, letters)
+        points = puzzle.getTotalScore()
+
+        clearScreen()
+        print("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount))
+
+        for row in bingo:
+            print("  ".join(str(item).rjust(width) for item, width in zip(row, column_widths)))
+
+        validWords = DictInterface.findValid(required, letters)
+        starters = set()
+        for word in validWords:
+            starter = word[:2]
+            starters.add(starter)
+        
+        print("\n" + "Two Letter List:")
+        for tup in starters:
+            count = DictInterface.findStartingWith(tup, letters, required)
+            if count != 0:
+                print(str(tup).upper() + ": " + str(count))
+        
+        print("Press Enter to return")
+        input()
+        clearScreen()
+        startGame(puzzle)
+        
     # Stops a guess when a word is too short or long
     if len(guess) < 4:
         clearScreen()
