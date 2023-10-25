@@ -74,3 +74,13 @@ def getWords(puzzle):
     print ('Words found:')
     for i in puzzle.getFoundWordList():
         print (i)
+
+def getBingo(puzzle):
+    
+    bingo = DictInterface.bingoHint(puzzle.getSpecialLetter(), puzzle.getLetters())
+    column_widths = [max(len(str(item)) for item in col) for col in zip(*bingo)]
+    returnString = ""
+
+    for row in bingo:
+        returnString = returnString + ("  ".join(str(item).rjust(width) for item, width in zip(row, column_widths))) + "\n"
+    return returnString

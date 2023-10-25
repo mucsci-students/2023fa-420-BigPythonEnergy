@@ -511,6 +511,7 @@
     </property>
     <addaction name="actionAbout"/>
     <addaction name="action_Rank_Thresholds"/>
+    <addaction name="actionHints"/>
     <addaction name="action_About"/>
     <addaction name="action_CC_Attributions"/>
    </widget>
@@ -557,6 +558,7 @@
    <addaction name="actionSave_Blank"/>
    <addaction name="actionAbout"/>
    <addaction name="action_Rank_Thresholds"/>
+   <addaction name="actionHints"/>
   </widget>
   <action name="actionLoad">
    <property name="icon">
@@ -625,6 +627,15 @@
   <action name="action_CC_Attributions">
    <property name="text">
     <string>&amp;CC Attributions</string>
+   </property>
+  </action>
+  <action name="actionHints">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/HintsLightbulb.png</normaloff>icons/HintsLightbulb.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hints</string>
    </property>
   </action>
  </widget>
