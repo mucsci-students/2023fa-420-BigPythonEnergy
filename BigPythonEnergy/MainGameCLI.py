@@ -91,10 +91,11 @@ def startGame(puzzle):
         column_widths = [max(len(str(item)) for item in col) for col in zip(*bingo)]
         totalWords = bingo[8][13]
         pangramCount = DictInterface.countPangram(required, letters)
+        perfectCount = DictInterface.countPerfect(required, letters)
         points = puzzle.getTotalScore()
 
         clearScreen()
-        print("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount) + "\n")
+        print("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount) + " (Perfect: " + str(perfectCount) + ")" + "\n")
 
         for row in bingo:
             print("  ".join(str(item).rjust(width) for item, width in zip(row, column_widths)))

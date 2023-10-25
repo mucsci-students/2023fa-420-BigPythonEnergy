@@ -79,8 +79,26 @@ def getBingo(puzzle):
     
     bingo = DictInterface.bingoHint(puzzle.getSpecialLetter(), puzzle.getLetters())
     column_widths = [max(len(str(item)) for item in col) for col in zip(*bingo)]
-    returnString = ""
+    totalWords = bingo[8][13]
+    pangramCount = DictInterface.countPangram(puzzle.getSpecialLetter(), puzzle.getLetters())
+    perfectCount = DictInterface.countPangram(puzzle.getSpecialLetter(), puzzle.getLetters())
+    points = puzzle.getTotalScore()
+    returnString = ("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount) + " (Perfect: " + str(perfectCount) + ")" + "\n\n")
 
     for row in bingo:
         returnString = returnString + ("  ".join(str(item).rjust(width) for item, width in zip(row, column_widths))) + "\n"
+
+    returnString = returnString + ("\n" + "Two Letter List:  ")
+
+    validWords = DictInterface.findValid(puzzle.getSpecialLetter(), puzzle.getLetters())
+    starters = set()
+    for word in validWords:
+        starter = word[:2]
+        starters.add(starter)
+
+    for tup in starters:
+        count = DictInterface.findStartingWith(tup, puzzle.getLetters(), puzzle.getSpecialLetter())
+        if count != 0:
+            returnString = returnString + (str(tup).upper() + ": " + str(count) + "   ")
+
     return returnString

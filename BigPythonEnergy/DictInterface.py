@@ -353,3 +353,12 @@ def countPangram(required, letters):
             count += 1
     
     return count
+
+def countPerfect(required, letters):
+    count = 0
+    validWords = findValid(required, letters)
+    for word in validWords:
+        if (isPangram(word, letters) and len(word) == 7):
+            count += 1
+
+    return count
