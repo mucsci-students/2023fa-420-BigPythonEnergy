@@ -53,6 +53,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.action_Rank_Thresholds.triggered.connect(self.thresholdMenu)
         self.action_CC_Attributions.triggered.connect(self.ccMenu)
         self.actionHints.triggered.connect(self.hintMenu)
+        self.addWordLE.textEdited.connect(lambda: self.checkKeyboardInput())
 
     def helpMenu(self):
         dialog = helpDialog(self)
@@ -88,6 +89,18 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def getHintsUIDisplay(self):
         return getBingo(self.newPuzzle)
+    
+    def checkKeyboardInput(self):
+        if(self.newPuzzle != None):
+            if (len(self.addWordLE.text()) > 0 and self.addWordLE.text() != ""):
+                if (self.isValidLetter(self.addWordLE.text()[-1])):
+                    self.addWordLE.setText(self.addWordLE.text()[:-1])
+    
+    def isValidLetter(self, letter):
+        if letter in self.newPuzzle.getLetters():
+            return False
+        else:
+            return True
 
     def setCurrentPoints(self):
         self.pointsGained.setText(str(self.newPuzzle.getCurrentScore()))
