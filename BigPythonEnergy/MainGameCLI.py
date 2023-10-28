@@ -23,8 +23,7 @@ from ViewCLI import *
 # Prerequesite: Must run until stopped.
 def startGame(puzzle):
     
-    mainGameDisplay(puzzle)
-    guess = input()
+    guess = mainGameDisplay(puzzle)
     guess = guess.lower()
 
     # Stops the program.
