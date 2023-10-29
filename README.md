@@ -43,5 +43,19 @@ Instructions for setting up the build system:
     5. When you have completed the game to your satisfaction and want to close the virtual environment, simply run a "deactivate" command to return to your native environment:
         > deactivate
 
-
 Have fun!
+
+Design Patterns:
+
+1. Facade (Structural): A single class that represents an entire subsystem. In our project we are utilizing a dictionary interface class which is responsible for all word comparison, generation, and manipulation in the puzzle. The DictInterface Class is responsible for:
+    Checking if a guess is valid; meaning it contains the required letter and only the acceptable letters.
+    Generating a list of valid words; all words made up of the required and acceptable letters
+    Has the functionality to select a random word made up of only 7 unique letters; if a user wants to play with a randomly generated puzzle
+    All intensive hint logic:
+        Find counts for all pangrams and perfect pangrams
+        Count the number of valid words starting with a given 2 letter combo
+        Generate bingo sheet and find all values:
+            Number of words starting with every letter from lengths 4-15
+            Calculate all sigma values in the bingo sheet
+    This class allows us to interact with the dictionary without concern for the specifics of the implementation. 
+    
