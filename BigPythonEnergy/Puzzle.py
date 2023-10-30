@@ -87,6 +87,9 @@ class puzzle:
         allLetters = allLetters + self.letterList[6] + " |"
         return allLetters
     
+    def getLetters(self):
+        return self.letters
+    
     def getLetterList(self):
         return self.letterList
 

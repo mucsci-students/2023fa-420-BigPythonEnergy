@@ -15,8 +15,24 @@ This script acts as the user interface for the Spelling Bee game and coordinates
 """
 
 import os
+from typing import Iterable
+
+from prompt_toolkit.document import Document
 from Puzzle import *
 import sys
+import prompt_toolkit
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import CompleteEvent, Completer, Completion
+
+class CustomCompleter(Completer):
+    def __init__(self, completions):
+        self.completions = completions
+
+    def get_completions(self, document: Document, complete_event: CompleteEvent) -> Iterable[Completion]:
+        wordIn = document.text_before_cursor
+        for c in self.completions:
+            if c.startswith(wordIn):
+                yield Completion(c, start_position= -len(wordIn))
 
 def clearScreen():
     system_platform = platform.system()
@@ -32,6 +48,8 @@ def entryDisplay():
     print('--------------------------------')
 
 def mainGameDisplay(puzzle):
+    options = ["/words", "/shuffle", "/rank", "/thresholds", "/save", "/quit", "/hints"]
+    custom_completer = CustomCompleter(options)
     print('LETTERS:')
     print('-----------------')
     print(puzzle.getAllLetters() + "\n")
@@ -39,7 +57,9 @@ def mainGameDisplay(puzzle):
     print('-----------------\n')
     print('Score:')
     print(puzzle.getCurrentScore())
-    print ('\nEnter your guess below!\n\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nor \nEnter /save to save your progress')
+    print('\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nEnter /save to save your progress, \nor \nEnter /hints to display all puzzle hints \n')
+    opt = prompt("\nEnter your guess below!\n", completer=custom_completer)
+    return opt
 
 def startMenuDisplay():
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.')
@@ -74,3 +94,31 @@ def getWords(puzzle):
     print ('Words found:')
     for i in puzzle.getFoundWordList():
         print (i)
+
+def getBingo(puzzle):
+    
+    bingo = DictInterface.bingoHint(puzzle.getSpecialLetter(), puzzle.getLetters())
+    column_widths = [max(len(str(item)) for item in col) for col in zip(*bingo)]
+    totalWords = bingo[8][13]
+    pangramCount = DictInterface.countPangram(puzzle.getSpecialLetter(), puzzle.getLetters())
+    perfectCount = DictInterface.countPangram(puzzle.getSpecialLetter(), puzzle.getLetters())
+    points = puzzle.getTotalScore()
+    returnString = ("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount) + " (Perfect: " + str(perfectCount) + ")" + "\n\n")
+
+    for row in bingo:
+        returnString = returnString + ("  ".join(str(item).rjust(width) for item, width in zip(row, column_widths))) + "\n"
+
+    returnString = returnString + ("\n" + "Two Letter List:  ")
+
+    validWords = DictInterface.findValid(puzzle.getSpecialLetter(), puzzle.getLetters())
+    starters = set()
+    for word in validWords:
+        starter = word[:2]
+        starters.add(starter)
+
+    for tup in starters:
+        count = DictInterface.findStartingWith(tup, puzzle.getLetters(), puzzle.getSpecialLetter())
+        if count != 0:
+            returnString = returnString + (str(tup).upper() + ": " + str(count) + "   ")
+
+    return returnString

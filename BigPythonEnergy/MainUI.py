@@ -16,11 +16,13 @@ import sys
 import time
 
 import tkinter as tk
+import json
 from tkinter import filedialog
-from MainGameCLI import *
+from ViewCLI import *
 from Puzzle import *
 from DictInterface import *
 import random as rd
+import numpy as np
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
@@ -50,6 +52,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.actionSave_Blank.triggered.connect(self.blankSaveMenu)
         self.action_Rank_Thresholds.triggered.connect(self.thresholdMenu)
         self.action_CC_Attributions.triggered.connect(self.ccMenu)
+        self.actionHints.triggered.connect(self.hintMenu)
+        self.addWordLE.textEdited.connect(lambda: self.checkKeyboardInput())
 
     def helpMenu(self):
         dialog = helpDialog(self)
@@ -74,10 +78,29 @@ class Window(QMainWindow, Ui_MainWindow):
     def thresholdMenu(self):
         dialog = thresholdDialog(self)
         dialog.exec()
+
+    def hintMenu(self):
+        dialog = hintDialog(self)
+        dialog.exec()
     
     def ccMenu(self):
         dialog = ccDialog(self)
         dialog.exec()
+
+    def getHintsUIDisplay(self):
+        return getBingo(self.newPuzzle)
+    
+    def checkKeyboardInput(self):
+        if(self.newPuzzle != None):
+            if (len(self.addWordLE.text()) > 0 and self.addWordLE.text() != ""):
+                if (self.isValidLetter(self.addWordLE.text()[-1])):
+                    self.addWordLE.setText(self.addWordLE.text()[:-1])
+    
+    def isValidLetter(self, letter):
+        if letter in self.newPuzzle.getLetters():
+            return False
+        else:
+            return True
 
     def setCurrentPoints(self):
         self.pointsGained.setText(str(self.newPuzzle.getCurrentScore()))
@@ -294,6 +317,13 @@ class thresholdDialog(QDialog):
         loadUi("BigPythonEnergy/ui/rankThresholds.ui", self)
         if(win.newPuzzle != None):
             self.threshText.setText(win.newPuzzle.getScoreThresholds())
+
+class hintDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loadUi("BigPythonEnergy/ui/hintsMenu.ui", self)
+        if(win.newPuzzle != None):
+            self.threshText.setText(win.getHintsUIDisplay())
 
 class ccDialog(QDialog):
     def __init__(self, parent=None):

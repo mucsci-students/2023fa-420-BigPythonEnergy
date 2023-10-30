@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\gameBox.ui'
+# Form implementation generated from reading ui file 'ui/gameBox.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -266,6 +266,11 @@ class Ui_MainWindow(object):
         self.action_New.setObjectName("action_New")
         self.action_CC_Attributions = QtWidgets.QAction(MainWindow)
         self.action_CC_Attributions.setObjectName("action_CC_Attributions")
+        self.actionHints = QtWidgets.QAction(MainWindow)
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/HintsLightbulb.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionHints.setIcon(icon10)
+        self.actionHints.setObjectName("actionHints")
         self.menu_File.addAction(self.action_New)
         self.menu_File.addAction(self.actionLoad)
         self.menu_File.addAction(self.actionSave)
@@ -273,6 +278,7 @@ class Ui_MainWindow(object):
         self.menu_File.addAction(self.action_Exit)
         self.menu_Help.addAction(self.actionAbout)
         self.menu_Help.addAction(self.action_Rank_Thresholds)
+        self.menu_Help.addAction(self.actionHints)
         self.menu_Help.addAction(self.action_About)
         self.menu_Help.addAction(self.action_CC_Attributions)
         self.menubar.addAction(self.menu_File.menuAction())
@@ -283,6 +289,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionSave_Blank)
         self.toolBar.addAction(self.actionAbout)
         self.toolBar.addAction(self.action_Rank_Thresholds)
+        self.toolBar.addAction(self.actionHints)
 
         self.retranslateUi(MainWindow)
         self.shuffleButton.clicked.connect(self.shuffle)
@@ -321,3 +328,4 @@ class Ui_MainWindow(object):
         self.action_Exit.setText(_translate("MainWindow", "&Exit"))
         self.action_New.setText(_translate("MainWindow", "&New"))
         self.action_CC_Attributions.setText(_translate("MainWindow", "&CC Attributions"))
+        self.actionHints.setText(_translate("MainWindow", "Hints"))
