@@ -1,19 +1,10 @@
 import ViewCLI
-import ViewGUI
 import MainWindowUI
 import sys
 
-from PyQt5.QtWidgets import QApplication
-
 class View:
-    def __init__(self, win=None, app=None):
-        if(win != None):
-            self.win = ViewGUI.Window()
-        if(app != None):
-            app = QApplication(sys.argv)
-
-    def startGUI(self):
-        ViewGUI.start(self.app, self.win)
+    def __init__(self):
+        view = True
 
     def getBingo(self, model):
         return ViewCLI.getBingo(model)

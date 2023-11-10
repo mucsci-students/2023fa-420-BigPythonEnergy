@@ -83,8 +83,8 @@ def startPage():
             with open(file_path, "r") as infile:
                 data = json.load(infile)
         except:
-            print("Not a correct filename, try again!")
             view.clearScreen()
+            print("Not a correct filename, try again!")
             startPage()
 
         else:

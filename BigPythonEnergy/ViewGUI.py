@@ -18,12 +18,10 @@ import time
 import tkinter as tk
 import json
 from tkinter import filedialog
-from ViewCLI import *
-from Puzzle import *
-from DictInterface import *
+from MainUI import MainUI
+from Model import Model
 import random as rd
 import numpy as np
-from MainUI import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
@@ -36,13 +34,10 @@ from PyQt5.uic import loadUi
 
 from MainWindowUI import Ui_MainWindow
 
-win = None
-
-
 class Window(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.newPuzzle = None
+        self.controller = MainUI()
         self.setupUi(self)
         self.connections()
     
@@ -57,6 +52,12 @@ class Window(QMainWindow, Ui_MainWindow):
         self.action_CC_Attributions.triggered.connect(self.ccMenu)
         self.actionHints.triggered.connect(self.hintMenu)
         self.addWordLE.textEdited.connect(lambda: self.checkKeyboardInput())
+    
+    def checkKeyboardInput(self):
+        if(self.controller.model.getPuzzle() != None):
+            if (len(self.addWordLE.text()) > 0 and self.addWordLE.text() != ""):
+                if (self.controller.isValidLetter(self.addWordLE.text()[-1])):
+                    self.addWordLE.setText(self.addWordLE.text()[:-1])
 
     def helpMenu(self):
         dialog = helpDialog(self)
@@ -91,68 +92,79 @@ class Window(QMainWindow, Ui_MainWindow):
         dialog.exec()
 
     def getHintsUIDisplay(self):
-        return getBingo(self.newPuzzle)
+        return self.controller.model.getBingoHint()
     
-    def checkKeyboardInput(self):
-        if(self.newPuzzle != None):
-            if (len(self.addWordLE.text()) > 0 and self.addWordLE.text() != ""):
-                if (self.isValidLetter(self.addWordLE.text()[-1])):
-                    self.addWordLE.setText(self.addWordLE.text()[:-1])
+    def getBingo(self):
     
-    def isValidLetter(self, letter):
-        if letter in self.newPuzzle.getLetters():
-            return False
+        bingo = self.controller.model.getBingoHint()
+        column_widths = [max(len(str(item)) for item in col) for col in zip(*bingo)]
+        totalWords = bingo[8][13]
+        pangramNumbers = self.controller.model.getPangramNumbers()
+        pangramCount = pangramNumbers[0]
+        perfectCount = pangramNumbers[1]
+        points = self.controller.model.getPuzzle().getTotalScore()
+        returnString = ("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount) + " (Perfect: " + str(perfectCount) + ")" + "\n\n")
+
+        for row in bingo:
+            returnString = returnString + ("  ".join(str(item).rjust(width) for item, width in zip(row, column_widths))) + "\n"
+
+        returnString = returnString + ("\n" + "Two Letter List:  ")
+
+        validWords = self.controller.model.getValidWordList()
+        starters = set()
+        for word in validWords:
+            starter = word[:2]
+            starters.add(starter)
+
+        for tup in starters:
+            count = self.controller.model.getEachStartingWith(tup)
+            if count != 0:
+                returnString = returnString + (str(tup).upper() + ": " + str(count) + "   ")
+
+        return returnString
+    
+    def getScoreThresholds(self):
+        queenBee = "Queen Bee: " + str(self.controller.model.getPuzzle().getTotalScore())
+        genius = "Genius: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.7) + 0.99999999))
+        amazing = "Amazing: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.5) + 0.99999999))
+        great = "Great: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.4) + 0.99999999))
+        nice = "Nice: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.25) + 0.99999999))
+        solid = "Solid: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.15) + 0.99999999))
+        good = "Good: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.08) + 0.99999999))
+        movingUp = "Moving Up: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.05) + 0.99999999))
+        goodStart = "Good Start: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.02) + 0.99999999))
+        beginner = "Beginner: 0"
+
+        return "Rank thresholds:\n\n" + queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
+    
+    def getCurrentScoreType(self):
+        percentage = self.controller.model.getPuzzle().getCurrentScore() / self.controller.model.getPuzzle().getTotalScore()
+
+        if(percentage == 1):
+            return "Queen Bee"
+        elif(0.7 <= percentage < 1):
+            return "Genius"
+        elif(0.5 <= percentage < 0.7):
+            return "Amazing"
+        elif(0.4 <= percentage < 0.5):
+            return "Great"
+        elif(0.25 <= percentage < 0.4):
+            return "Nice"
+        elif(0.15 <= percentage < 0.25):
+            return "Solid"
+        elif(0.08 <= percentage < 0.15):
+            return "Good"
+        elif(0.05 <= percentage < 0.08):
+            return "Moving Up"
+        elif(0.02 <= percentage < 0.05):
+            return "Good Start"
         else:
-            return True
-
-    def setCurrentPoints(self):
-        self.pointsGained.setText(str(self.newPuzzle.getCurrentScore()))
-
-    def savedBlank(self, saveName):
-        if (self.newPuzzle != None):
-            save = {
-                "baseWord": list(self.newPuzzle.letterList),
-                "foundWords" : list(),
-                "playerPoints": 0,
-                "requiredLetter": self.newPuzzle.specialLetter,
-                "maxPoints": self.newPuzzle.totalScore
-            }
-            file_path = "BigPythonEnergy/blankSaves/" + saveName + ".json"
-            with open(file_path, "w") as outfile:
-                json.dump(save, outfile)
-            self.wrongInputLabel.setText("Saved successfully!")
-
-    def saved(self, saveName):
-        if (self.newPuzzle != None):
-            save = {
-                "baseWord": list(self.newPuzzle.letterList),
-                "foundWords" : list(self.newPuzzle.getFoundWordList()),
-                "playerPoints": self.newPuzzle.getCurrentScore(),
-                "requiredLetter": self.newPuzzle.specialLetter,
-                "maxPoints": self.newPuzzle.totalScore
-            }
-            file_path = "BigPythonEnergy/saves/" + saveName + ".json"
-            with open(file_path, "w") as outfile:
-                json.dump(save, outfile)
-            self.wrongInputLabel.setText("Saved successfully!")
+            return "Beginner"
         
-
-    def shuffle(self):
-        if self.newPuzzle is not None:
-            loopedLetters = self.newPuzzle.getNormalLetters()
-            addLetters = []
-            for i in loopedLetters:
-                addLetters.append(i)
-            rd.shuffle(addLetters)
-            self.letter1.setText(addLetters[0])
-            self.letter2.setText(addLetters[1])
-            self.letter3.setText(addLetters[2])
-            self.letter4.setText(addLetters[3])
-            self.letter5.setText(addLetters[4])
-            self.letter6.setText(addLetters[5])
+    def setCurrentPoints(self):
+        self.pointsGained.setText(str(self.controller.model.getPuzzle().getCurrentScore()))
 
     def addFoundWords(self, text):
-        
         item = QtWidgets.QListWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignVCenter)
         font = QtGui.QFont()
@@ -166,115 +178,104 @@ class Window(QMainWindow, Ui_MainWindow):
     def remFoundWords(self):
         self.foundWords.clear()
 
-    def random(self):
-        word = DictInterface.randomWord()
-        uniqueCharacters = set(word)
-        nPuzzle = puzzle(uniqueCharacters)
-        self.newPuzzle = nPuzzle
-        loopedLetters = self.newPuzzle.getNormalLetters()
+    def savedBlankView(self, text):
+        checker = self.controller.savedBlank(text)
+        self.wrongInputLabel.setText(checker)
+    
+    def savedView(self, text):
+        checker = self.controller.saved(text)
+        self.wrongInputLabel.setText(checker)
+    
+    def randomView(self):
+        self.controller.random()
+        self.currentRank.setText(self.getCurrentScoreType()+"")
+        loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
         addLetters = []
         for i in loopedLetters:
             addLetters.append(i)
-        self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
+        self.currentRank.setText(self.getCurrentScoreType()+"")
         self.letter1.setText(addLetters[0])
         self.letter2.setText(addLetters[1])
         self.letter3.setText(addLetters[2])
         self.letter4.setText(addLetters[3])
         self.letter5.setText(addLetters[4])
         self.letter6.setText(addLetters[5])
-        self.specialLetter.setText(self.newPuzzle.specialLetter)
-        self.wrongInputLabel.setText("New random game started! Have fun!")
+        self.specialLetter.setText(self.controller.model.getPuzzle().getSpecialLetter())
+        self.wrongInputLabel.setText("New game set! Have fun!")
         self.setCurrentPoints()
         self.remFoundWords()
-
-    def start(self, newWord):
-        if DictInterface.has_7_unique_letters(newWord) and DictInterface.isValid(newWord):
-            uniqueCharacters = set()
-            for i in newWord:
-                uniqueCharacters.add(i)
-            self.newPuzzle = puzzle(uniqueCharacters)
-            loopedLetters = self.newPuzzle.getNormalLetters()
+    
+    def loadView(self):
+        checker = self.controller.load()
+        if checker == 1:
+            loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
             addLetters = []
             for i in loopedLetters:
                 addLetters.append(i)
-            self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
+            self.currentRank.setText(self.getCurrentScoreType()+"")
             self.letter1.setText(addLetters[0])
             self.letter2.setText(addLetters[1])
             self.letter3.setText(addLetters[2])
             self.letter4.setText(addLetters[3])
             self.letter5.setText(addLetters[4])
             self.letter6.setText(addLetters[5])
-            self.specialLetter.setText(self.newPuzzle.specialLetter)
-            self.wrongInputLabel.setText("New game set! Have fun!")
-            self.setCurrentPoints()
-            self.remFoundWords()
-        else:
-            self.wrongInputLabel.setText("Not a valid starting word.")
-
-    def load(self):
-        root = tk.Tk()
-        root.withdraw()
-        file_selected = filedialog.askopenfile()
-        if (file_selected != None):
-            with open(file_selected.name, "r") as infile:
-                data = json.load(infile)
-
-            # Access the attributes from the loaded JSON data
-            letters = data["baseWord"]
-            special_letter = data["requiredLetter"]
-            words = data["foundWords"]
-            score = data["playerPoints"] 
-            self.newPuzzle = None
-            self.newPuzzle = puzzle(set(letters), special_letter, score)
-            self.newPuzzle.listOfFoundWords = set(words)
-
-            # Set text elements.
-            self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
-            self.letter1.setText(self.newPuzzle.letterList[1])
-            self.letter2.setText(self.newPuzzle.letterList[2])
-            self.letter3.setText(self.newPuzzle.letterList[3])
-            self.letter4.setText(self.newPuzzle.letterList[4])
-            self.letter5.setText(self.newPuzzle.letterList[5])
-            self.letter6.setText(self.newPuzzle.letterList[6])
-            self.specialLetter.setText(self.newPuzzle.specialLetter)
+            self.specialLetter.setText(self.controller.model.getPuzzle().getSpecialLetter())
             self.setCurrentPoints()
             self.wrongInputLabel.setText("Game loaded successfully!")
             self.remFoundWords()
-            for i in self.newPuzzle.listOfFoundWords:
+            for i in self.controller.model.getPuzzle().getFoundWordList():
                 self.addFoundWords(i)
-
-    def submit(self):
-        if self.newPuzzle != None:
-            result = self.addWordLE.text()
-            letterList = self.newPuzzle.getLetterList()
-            foundList = self.newPuzzle.getFoundWordList()
-            valid = True
-            if DictInterface.isValid(result) and result not in foundList:
-                for i in result:
-                    if i not in letterList:
-                        valid = False
-                if self.newPuzzle.getSpecialLetter() not in set(result):
-                    valid = False
-                if valid:
-                    self.newPuzzle.addFoundWord(result)
-                    pointsGained = 0
-                    if len(result)==4:
-                        pointsGained=1
-                    elif len(result)>4:
-                        pointsGained = len(result)
-                    if set(result) == set(self.newPuzzle.getLetterList()):
-                        pointsGained += 7
-                    self.newPuzzle.addScore(pointsGained)
-                    self.addFoundWords(result)
-                    self.currentRank.setText(self.newPuzzle.getCurrentScoreType()+"")
-                    self.setCurrentPoints()
-                    self.wrongInputLabel.setText("You just gained " + str(pointsGained) + " points!")
-                else:
-                    self.wrongInputLabel.setText("Not a valid word.")
-            else:
-                self.wrongInputLabel.setText("Not a valid word.")
         else:
+            self.wrongInputLabel.setText("Game did not load succesfully.")
+    
+    def startView(self, newWord):
+        if self.controller.model.has_7_unique_letters(newWord) and self.controller.model.isValid(newWord):
+            self.controller.start(newWord)
+            loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
+            addLetters = []
+            for i in loopedLetters:
+                addLetters.append(i)
+            self.currentRank.setText(self.getCurrentScoreType()+"")
+            self.letter1.setText(addLetters[0])
+            self.letter2.setText(addLetters[1])
+            self.letter3.setText(addLetters[2])
+            self.letter4.setText(addLetters[3])
+            self.letter5.setText(addLetters[4])
+            self.letter6.setText(addLetters[5])
+            self.specialLetter.setText(self.controller.model.getPuzzle().getSpecialLetter())
+            self.wrongInputLabel.setText("New game set! Have fun!")
+            self.setCurrentPoints()
+            self.remFoundWords()
+
+        else:
+            self.wrongInputLabel.setText("Not a valid starting word.")
+    
+    def submitView(self):
+        result = self.addWordLE.text()
+        checker = self.controller.submit(result)
+        if checker == "Not a valid word.":
+            self.wrongInputLabel.setText("Not a valid word.")
+        elif checker == "Start a puzzle from the 'new' menu first!":
             self.wrongInputLabel.setText("Start a puzzle from the 'new' menu first!")
+        else:
+            self.addFoundWords(result)
+            self.currentRank.setText(self.getCurrentScoreType()+"")
+            self.setCurrentPoints()
+            self.wrongInputLabel.setText("You just gained " + checker + " points!")
+    
+    def shuffle(self):
+        if self.controller.model.getPuzzle() is not None:
+            loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
+            addLetters = []
+            for i in loopedLetters:
+                addLetters.append(i)
+            rd.shuffle(addLetters)
+            self.letter1.setText(addLetters[0])
+            self.letter2.setText(addLetters[1])
+            self.letter3.setText(addLetters[2])
+            self.letter4.setText(addLetters[3])
+            self.letter5.setText(addLetters[4])
+            self.letter6.setText(addLetters[5])
 
 class helpDialog(QDialog):
     def __init__(self, parent=None):
@@ -293,7 +294,7 @@ class saveDialog(QDialog):
         self.connections()
     
     def connections(self):
-        self.saveButton.pressed.connect(lambda: win.saved(self.saveNameEdit.text()))
+        self.saveButton.pressed.connect(lambda: win.savedView(self.saveNameEdit.text()))
 
 class blankSaveDialog(QDialog):
     def __init__(self, parent=None):
@@ -302,7 +303,7 @@ class blankSaveDialog(QDialog):
         self.connections()
     
     def connections(self):
-        self.saveButton.clicked.connect(lambda: win.savedBlank(self.saveNameEdit.text()))
+        self.saveButton.clicked.connect(lambda: win.savedBlankView(self.saveNameEdit.text()))
 
 class newGameDialog(QDialog):
     def __init__(self, parent=None):
@@ -311,30 +312,30 @@ class newGameDialog(QDialog):
         self.connections()
     
     def connections(self):
-        self.randomButton.clicked.connect(lambda: win.random())
-        self.startButton.clicked.connect(lambda: win.start(self.newWord.text()))
+        self.randomButton.clicked.connect(lambda: win.randomView())
+        self.startButton.clicked.connect(lambda: win.startView(self.newWord.text()))
 
 class thresholdDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/rankThresholds.ui", self)
-        if(win.newPuzzle != None):
-            self.threshText.setText(win.newPuzzle.getScoreThresholds())
+        if(win.controller.model.getPuzzle() != None):
+            self.threshText.setText(win.getScoreThresholds())
 
 class hintDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/hintsMenu.ui", self)
-        if(win.newPuzzle != None):
-            self.threshText.setText(win.getHintsUIDisplay())
+        if(win.controller.model.getPuzzle() != None):
+            self.threshText.setText(win.getBingo())
 
 class ccDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/ccAttributions.ui", self)
 
-def start(app, win):
 
-    win.show()
-
-    sys.exit(app.exec())
+app = QApplication(sys.argv)
+win = Window()
+win.show()
+sys.exit(app.exec())

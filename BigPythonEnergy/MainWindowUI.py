@@ -293,8 +293,6 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionHints)
 
         self.retranslateUi(MainWindow)
-        self.shuffleButton.clicked.connect(self.shuffle)
-        self.addWordButton.clicked.connect(self.submit)
         self.letter1.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter1.text()))
         self.letter2.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter2.text()))
         self.letter3.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter3.text()))
@@ -303,7 +301,9 @@ class Ui_MainWindow(object):
         self.letter6.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter6.text()))
         self.specialLetter.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.specialLetter.text()))
         self.backspaceButton.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text()[:-1]))
-        self.actionLoad.triggered.connect(self.load)
+        self.shuffleButton.clicked.connect(self.shuffle)
+        self.addWordButton.clicked.connect(self.submitView)
+        self.actionLoad.triggered.connect(self.loadView)
         self.addWordButton.clicked.connect(self.addWordLE.clear) # type: ignore
         self.addWordLE.returnPressed.connect(self.addWordButton.click) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

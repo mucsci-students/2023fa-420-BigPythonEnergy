@@ -37,6 +37,7 @@ class puzzle:
             self.letters = None
             self.letters = set()
             self.letters = letters
+            self.letterList = None
             self.letterList = []
             if specialLetter is not None:
                 self.specialLetter = specialLetter
