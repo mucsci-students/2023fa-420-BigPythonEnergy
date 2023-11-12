@@ -362,3 +362,9 @@ def countPerfect(required, letters):
             count += 1
 
     return count
+
+def countPangramAndPerfect(required, letters):
+    pTypes = []
+    pTypes.append(countPangram(required, letters))
+    pTypes.append(countPerfect(required, letters))
+    return pTypes

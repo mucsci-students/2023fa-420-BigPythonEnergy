@@ -31,12 +31,13 @@ class puzzle:
     letterList = []
     
     # Constructor that handles creation of the play elements of a specific puzzle.
-    def __init__(self, letters=None, specialLetter=None, currentScore=None):
+    def __init__(self, letters=None, specialLetter=None, currentScore=None, foundWords=None, totalWords=None, isNull=None):
         if letters is not None:
             
             self.letters = None
             self.letters = set()
             self.letters = letters
+            self.letterList = None
             self.letterList = []
             if specialLetter is not None:
                 self.specialLetter = specialLetter
@@ -61,11 +62,17 @@ class puzzle:
             self.currentScore = 0
 
         # Initializes blank sets and new total score for a new game.
-        self.listOfTotalWords = None
-        self.listOfTotalWords = set()
-        self.listOfFoundWords = None
-        self.listOfFoundWords = set()
-        self.listOfTotalWords = DictInterface.findValid(self.specialLetter, self.letterList)
+        if totalWords is not None:
+            self.listOfTotalWords = totalWords
+        else:
+            self.listOfTotalWords = None
+            self.listOfTotalWords = set()
+            self.listOfTotalWords = DictInterface.findValid(self.specialLetter, self.letterList)
+        if foundWords is not None:
+            self.listOfFoundWords = foundWords
+        else:
+            self.listOfFoundWords = None
+            self.listOfFoundWords = set()
         self.initializeTotalScore()
 
     # Initializes the total possible score, primarily for puzzle setup.
@@ -105,44 +112,6 @@ class puzzle:
     def getTotalScore(self):
         return self.totalScore
     
-    def getCurrentScoreType(self):
-        percentage = self.currentScore / self.totalScore
-
-        if(percentage == 1):
-            return "Queen Bee"
-        elif(0.7 <= percentage < 1):
-            return "Genius"
-        elif(0.5 <= percentage < 0.7):
-            return "Amazing"
-        elif(0.4 <= percentage < 0.5):
-            return "Great"
-        elif(0.25 <= percentage < 0.4):
-            return "Nice"
-        elif(0.15 <= percentage < 0.25):
-            return "Solid"
-        elif(0.08 <= percentage < 0.15):
-            return "Good"
-        elif(0.05 <= percentage < 0.08):
-            return "Moving Up"
-        elif(0.02 <= percentage < 0.05):
-            return "Good Start"
-        else:
-            return "Beginner"
-    
-    def getScoreThresholds(self):
-        queenBee = "Queen Bee: " + str(self.getTotalScore())
-        genius = "Genius: " + str(int((self.getTotalScore() * 0.7) + 0.99999999))
-        amazing = "Amazing: " + str(int((self.getTotalScore() * 0.5) + 0.99999999))
-        great = "Great: " + str(int((self.getTotalScore() * 0.4) + 0.99999999))
-        nice = "Nice: " + str(int((self.getTotalScore() * 0.25) + 0.99999999))
-        solid = "Solid: " + str(int((self.getTotalScore() * 0.15) + 0.99999999))
-        good = "Good: " + str(int((self.getTotalScore() * 0.08) + 0.99999999))
-        movingUp = "Moving Up: " + str(int((self.getTotalScore() * 0.05) + 0.99999999))
-        goodStart = "Good Start: " + str(int((self.getTotalScore() * 0.02) + 0.99999999))
-        beginner = "Beginner: 0"
-
-        return "Rank thresholds:\n\n" + queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
-    
     def getFoundWordList(self):
         return self.listOfFoundWords
     
@@ -166,9 +135,5 @@ class puzzle:
     def setFoundWord(self, wordList):
         self.listOfFoundWords = wordList
 
-    def clearScreen():
-        system_platform = platform.system()
-        if system_platform == "Windows":
-            os.system("cls")  # Clear screen on Windows
-        else:
-            os.system("clear")  # Clear screen on macOS and Linux
+    def shuffleLetterList(self):
+        random.shuffle(self.letterList)

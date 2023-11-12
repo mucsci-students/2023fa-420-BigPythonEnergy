@@ -12,36 +12,33 @@ This script acts as the user interface for the Spelling Bee game and coordinates
 
 import os
 import re
-import tkinter as tk
-from tkinter import filedialog
-from MainGameCLI import *
-from Puzzle import *
-from MainUI import *
-import DictInterface
+import json
+from Model import Model
+from View import View
+from MainGameCLI import startGame
 import sys
-from ViewCLI import *
 
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application.
 def inputCheck():
-    startMenuDisplay() 
+    view.getStartingPrompt()
     userInput = input()
     userInput = userInput.lower() # Turns the user input into lower case for easy checking.
     
     if userInput == "start":
-        clearScreen()
+        view.clearScreen()
         startPage()
     elif userInput == "help":
         helpPage()
     elif userInput == "quit":
         exit()
     else:
-        clearScreen()
-        unrecognizedCommand()
+        view.clearScreen()
+        view.getUnrecCommPrompt()
         inputCheck()
 
 # Start page where the user can select what type of puzzle they want, or they can go back to the main screen.
 def startPage():
-    newGameDisplay()
+    view.getNewGamePrompt()
     userInput = input()
     userInput = userInput.lower() # Turns the user input into lower case for easy checking.
 
@@ -51,6 +48,7 @@ def startPage():
     # Load the JSON data from the save file.
 
     elif userInput == "load":
+        view.clearScreen()
         print("Please enter the save name to load: ")
         file_selected = input()
         file_path = "BigPythonEnergy/saves/" + file_selected + ".json"
@@ -58,7 +56,7 @@ def startPage():
             with open(file_path, "r") as infile:
                 data = json.load(infile)
         except:
-            clearScreen()
+            view.clearScreen()
             print("Not a correct filename, try again!")
             startPage()
 
@@ -69,17 +67,15 @@ def startPage():
             words = data["foundWords"]
             score = data["playerPoints"] 
 
-            newPuzzle = puzzle(letters)
-            newPuzzle.currentScore = score
-            newPuzzle.listOfFoundWords = set(words)
-            newPuzzle.specialLetter = special_letter
-            clearScreen()
+            model.setPuzzle(letters, special_letter, score, words)
+            view.clearScreen()
             print('Loaded save')
-            startGame(newPuzzle)
+            startGame(model, view)
 
     # Load the JSON data from the blank save file.
 
     elif userInput == "blank load":
+        view.clearScreen()
         print("Please enter the save name of the blank save to load: ")
         file_selected = input()
         file_path = "BigPythonEnergy/blankSaves/" + file_selected + ".json"
@@ -87,8 +83,8 @@ def startPage():
             with open(file_path, "r") as infile:
                 data = json.load(infile)
         except:
+            view.clearScreen()
             print("Not a correct filename, try again!")
-            clearScreen()
             startPage()
 
         else:
@@ -98,60 +94,57 @@ def startPage():
             words = data["foundWords"]
             score = data["playerPoints"] 
 
-            newPuzzle = puzzle(letters)
-            newPuzzle.currentScore = score
-            newPuzzle.listOfFoundWords = set(words)
-            newPuzzle.specialLetter = special_letter
-            clearScreen()
+            model.setPuzzle(letters, special_letter, score, words)
+            view.clearScreen()
             print('Loaded save')
-            startGame(newPuzzle)
+            startGame(model, view)
 
     elif userInput == "choose":
         chooseWord()
 
     elif userInput == "back":
-        clearScreen()
+        view.clearScreen()
         inputCheck()
     
     else:
-        unrecognizedCommand()
+        view.getUnrecCommPrompt()
         startPage()
 
 #Choose word script used if the player wants to choose their own word to base the puzzle off of
 def chooseWord():
 
-    clearScreen()
+    view.clearScreen()
     
-    print('Enter an english word with atleast 7 unique letters')
+    print('Enter an english word with at least 7 unique letters.')
     wordInput = input()
     wordInput = wordInput.lower() 
 
     # checks if the length is atleast 7.
     if len(wordInput)<7:
-        clearScreen()
-        print('Word does not contain enough letters')
+        view.clearScreen()
+        print('Your word does not contain enough letters.')
         chooseWord()
 
     # Checks if word has any non-English letters.
     elif not re.match("^[a-zA-Z]+$", wordInput): 
-        clearScreen()
-        print('Word contains non english letters')
+        view.clearScreen()
+        print('Your word contains non-English letters.')
         chooseWord()
     
     # Checks if the word has exactly 7 unique letters.
-    clearScreen()
+    view.clearScreen()
     uniqueCharacters = set()
     for i in wordInput:  
         uniqueCharacters.add(i)
     if len(uniqueCharacters) != 7:
         uniqueCharacters.clear()
-        print('your word does not contain exactly 7 unique characters')
+        print('Your word does not contain exactly 7 unique characters.')
         chooseWord()
     
     # Checks the dictionary to see if the word is a valid word.
-    if DictInterface.isValid(wordInput):
-        newPuzzle = puzzle(uniqueCharacters)
-        startGame(newPuzzle)
+    if model.isValid(wordInput):
+        model.setPuzzle(uniqueCharacters)
+        startGame(model, view)
     else:
         chooseWord()
 
@@ -159,22 +152,23 @@ def chooseWord():
 
 # Prints out the help page containing information useful to the player.
 def helpPage():
-    helpMenuDisplay()
+    view.getHelpMenu()
     next = input()
-    clearScreen()
+    view.clearScreen()
     inputCheck()
 
 # Function to initialize a new puzzle with a randomly selected word
 def randomWord():
-    word = DictInterface.randomWord()
+    word = model.getRandomWord()
     uniqueCharacters = set()
     for i in word:  
         uniqueCharacters.add(i)
-    newPuzzle = puzzle(uniqueCharacters)
-    startGame(newPuzzle)
+    model.setPuzzle(uniqueCharacters)
+    view.clearScreen()
+    startGame(model, view)
 
 # Start script to clear the command line so the user just sees the instructions.
-if str(len(sys.argv) > 1 and sys.argv[1]) == "--gui":
-    exec(open("BigPythonEnergy/MainUI.py").read())
-entryDisplay()
+model = Model()
+view = View()
+view.getEntryDisplay()
 inputCheck()
