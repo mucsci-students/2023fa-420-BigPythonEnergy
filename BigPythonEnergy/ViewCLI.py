@@ -49,7 +49,7 @@ def entryDisplay():
     print('--------------------------------')
 
 def mainGameDisplay(model):
-    options = ["/words", "/shuffle", "/rank", "/thresholds", "/save", "/quit", "/hints", "/scoreboard", "/addPlayer"]
+    options = ["/words", "/shuffle", "/rank", "/thresholds", "/save", "/quit", "/hints", "/scoreboard", "/addplayer"]
     custom_completer = CustomCompleter(options)
     print('LETTERS:')
     print('-----------------')

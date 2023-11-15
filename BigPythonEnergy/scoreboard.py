@@ -12,10 +12,12 @@ def clearScreen():
 scoreboard = pd.read_json("scoreboard.json")
 
 def getScoreboard():
+    scoreboard = pd.read_json("scoreboard.json")
     sorted = scoreboard.sort_values(by='score', ascending=False)
     return sorted.head(10)
 
 def addScore(name, score, letters, rletter):
+    scoreboard = pd.read_json("scoreboard.json")
     new_row = pd.DataFrame({'name': [name], 'score': [score], 'letters': [letters], 'special letter': [rletter]})
     # Concatenate the new DataFrame with the existing DataFrame
     scoreboard = pd.concat([scoreboard, new_row], ignore_index=True)

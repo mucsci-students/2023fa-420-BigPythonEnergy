@@ -41,3 +41,4 @@ class View:
     
     def getScoreThresholdsMenu(self, model):
         return ViewCLI.getScoreThresholds(model)
+    

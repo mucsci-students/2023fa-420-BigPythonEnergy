@@ -115,10 +115,11 @@ def startGame(model, view):
         view.clearScreen()
         startGame(model, view)
         
-    if guess == "/addPlayer":
+    if guess == "/addplayer":
         print("Enter your name for the Scoreboard: ")
         name = input()
         view.clearScreen()
+        print("You have successfully added yourself to the scoreboard")
         model.addPlayer(name)
         startGame(model, view)
 
