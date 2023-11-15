@@ -6,8 +6,8 @@ class Model:
     def __init__(self, puzzle=None):
         self.puzzle = puzzle
 
-    def setPuzzle(self, letters, specialLetter=None, currentScore=None, foundWords=None, totalWords=None, isNull=None):
-        newPuzzle = puzzle(letters, specialLetter, currentScore, foundWords, totalWords, isNull)
+    def setPuzzle(self, letters, specialLetter=None, currentScore=None, foundWords=None, totalWords=None):
+        newPuzzle = puzzle(letters, specialLetter, currentScore, foundWords, totalWords)
         self.puzzle = newPuzzle
     
     def getPuzzle(self):

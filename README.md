@@ -60,3 +60,8 @@ Design Patterns:
             Calculate all sigma values in the bingo sheet
     This class allows us to interact with the dictionary without concern for the specifics of the implementation. 
     
+2. Model-View-Controller: Replace text later.
+
+3. Builder: Replace text later.
+
+4. Null Object: Replace text later.
