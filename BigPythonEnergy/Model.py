@@ -1,5 +1,6 @@
 from Puzzle import *
 import DictInterface
+import scoreboard
 
 class Model:
     def __init__(self, puzzle=None):
@@ -42,3 +43,11 @@ class Model:
     def addScore(self, score):
         self.puzzle.addScore(score)
     
+    def getScoreboard(self):
+        return scoreboard.getScoreboard()
+    
+    def addPlayer(self, name):
+        score = self.puzzle.getCurrentScore()
+        letters = self.puzzle.getAllLetters()
+        rletter = self.puzzle.getSpecialLetter()
+        return scoreboard.addScore(name, score, letters, rletter)
