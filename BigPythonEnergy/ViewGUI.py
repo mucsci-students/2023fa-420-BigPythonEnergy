@@ -40,6 +40,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.controller = MainUI()
         self.setupUi(self)
         self.connections()
+        self.encrypt = False
     
     def connections(self):
         self.action_Exit.triggered.connect(self.close)
@@ -178,13 +179,15 @@ class Window(QMainWindow, Ui_MainWindow):
     def remFoundWords(self):
         self.foundWords.clear()
 
-    def savedBlankView(self, text):
-        checker = self.controller.savedBlank(text)
+    def savedBlankView(self, text, encrypt):
+        checker = self.controller.savedBlank(text, encrypt)
         self.wrongInputLabel.setText(checker)
+        self.encrypt = False
     
-    def savedView(self, text):
-        checker = self.controller.saved(text)
+    def savedView(self, text, encrypt):
+        checker = self.controller.saved(text, encrypt)
         self.wrongInputLabel.setText(checker)
+        self.encrypt = False
     
     def randomView(self):
         self.controller.random()
@@ -276,6 +279,12 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter4.setText(addLetters[3])
             self.letter5.setText(addLetters[4])
             self.letter6.setText(addLetters[5])
+        
+    def encryptSwap(self):
+        if self.encrypt is True:
+            self.encrypt = False
+        else:
+            self.encrypt = True
 
 class helpDialog(QDialog):
     def __init__(self, parent=None):
@@ -294,7 +303,8 @@ class saveDialog(QDialog):
         self.connections()
     
     def connections(self):
-        self.saveButton.pressed.connect(lambda: win.savedView(self.saveNameEdit.text()))
+        self.encryptButton.toggled.connect(lambda: win.encryptSwap())
+        self.saveButton.pressed.connect(lambda: win.savedView(self.saveNameEdit.text(), win.encrypt))
 
 class blankSaveDialog(QDialog):
     def __init__(self, parent=None):
@@ -303,7 +313,8 @@ class blankSaveDialog(QDialog):
         self.connections()
     
     def connections(self):
-        self.saveButton.clicked.connect(lambda: win.savedBlankView(self.saveNameEdit.text()))
+        self.encryptButton.toggled.connect(lambda: win.encryptSwap())
+        self.saveButton.clicked.connect(lambda: win.savedBlankView(self.saveNameEdit.text(), win.encrypt))
 
 class newGameDialog(QDialog):
     def __init__(self, parent=None):
