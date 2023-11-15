@@ -3,8 +3,11 @@ import DictInterface
 from cryptography.fernet import Fernet
 
 class Model:
-    def __init__(self, puzzle=None):
-        self.puzzle = puzzle
+    def __init__(self, setupPuzzle=None):
+        if setupPuzzle is not None:
+            self.puzzle = setupPuzzle
+        else:
+            self.puzzle = puzzle()
 
     def setPuzzle(self, letters, specialLetter=None, currentScore=None, foundWords=None, totalWords=None):
         newPuzzle = puzzle(letters, specialLetter, currentScore, foundWords, totalWords)
