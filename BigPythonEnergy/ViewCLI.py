@@ -163,3 +163,8 @@ def getScoreThresholds(model):
 
     return "Rank thresholds:\n\n" + queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
     
+def getSaveType():
+    clearScreen()
+    print("Enter 'yes' to save with encryption: ")
+    option = input()
+    return option

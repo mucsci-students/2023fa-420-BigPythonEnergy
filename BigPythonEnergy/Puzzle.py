@@ -129,7 +129,7 @@ class puzzle:
     
     def addFoundWord(self, word):
         if(word != ""):
-            self.listOfFoundWords.add(word)
+            self.listOfFoundWords.append(word)
 
     # Used to set all found words in case of loading a puzzle.
     def setFoundWord(self, wordList):

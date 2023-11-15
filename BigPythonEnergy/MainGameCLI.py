@@ -31,14 +31,29 @@ def startGame(model, view):
 
     # Saves the game data to the save file.
     if guess == "/save":
+        saveType = view.getSaveType()
         view.clearScreen()
-        save = {
-            "baseWord": list(model.getPuzzle().getLetterList()),
-            "foundWords" : list(model.getPuzzle().getFoundWordList()),
-            "playerPoints": model.getPuzzle().getCurrentScore(),
-            "requiredLetter": model.getPuzzle().getSpecialLetter(),
-            "maxPoints": model.getPuzzle().getTotalScore()
-        }
+        if saveType == "yes":
+            save = {
+                "baseWord": list(model.getPuzzle().getLetterList()),
+                "foundWords" : list(model.getPuzzle().getFoundWordList()),
+                "playerPoints": model.getPuzzle().getCurrentScore(),
+                "requiredLetter": model.getPuzzle().getSpecialLetter(),
+                "maxPoints": model.getPuzzle().getTotalScore(),
+                "secretwordlist": list(model.getEncryptedData()),
+                "author": "BigPythonEnergy"
+            }
+        else:
+            save = {
+                "baseWord": list(model.getPuzzle().getLetterList()),
+                "foundWords" : list(model.getPuzzle().getFoundWordList()),
+                "playerPoints": model.getPuzzle().getCurrentScore(),
+                "requiredLetter": model.getPuzzle().getSpecialLetter(),
+                "maxPoints": model.getPuzzle().getTotalScore(),
+                "wordlist": list(model.getPuzzle().getTotalWordList()),
+                "author": "BigPythonEnergy"
+            }
+
         print('Enter a name for your save file:')
         fileName = input()
         if fileName == "":
@@ -52,14 +67,29 @@ def startGame(model, view):
         startGame(model, view)
 
     if guess == "/blanksave":
+        saveType = view.getSaveType()
         view.clearScreen()
-        save = {
-            "baseWord": list(model.getPuzzle().getLetterList()),
-            "foundWords" : list(),
-            "playerPoints": 0,
-            "requiredLetter": model.getPuzzle().getSpecialLetter(),
-            "maxPoints": model.getPuzzle().getTotalScore()
-        }
+        if saveType == "Yes":
+            save = {
+                "baseWord": list(model.getPuzzle().getLetterList()),
+                "foundWords" : list(),
+                "playerPoints": 0,
+                "requiredLetter": model.getPuzzle().getSpecialLetter(),
+                "maxPoints": model.getPuzzle().getTotalScore(),
+                "secretwordlist": list(model.getEncryptedData()),
+                "author": "BigPythonEnergy"
+            }
+        else:
+            save = {
+                "baseWord": list(model.getPuzzle().getLetterList()),
+                "foundWords" : list(),
+                "playerPoints": 0,
+                "requiredLetter": model.getPuzzle().getSpecialLetter(),
+                "maxPoints": model.getPuzzle().getTotalScore(),
+                "wordlist": list(model.getPuzzle().getValidWordList()),
+                "author": "BigPythonEnergy"
+            }
+
         print('Enter a name for your blank save file:')
         fileName = input()
         if fileName == "":
