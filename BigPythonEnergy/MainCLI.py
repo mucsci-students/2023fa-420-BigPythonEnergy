@@ -67,14 +67,21 @@ def startPage():
             words = data["foundWords"]
             score = data["playerPoints"] 
             author = data["author"]
-            if (author != "BigPythonEnergy"):
-                print('Decryption Failed!!!')
-                print('Decryption Failed!!!')
-                print('Decryption Failed!!!')
-                print('Decryption Failed!!!')
-                print('Decryption Failed!!!')
-                startPage()
-
+            try:
+                wordlist = data["wordlist"]
+            except:
+                try:
+                    author = data["author"]
+                except:
+                    author = None
+                else:
+                    if (author != "BigPythonEnergy"):
+                        print('Decryption Failed!!!')
+                        print('Decryption Failed!!!')
+                        print('Decryption Failed!!!')
+                        print('Decryption Failed!!!')
+                        print('Decryption Failed!!!')
+                        startPage()
             model.setPuzzle(letters, special_letter, score, words)
             view.clearScreen()
             print('Loaded save')
