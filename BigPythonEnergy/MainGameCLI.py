@@ -69,7 +69,7 @@ def startGame(model, view):
     if guess == "/blanksave":
         saveType = view.getSaveType()
         view.clearScreen()
-        if saveType == "Yes":
+        if saveType == "yes":
             save = {
                 "baseWord": list(model.getPuzzle().getLetterList()),
                 "foundWords" : list(),

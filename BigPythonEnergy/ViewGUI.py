@@ -40,6 +40,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.controller = MainUI()
         self.setupUi(self)
         self.connections()
+        self.encrypt = False
     
     def connections(self):
         self.action_Exit.triggered.connect(self.close)
@@ -54,7 +55,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.addWordLE.textEdited.connect(lambda: self.checkKeyboardInput())
     
     def checkKeyboardInput(self):
-        if(self.controller.model.getPuzzle() != None):
+        if self.controller.model.getPuzzle().isNotNull():
             if (len(self.addWordLE.text()) > 0 and self.addWordLE.text() != ""):
                 if (self.controller.isValidLetter(self.addWordLE.text()[-1])):
                     self.addWordLE.setText(self.addWordLE.text()[:-1])
@@ -178,13 +179,15 @@ class Window(QMainWindow, Ui_MainWindow):
     def remFoundWords(self):
         self.foundWords.clear()
 
-    def savedBlankView(self, text):
-        checker = self.controller.savedBlank(text)
+    def savedBlankView(self, text, encrypt):
+        checker = self.controller.savedBlank(text, encrypt)
         self.wrongInputLabel.setText(checker)
+        self.encrypt = False
     
-    def savedView(self, text):
-        checker = self.controller.saved(text)
+    def savedView(self, text, encrypt):
+        checker = self.controller.saved(text, encrypt)
         self.wrongInputLabel.setText(checker)
+        self.encrypt = False
     
     def randomView(self):
         self.controller.random()
@@ -207,11 +210,13 @@ class Window(QMainWindow, Ui_MainWindow):
     
     def loadView(self):
         checker = self.controller.load()
+
         if checker == 1:
             loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
             addLetters = []
             for i in loopedLetters:
                 addLetters.append(i)
+
             self.currentRank.setText(self.getCurrentScoreType()+"")
             self.letter1.setText(addLetters[0])
             self.letter2.setText(addLetters[1])
@@ -222,11 +227,16 @@ class Window(QMainWindow, Ui_MainWindow):
             self.specialLetter.setText(self.controller.model.getPuzzle().getSpecialLetter())
             self.setCurrentPoints()
             self.wrongInputLabel.setText("Game loaded successfully!")
+
             self.remFoundWords()
             for i in self.controller.model.getPuzzle().getFoundWordList():
                 self.addFoundWords(i)
-        else:
+
+        elif checker == 0:
             self.wrongInputLabel.setText("Game did not load succesfully.")
+
+        else:
+            self.wrongInputLabel.setText("Decryption was unsuccessful.")
     
     def startView(self, newWord):
         if self.controller.model.has_7_unique_letters(newWord) and self.controller.model.isValid(newWord):
@@ -264,7 +274,7 @@ class Window(QMainWindow, Ui_MainWindow):
             self.wrongInputLabel.setText("You just gained " + checker + " points!")
     
     def shuffle(self):
-        if self.controller.model.getPuzzle() is not None:
+        if self.controller.model.getPuzzle().isNotNull():
             loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
             addLetters = []
             for i in loopedLetters:
@@ -276,6 +286,12 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter4.setText(addLetters[3])
             self.letter5.setText(addLetters[4])
             self.letter6.setText(addLetters[5])
+        
+    def encryptSwap(self):
+        if self.encrypt is True:
+            self.encrypt = False
+        else:
+            self.encrypt = True
 
 class helpDialog(QDialog):
     def __init__(self, parent=None):
@@ -294,7 +310,8 @@ class saveDialog(QDialog):
         self.connections()
     
     def connections(self):
-        self.saveButton.pressed.connect(lambda: win.savedView(self.saveNameEdit.text()))
+        self.encryptButton.toggled.connect(lambda: win.encryptSwap())
+        self.saveButton.pressed.connect(lambda: win.savedView(self.saveNameEdit.text(), win.encrypt))
 
 class blankSaveDialog(QDialog):
     def __init__(self, parent=None):
@@ -303,7 +320,8 @@ class blankSaveDialog(QDialog):
         self.connections()
     
     def connections(self):
-        self.saveButton.clicked.connect(lambda: win.savedBlankView(self.saveNameEdit.text()))
+        self.encryptButton.toggled.connect(lambda: win.encryptSwap())
+        self.saveButton.clicked.connect(lambda: win.savedBlankView(self.saveNameEdit.text(), win.encrypt))
 
 class newGameDialog(QDialog):
     def __init__(self, parent=None):
@@ -319,14 +337,14 @@ class thresholdDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/rankThresholds.ui", self)
-        if(win.controller.model.getPuzzle() != None):
+        if win.controller.model.getPuzzle().isNotNull():
             self.threshText.setText(win.getScoreThresholds())
 
 class hintDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/hintsMenu.ui", self)
-        if(win.controller.model.getPuzzle() != None):
+        if win.controller.model.getPuzzle().isNotNull():
             self.threshText.setText(win.getBingo())
 
 class ccDialog(QDialog):

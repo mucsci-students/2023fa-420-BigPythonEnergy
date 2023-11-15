@@ -48,13 +48,21 @@ def entryDisplay():
     print('Created by Big Python Energy')
     print('--------------------------------')
 
+def getAllLetters(model):
+        letterList = model.getPuzzle().getLetterList()
+        allLetters = "| "
+        for i in range(6):
+            allLetters = allLetters + letterList[i] + " | "
+        allLetters = allLetters + letterList[6] + " |"
+        return allLetters
+
 def mainGameDisplay(model):
     options = ["/words", "/shuffle", "/rank", "/thresholds", "/save", "/quit", "/hints"]
     custom_completer = CustomCompleter(options)
     print('LETTERS:')
     print('-----------------')
-    print(model.getPuzzle().getAllLetters() + "\n")
-    print('Must Contain: ' + model.getPuzzle().specialLetter)
+    print(getAllLetters(model) + "\n")
+    print('Must Contain: ' + model.getPuzzle().getSpecialLetter())
     print('-----------------\n')
     print('Score:')
     print(model.getPuzzle().getCurrentScore())
