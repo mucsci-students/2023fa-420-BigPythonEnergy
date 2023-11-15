@@ -1,13 +1,17 @@
 from Puzzle import *
 import DictInterface
 import scoreboard
+from cryptography.fernet import Fernet
 
 class Model:
-    def __init__(self, puzzle=None):
-        self.puzzle = puzzle
+    def __init__(self, setupPuzzle=None):
+        if setupPuzzle is not None:
+            self.puzzle = setupPuzzle
+        else:
+            self.puzzle = puzzle()
 
-    def setPuzzle(self, letters, specialLetter=None, currentScore=None, foundWords=None, totalWords=None, isNull=None):
-        newPuzzle = puzzle(letters, specialLetter, currentScore, foundWords, totalWords, isNull)
+    def setPuzzle(self, letters, specialLetter=None, currentScore=None, foundWords=None, totalWords=None):
+        newPuzzle = puzzle(letters, specialLetter, currentScore, foundWords, totalWords)
         self.puzzle = newPuzzle
     
     def getPuzzle(self):
@@ -51,3 +55,10 @@ class Model:
         letters = self.puzzle.getAllLetters()
         rletter = self.puzzle.getSpecialLetter()
         return scoreboard.addScore(name, score, letters, rletter)
+
+    def getEncryptedData(self):
+        fern = Fernet(Fernet.generate_key())
+        data = DictInterface.findValid(self.puzzle.getSpecialLetter(), self.puzzle.getLetters())
+        bytes = ','.join(map(str, data))
+        return fern.encrypt(bytes.encode())
+

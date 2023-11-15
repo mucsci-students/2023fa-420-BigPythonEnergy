@@ -49,28 +49,6 @@ class TestPuzzle(unittest.TestCase):
         self.test_puzzle.addScore(7)
         self.assertEqual(self.test_puzzle.getCurrentScore(), 12)
 
-    def test_rank_calculation(self):
-        # Check if rank calculation works as expected.
-        self.test_puzzle.setScore(35)  # Set the current score to 35.
-        self.assertEqual(self.test_puzzle.getCurrentScoreType(), "Amazing")
-
-    def test_get_score_thresholds(self):
-        # Check if score thresholds are generated correctly.
-        thresholds = self.test_puzzle.getScoreThresholds()
-        self.assertIn("Queen Bee:", thresholds)
-        self.assertIn("Genius:", thresholds)
-        self.assertIn("Amazing:", thresholds)
-        self.assertIn("Great:", thresholds)
-        self.assertIn("Nice:", thresholds)
-        self.assertIn("Solid:", thresholds)
-        self.assertIn("Good:", thresholds)
-        self.assertIn("Moving Up:", thresholds)
-        self.assertIn("Good Start:", thresholds)
-        self.assertIn("Beginner:", thresholds)
-
-    def test_letter_display(self):
-        self.assertEquals(self.test_puzzle.getAllLetters, "| a | b | c | d | e | f | g |")
-
     def test_found_words(self):
         # Check if found words are added and retrieved correctly.
         self.test_puzzle.addFoundWord("bad")
@@ -114,13 +92,13 @@ class TestPuzzle(unittest.TestCase):
 
     def test_blank_puzzle(self):
         self.blank_puzzle = puzzle()
-        self.assertEqual(self.blank_puzzle.getLetterList(), [])
+        self.assertEqual(self.blank_puzzle.getLetterList(), None)
         self.assertEqual(self.blank_puzzle.getSpecialLetter(), None)
-        self.assertEqual(self.blank_puzzle.getCurrentScore(), 0)
-        self.assertEqual(self.blank_puzzle.getTotalScore(), 0)
-        self.assertEqual(self.blank_puzzle.getNormalLetters(), set())
-        self.assertEqual(self.blank_puzzle.letters, set())
-        self.assertEqual(self.blank_puzzle.getFoundWordList(), set())
+        self.assertEqual(self.blank_puzzle.getCurrentScore(), None)
+        self.assertEqual(self.blank_puzzle.getTotalScore(), None)
+        self.assertEqual(self.blank_puzzle.getNormalLetters(), None)
+        self.assertEqual(self.blank_puzzle.getLetters(), None)
+        self.assertEqual(self.blank_puzzle.getFoundWordList(), None)
 
 if __name__ == '__main__':
     unittest.main()

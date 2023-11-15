@@ -42,3 +42,6 @@ class View:
     def getScoreThresholdsMenu(self, model):
         return ViewCLI.getScoreThresholds(model)
     
+    def getSaveType(self):
+        return ViewCLI.getSaveType()
+

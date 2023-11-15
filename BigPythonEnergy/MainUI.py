@@ -43,39 +43,75 @@ class MainUI():
         else:
             return True
 
-    def savedBlank(self, saveName):
-        if (self.model.getPuzzle() != None):
-            save = {
-                "baseWord": list(self.model.getPuzzle().getLetterList()),
-                "foundWords" : list(),
-                "playerPoints": 0,
-                "requiredLetter": self.model.getPuzzle().getSpecialLetter(),
-                "maxPoints": self.model.getPuzzle().getTotalScore()
-            }
+    def savedBlank(self, saveName, encrypt):
+        if self.model.getPuzzle().isNotNull():
+            if encrypt is True:
+                save = {
+                    "baseWord": list(self.model.getPuzzle().getLetterList()),
+                    "foundWords" : list(),
+                    "playerPoints": 0,
+                    "requiredLetter": self.model.getPuzzle().getSpecialLetter(),
+                    "maxPoints": self.model.getPuzzle().getTotalScore(),
+                    "secretwordlist": list(self.model.getEncryptedData()),
+                    "author": "BigPythonEnergy"
+                }
+            else:
+                save = {
+                    "baseWord": list(self.model.getPuzzle().getLetterList()),
+                    "foundWords" : list(),
+                    "playerPoints": 0,
+                    "requiredLetter": self.model.getPuzzle().getSpecialLetter(),
+                    "maxPoints": self.model.getPuzzle().getTotalScore(),
+                    "wordlist": list(self.model.getPuzzle().getTotalWordList()),
+                    "author": "BigPythonEnergy"
+                }
             if saveName != "":
                 file_path = "BigPythonEnergy/blankSaves/" + saveName + ".json"
-                with open(file_path, "w") as outfile:
-                    json.dump(save, outfile)
+                try:
+                    with open(file_path, "w") as outfile:
+                        json.dump(save, outfile)
+                except:
+                    return "Not a valid save name."
                 return "Saved succesfully!"
             else:
                 return "Not a valid save name."
+        else:
+            return "Please start a new puzzle before attempting to save!"
 
-    def saved(self, saveName):
-        if (self.model.getPuzzle() != None):
-            save = {
-                "baseWord": list(self.model.getPuzzle().getLetterList()),
-                "foundWords" : list(self.model.getPuzzle().getFoundWordList()),
-                "playerPoints": self.model.getPuzzle().getCurrentScore(),
-                "requiredLetter": self.model.getPuzzle().getSpecialLetter(),
-                "maxPoints": self.model.getPuzzle().getTotalScore()
-            }
+    def saved(self, saveName, encrypt):
+        if self.model.getPuzzle().isNotNull():
+            if encrypt is True:
+                save = {
+                    "baseWord": list(self.model.getPuzzle().getLetterList()),
+                    "foundWords" : list(self.model.getPuzzle().getFoundWordList()),
+                    "playerPoints": self.model.getPuzzle().getCurrentScore(),
+                    "requiredLetter": self.model.getPuzzle().getSpecialLetter(),
+                    "maxPoints": self.model.getPuzzle().getTotalScore(),
+                    "secretwordlist": list(self.model.getEncryptedData()),
+                    "author": "BigPythonEnergy"
+                }
+            else:
+                save = {
+                    "baseWord": list(self.model.getPuzzle().getLetterList()),
+                    "foundWords" : list(self.model.getPuzzle().getFoundWordList()),
+                    "playerPoints": self.model.getPuzzle().getCurrentScore(),
+                    "requiredLetter": self.model.getPuzzle().getSpecialLetter(),
+                    "maxPoints": self.model.getPuzzle().getTotalScore(),
+                    "wordlist": list(self.model.getPuzzle().getTotalWordList()),
+                    "author": "BigPythonEnergy"
+                }
             if saveName != "":
                 file_path = "BigPythonEnergy/saves/" + saveName + ".json"
-                with open(file_path, "w") as outfile:
-                    json.dump(save, outfile)
+                try:
+                    with open(file_path, "w") as outfile:
+                        json.dump(save, outfile)
+                except:
+                    return "Not a valid save name."
                 return "Saved successfully!"
             else:
                 return "Not a valid save name."
+        else:
+            return "Please start a new puzzle before attempting to save!"
 
     def random(self):
         word = self.model.getRandomWord()
@@ -100,13 +136,23 @@ class MainUI():
             letters = data["baseWord"]
             special_letter = data["requiredLetter"]
             words = data["foundWords"]
-            score = data["playerPoints"] 
+            score = data["playerPoints"]
+            try:
+                wordlist = data["wordlist"]
+            except:
+                try:
+                    author = data["author"]
+                except:
+                    author = None
+                else:
+                    if (author != "BigPythonEnergy"):
+                        return -1
             self.model.setPuzzle(set(letters), special_letter, score, words)
             return 1
         return 0
 
     def submit(self, result):
-        if self.model.getPuzzle() is not None:
+        if self.model.getPuzzle().isNotNull():
             letterList = self.model.getPuzzle().getLetterList()
             foundList = self.model.getPuzzle().getFoundWordList()
             valid = True
