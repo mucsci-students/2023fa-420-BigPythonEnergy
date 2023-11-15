@@ -210,11 +210,13 @@ class Window(QMainWindow, Ui_MainWindow):
     
     def loadView(self):
         checker = self.controller.load()
+
         if checker == 1:
             loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
             addLetters = []
             for i in loopedLetters:
                 addLetters.append(i)
+
             self.currentRank.setText(self.getCurrentScoreType()+"")
             self.letter1.setText(addLetters[0])
             self.letter2.setText(addLetters[1])
@@ -225,11 +227,16 @@ class Window(QMainWindow, Ui_MainWindow):
             self.specialLetter.setText(self.controller.model.getPuzzle().getSpecialLetter())
             self.setCurrentPoints()
             self.wrongInputLabel.setText("Game loaded successfully!")
+
             self.remFoundWords()
             for i in self.controller.model.getPuzzle().getFoundWordList():
                 self.addFoundWords(i)
-        else:
+
+        elif checker == 0:
             self.wrongInputLabel.setText("Game did not load succesfully.")
+
+        else:
+            self.wrongInputLabel.setText("Decryption was unsuccessful.")
     
     def startView(self, newWord):
         if self.controller.model.has_7_unique_letters(newWord) and self.controller.model.isValid(newWord):

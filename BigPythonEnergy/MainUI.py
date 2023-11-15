@@ -136,7 +136,17 @@ class MainUI():
             letters = data["baseWord"]
             special_letter = data["requiredLetter"]
             words = data["foundWords"]
-            score = data["playerPoints"] 
+            score = data["playerPoints"]
+            try:
+                wordlist = data["wordlist"]
+            except:
+                try:
+                    author = data["author"]
+                except:
+                    author = None
+                else:
+                    if (author != "BigPythonEnergy"):
+                        return -1
             self.model.setPuzzle(set(letters), special_letter, score, words)
             return 1
         return 0
