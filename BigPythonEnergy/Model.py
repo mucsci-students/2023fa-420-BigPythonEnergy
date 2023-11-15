@@ -1,5 +1,6 @@
 from Puzzle import *
 import DictInterface
+import scoreboard
 from cryptography.fernet import Fernet
 
 class Model:
@@ -46,8 +47,18 @@ class Model:
     def addScore(self, score):
         self.puzzle.addScore(score)
     
+    def getScoreboard(self):
+        return scoreboard.getScoreboard()
+    
+    def addPlayer(self, name):
+        score = self.puzzle.getCurrentScore()
+        letters = self.puzzle.getAllLetters()
+        rletter = self.puzzle.getSpecialLetter()
+        return scoreboard.addScore(name, score, letters, rletter)
+
     def getEncryptedData(self):
         fern = Fernet(Fernet.generate_key())
         data = DictInterface.findValid(self.puzzle.getSpecialLetter(), self.puzzle.getLetters())
         bytes = ','.join(map(str, data))
         return fern.encrypt(bytes.encode())
+
