@@ -66,7 +66,7 @@ def mainGameDisplay(model):
     print('-----------------\n')
     print('Score:')
     print(model.getPuzzle().getCurrentScore())
-    print('\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nEnter /save or /blanksave to save your progress, \nEnter /hints to display all puzzle hints \nEnter /scoreboard to see the scoreboard \nor /addPlayer to add yourself to the scoreboard\n')
+    print('\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nEnter /save or /blanksave to save your progress, \nEnter /hints to display all puzzle hints \nEnter /scoreboard to see the scoreboard \nor /addplayer to add yourself to the scoreboard\n')
     opt = prompt("\nEnter your guess below!\n", completer=custom_completer)
     return opt
 

@@ -146,6 +146,7 @@ def startGame(model, view):
         startGame(model, view)
         
     if guess == "/addplayer":
+        view.clearScreen()
         print("Enter your name for the Scoreboard: ")
         name = input()
         view.clearScreen()
@@ -156,11 +157,13 @@ def startGame(model, view):
     if guess == "/scoreboard":
         view.clearScreen()
         df = model.getScoreboard()
-        for index, row in df.iterrows():
-            print(f'Rank: {index}, Name: {row["name"]}, score: {row["score"]}, letters: {row["letters"]}, Required Letter: {row["special letter"]}')
+        print(str(df))
+        #for index, row in df.iterrows():
+        #    print(f'Rank: {index}, Name: {row["name"]}, score: {row["score"]}, letters: {row["letters"]}, Required Letter: {row["special letter"]}')
 
         print ("Hit enter to continue the game: ")
         input()
+        view.clearScreen()
         startGame(model, view)
         
     # Stops a guess when a word is too short or long
