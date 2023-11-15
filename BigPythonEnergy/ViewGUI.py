@@ -54,7 +54,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.addWordLE.textEdited.connect(lambda: self.checkKeyboardInput())
     
     def checkKeyboardInput(self):
-        if(self.controller.model.getPuzzle() != None):
+        if self.controller.model.getPuzzle().isNotNull():
             if (len(self.addWordLE.text()) > 0 and self.addWordLE.text() != ""):
                 if (self.controller.isValidLetter(self.addWordLE.text()[-1])):
                     self.addWordLE.setText(self.addWordLE.text()[:-1])
@@ -264,7 +264,7 @@ class Window(QMainWindow, Ui_MainWindow):
             self.wrongInputLabel.setText("You just gained " + checker + " points!")
     
     def shuffle(self):
-        if self.controller.model.getPuzzle() is not None:
+        if self.controller.model.getPuzzle().isNotNull():
             loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
             addLetters = []
             for i in loopedLetters:
@@ -319,14 +319,14 @@ class thresholdDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/rankThresholds.ui", self)
-        if(win.controller.model.getPuzzle() != None):
+        if win.controller.model.getPuzzle().isNotNull():
             self.threshText.setText(win.getScoreThresholds())
 
 class hintDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/hintsMenu.ui", self)
-        if(win.controller.model.getPuzzle() != None):
+        if win.controller.model.getPuzzle().isNotNull():
             self.threshText.setText(win.getBingo())
 
 class ccDialog(QDialog):

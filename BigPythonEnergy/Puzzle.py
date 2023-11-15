@@ -31,6 +31,9 @@ class puzzle:
 
     # ------ Getter Methods ------
     
+    def isNotNull(self):
+        return self.puzzleBuilt.isNotNull()
+
     def getLetters(self):
         return self.puzzleBuilt.getLetters()
     

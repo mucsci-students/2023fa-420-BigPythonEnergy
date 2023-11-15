@@ -27,7 +27,7 @@ import pytest
 
 def test_has_7_unique_letters_returns_bool():
     word = "Bromine"
-    result = has_7_unique_letters(word);
+    result = has_7_unique_letters(word)
     assert isinstance(result, bool)
 
 def test_has_7_unique_letters_with_valid_input():
@@ -50,11 +50,11 @@ def test_has_7_unique_letters_with_whitespace_input():
     assert has_7_unique_letters("        ") is False
 
 def test_randomWord_returns_string():
-    word = randomWord();
+    word = randomWord()
     assert isinstance(word, str)
 
 def test_randomWord_returns_7_unique_letter_word():
-    word = randomWord();
+    word = randomWord()
     assert len(set(word)) >= 7
 
 def test_isValid_returns_bool():

@@ -48,11 +48,13 @@ class PuzzleAbstract:
     def shuffleLetterList(self):
         self.puzzlePieces.shuffleLetterList()
 
+    def isNotNull(self):
+        return self.puzzlePieces.isNotNull()
+
 
 class PuzzleNull:
     def __init__(self):
 
-        self.nullCheck = 1
         self.letters = None
         self.letterList = None
         self.specialLetter = None
@@ -62,6 +64,9 @@ class PuzzleNull:
         self.listOfFoundWords = None
         self.totalScore = None
 
+    def isNotNull(self):
+        return False
+    
     def getLetters(self):
         return None
     
@@ -103,8 +108,6 @@ class PuzzleNull:
 
 class PuzzleFull:
     def __init__(self, letters, specialLetter, currentScore, foundWords, totalWords):
-
-        self.nullCheck = 0
 
         self.letters = None
         self.letters = set()
@@ -155,7 +158,8 @@ class PuzzleFull:
             elif len(i) > 4:
                 self.totalScore += len(i)
 
-
+    def isNotNull(self):
+        return True
 
     def getLetters(self):
         return self.letters

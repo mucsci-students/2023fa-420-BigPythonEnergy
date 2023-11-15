@@ -44,7 +44,7 @@ class MainUI():
             return True
 
     def savedBlank(self, saveName):
-        if (self.model.getPuzzle() != None):
+        if self.model.getPuzzle().isNotNull():
             save = {
                 "baseWord": list(self.model.getPuzzle().getLetterList()),
                 "foundWords" : list(),
@@ -61,7 +61,7 @@ class MainUI():
                 return "Not a valid save name."
 
     def saved(self, saveName):
-        if (self.model.getPuzzle() != None):
+        if self.model.getPuzzle().isNotNull():
             save = {
                 "baseWord": list(self.model.getPuzzle().getLetterList()),
                 "foundWords" : list(self.model.getPuzzle().getFoundWordList()),
@@ -106,7 +106,7 @@ class MainUI():
         return 0
 
     def submit(self, result):
-        if self.model.getPuzzle() is not None:
+        if self.model.getPuzzle().isNotNull():
             letterList = self.model.getPuzzle().getLetterList()
             foundList = self.model.getPuzzle().getFoundWordList()
             valid = True
