@@ -313,6 +313,9 @@ class saveDialog(QDialog):
         self.encryptButton.toggled.connect(lambda: win.encryptSwap())
         self.saveButton.pressed.connect(lambda: win.savedView(self.saveNameEdit.text(), win.encrypt))
 
+    def closeEvent(self, event):
+        win.encrypt = False
+
 class blankSaveDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -322,6 +325,9 @@ class blankSaveDialog(QDialog):
     def connections(self):
         self.encryptButton.toggled.connect(lambda: win.encryptSwap())
         self.saveButton.clicked.connect(lambda: win.savedBlankView(self.saveNameEdit.text(), win.encrypt))
+
+    def closeEvent(self, event):
+        win.encrypt = False
 
 class newGameDialog(QDialog):
     def __init__(self, parent=None):
