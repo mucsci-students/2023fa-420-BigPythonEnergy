@@ -45,3 +45,5 @@ class View:
     def getSaveType(self):
         return ViewCLI.getSaveType()
 
+    def getAllLetters(self, model):
+        return ViewCLI.getAllLetters(model)

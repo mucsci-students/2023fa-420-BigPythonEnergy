@@ -518,6 +518,7 @@
     <addaction name="actionAbout"/>
     <addaction name="action_Rank_Thresholds"/>
     <addaction name="actionHints"/>
+    <addaction name="actionScoreboard"/>
     <addaction name="action_About"/>
     <addaction name="action_CC_Attributions"/>
    </widget>
@@ -590,7 +591,7 @@
      <normaloff>icons/Help.png</normaloff>icons/Help.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Help Menu</string>
+    <string>Help &amp;Menu</string>
    </property>
   </action>
   <action name="action_About">
@@ -641,7 +642,12 @@
      <normaloff>icons/HintsLightbulb.png</normaloff>icons/HintsLightbulb.png</iconset>
    </property>
    <property name="text">
-    <string>Hints</string>
+    <string>&amp;Hints</string>
+   </property>
+  </action>
+  <action name="actionScoreboard">
+   <property name="text">
+    <string>&amp;Scoreboard</string>
    </property>
   </action>
  </widget>

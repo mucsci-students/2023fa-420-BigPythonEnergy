@@ -52,9 +52,12 @@ class Model:
     
     def addPlayer(self, name):
         score = self.puzzle.getCurrentScore()
-        letters = self.puzzle.getAllLetters()
+        placedLetters = ""
+        letters = self.puzzle.getLetters()
+        for i in letters:
+            placedLetters += i
         rletter = self.puzzle.getSpecialLetter()
-        return scoreboard.addScore(name, score, letters, rletter)
+        return scoreboard.addScore(name, score, placedLetters, rletter)
 
     def getEncryptedData(self):
         fern = Fernet(Fernet.generate_key())

@@ -52,6 +52,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.action_Rank_Thresholds.triggered.connect(self.thresholdMenu)
         self.action_CC_Attributions.triggered.connect(self.ccMenu)
         self.actionHints.triggered.connect(self.hintMenu)
+        self.actionScoreboard.triggered.connect(self.scoreMenu)
         self.addWordLE.textEdited.connect(lambda: self.checkKeyboardInput())
     
     def checkKeyboardInput(self):
@@ -90,6 +91,10 @@ class Window(QMainWindow, Ui_MainWindow):
     
     def ccMenu(self):
         dialog = ccDialog(self)
+        dialog.exec()
+
+    def scoreMenu(self):
+        dialog = scoreDialog(self)
         dialog.exec()
 
     def getHintsUIDisplay(self):
@@ -357,7 +362,12 @@ class ccDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/ccAttributions.ui", self)
-
+    
+class scoreDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loadUi("BigPythonEnergy/ui/scoreboardMenu.ui", self)
+        self.scoreText.setText(str(win.controller.model.getScoreboard()))
 
 app = QApplication(sys.argv)
 win = Window()
