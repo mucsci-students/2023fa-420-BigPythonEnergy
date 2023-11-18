@@ -16,6 +16,8 @@ def getScoreboard(letters, rletter):
     sorted = scoreboard.sort_values(by='score', ascending=False)
     firstresult = sorted.loc[sorted['letters'] == letters]
     secondresult = firstresult.loc[firstresult['special letter'] == rletter]
+    if secondresult.empty:
+        return "There is no scoreboard for this puzzle yet."
     return secondresult.head(10)
 
 def addScore(name, score, letters, rletter):
