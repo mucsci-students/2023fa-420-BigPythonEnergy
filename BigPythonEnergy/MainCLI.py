@@ -65,8 +65,7 @@ def startPage():
             letters = data["baseWord"]
             special_letter = data["requiredLetter"]
             words = data["foundWords"]
-            score = data["playerPoints"] 
-            author = data["author"]
+            score = data["playerPoints"]
             try:
                 wordlist = data["wordlist"]
             except:
@@ -80,6 +79,7 @@ def startPage():
                         print('Decryption Failed!!!')
                         print('Decryption Failed!!!')
                         print('Decryption Failed!!!')
+                        view.clearScreen()
                         print('Decryption Failed!!!')
                         startPage()
             model.setPuzzle(letters, special_letter, score, words)
@@ -107,16 +107,23 @@ def startPage():
             letters = data["baseWord"]
             special_letter = data["requiredLetter"]
             words = data["foundWords"]
-            score = data["playerPoints"] 
-            author = data["author"]
-            if author != "BigPythonEnergy":
-                view.clearScreen()
-                print('Decryption Failed!!!')
-                print('Decryption Failed!!!')
-                print('Decryption Failed!!!')
-                print('Decryption Failed!!!')
-                print('Decryption Failed!!!')
-                startPage()
+            score = data["playerPoints"]
+            try:
+                wordlist = data["wordlist"]
+            except:
+                try:
+                    author = data["author"]
+                except:
+                    author = None
+                else:
+                    if (author != "BigPythonEnergy"):
+                        print('Decryption Failed!!!')
+                        print('Decryption Failed!!!')
+                        print('Decryption Failed!!!')
+                        print('Decryption Failed!!!')
+                        view.clearScreen()
+                        print('Decryption Failed!!!')
+                        startPage()
 
 
             model.setPuzzle(letters, special_letter, score, words)

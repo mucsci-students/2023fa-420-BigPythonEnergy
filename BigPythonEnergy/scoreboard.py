@@ -11,10 +11,12 @@ def clearScreen():
 
 scoreboard = pd.read_json("scoreboard.json")
 
-def getScoreboard():
+def getScoreboard(letters, rletter):
     scoreboard = pd.read_json("scoreboard.json")
     sorted = scoreboard.sort_values(by='score', ascending=False)
-    return sorted.head(10)
+    firstresult = sorted.loc[sorted['letters'] == letters]
+    secondresult = firstresult.loc[firstresult['special letter'] == rletter]
+    return secondresult.head(10)
 
 def addScore(name, score, letters, rletter):
     scoreboard = pd.read_json("scoreboard.json")

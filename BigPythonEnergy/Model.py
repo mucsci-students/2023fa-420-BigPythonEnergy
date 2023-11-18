@@ -48,12 +48,19 @@ class Model:
         self.puzzle.addScore(score)
     
     def getScoreboard(self):
-        return scoreboard.getScoreboard()
+        placedLetters = ""
+        letters = self.puzzle.getLetterList()
+        letters.sort()
+        for i in letters:
+            placedLetters += i
+        rletter = self.puzzle.getSpecialLetter()
+        return scoreboard.getScoreboard(placedLetters, rletter)
     
     def addPlayer(self, name):
         score = self.puzzle.getCurrentScore()
         placedLetters = ""
-        letters = self.puzzle.getLetters()
+        letters = self.puzzle.getLetterList()
+        letters.sort()
         for i in letters:
             placedLetters += i
         rletter = self.puzzle.getSpecialLetter()

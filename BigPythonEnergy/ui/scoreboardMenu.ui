@@ -39,7 +39,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Something went wrong.</string>
+      <string>Please start a new game to see the scoreboard.</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
