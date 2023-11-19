@@ -1,7 +1,6 @@
 # 2023fa-420-BigPythonEnergy
 Spelling Bee Created by Big Python Energy.
 v0.1
-Brendan LeFevre
 Rose Mattaboni
 Sean McQuillen
 Vasilis B
