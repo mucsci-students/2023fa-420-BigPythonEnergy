@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/gameBox.ui'
+# Form implementation generated from reading ui file 'ui\gameBox.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -273,6 +273,9 @@ class Ui_MainWindow(object):
         self.actionHints.setIcon(icon10)
         self.actionHints.setObjectName("actionHints")
         self.actionScoreboard = QtWidgets.QAction(MainWindow)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/Scoreboard.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionScoreboard.setIcon(icon11)
         self.actionScoreboard.setObjectName("actionScoreboard")
         self.menu_File.addAction(self.action_New)
         self.menu_File.addAction(self.actionLoad)
@@ -291,9 +294,10 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionLoad)
         self.toolBar.addAction(self.actionSave)
         self.toolBar.addAction(self.actionSave_Blank)
-        self.toolBar.addAction(self.actionAbout)
         self.toolBar.addAction(self.action_Rank_Thresholds)
         self.toolBar.addAction(self.actionHints)
+        self.toolBar.addAction(self.actionAbout)
+        self.toolBar.addAction(self.actionScoreboard)
 
         self.retranslateUi(MainWindow)
         self.letter1.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter1.text()))
