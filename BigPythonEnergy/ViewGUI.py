@@ -383,7 +383,7 @@ class scoreDialog(QDialog):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/scoreboardMenu.ui", self)
         if win.controller.model.getPuzzle().isNotNull():
-            self.scoreText.setText(str(win.controller.model.getScoreboard()))
+            self.scoreText.setText(win.controller.model.getScoreboard())
 
 class scoreAddDialog(QDialog):
     def __init__(self, parent=None):

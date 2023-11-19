@@ -18,9 +18,11 @@ def getScoreboard(letters, rletter):
     secondresult = firstresult.loc[firstresult['special letter'] == rletter]
     if secondresult.empty:
         return "There is no scoreboard for this puzzle yet."
-    return secondresult.head(10)
+    return secondresult.head(10).to_string(index=False)
 
 def addScore(name, score, letters, rletter):
+    if len(name) > 32:
+        name = name[0:32]
     scoreboard = pd.read_json("scoreboard.json")
     new_row = pd.DataFrame({'name': [name], 'score': [score], 'letters': [letters], 'special letter': [rletter]})
     # Concatenate the new DataFrame with the existing DataFrame
