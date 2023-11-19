@@ -3,7 +3,23 @@ import DictInterface
 import scoreboard
 from cryptography.fernet import Fernet
 
-class Model:
+
+class Singleton(type):
+    """
+    Define an Instance operation that lets clients access its unique
+    instance.
+    """
+
+    def __init__(cls, name, bases, attrs, **kwargs):
+        super().__init__(name, bases, attrs)
+        cls._instance = None
+
+    def __call__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__call__(*args, **kwargs)
+        return cls._instance
+
+class Model(metaclass=Singleton):
     def __init__(self, setupPuzzle=None):
         if setupPuzzle is not None:
             self.puzzle = setupPuzzle
@@ -72,3 +88,4 @@ class Model:
         bytes = ','.join(map(str, data))
         return fern.encrypt(bytes.encode())
 
+    pass
