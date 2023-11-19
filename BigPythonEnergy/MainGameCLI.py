@@ -27,6 +27,25 @@ def startGame(model, view):
 
     # Stops the program.
     if guess == "/quit":
+        response = ""
+        view.clearScreen()
+        while response != "y" or response != "n":
+            print("Would you like to add your score to the scoreboard? (y or n) ")
+            response = input()
+            response = response.lower()
+            if response == "y":
+                view.clearScreen()
+                print("Enter your name for the scoreboard: ")
+                name = input()
+                view.clearScreen()
+                print("You have successfully added yourself to the scoreboard!")
+                model.addPlayer(name)
+                exit()
+            elif response == "n":
+                exit()
+            else:
+                view.clearScreen()
+                print("Sorry, please input y or n.")
         exit()
 
     # Saves the game data to the save file.
@@ -143,15 +162,6 @@ def startGame(model, view):
         view.getReturnGuessingPrompt()
         input()
         view.clearScreen()
-        startGame(model, view)
-        
-    if guess == "/addplayer":
-        view.clearScreen()
-        print("Enter your name for the Scoreboard: ")
-        name = input()
-        view.clearScreen()
-        print("You have successfully added yourself to the scoreboard")
-        model.addPlayer(name)
         startGame(model, view)
 
     if guess == "/scoreboard":

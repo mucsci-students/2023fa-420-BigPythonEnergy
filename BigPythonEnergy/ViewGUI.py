@@ -54,6 +54,15 @@ class Window(QMainWindow, Ui_MainWindow):
         self.actionHints.triggered.connect(self.hintMenu)
         self.actionScoreboard.triggered.connect(self.scoreMenu)
         self.addWordLE.textEdited.connect(lambda: self.checkKeyboardInput())
+
+    def closeEvent(self, event):
+        if self.controller.model.getPuzzle().isNotNull():
+            dialog = scoreAddDialog(self)
+            check = dialog.exec()
+            if check == 0:
+                event.accept()
+            else:
+                event.ignore()
     
     def checkKeyboardInput(self):
         if self.controller.model.getPuzzle().isNotNull():
@@ -195,6 +204,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.encrypt = False
     
     def randomView(self):
+        if self.controller.model.getPuzzle().isNotNull():
+            dialog = scoreAddDialog(self)
+            dialog.exec()
         self.controller.random()
         self.currentRank.setText(self.getCurrentScoreType()+"")
         loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
@@ -244,6 +256,9 @@ class Window(QMainWindow, Ui_MainWindow):
             self.wrongInputLabel.setText("Decryption was unsuccessful.")
     
     def startView(self, newWord):
+        if self.controller.model.getPuzzle().isNotNull():
+            dialog = scoreAddDialog(self)
+            dialog.exec()
         if self.controller.model.has_7_unique_letters(newWord) and self.controller.model.isValid(newWord):
             self.controller.start(newWord)
             loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
@@ -369,6 +384,15 @@ class scoreDialog(QDialog):
         loadUi("BigPythonEnergy/ui/scoreboardMenu.ui", self)
         if win.controller.model.getPuzzle().isNotNull():
             self.scoreText.setText(str(win.controller.model.getScoreboard()))
+
+class scoreAddDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loadUi("BigPythonEnergy/ui/scoreAddMenu.ui", self)
+        self.connections()
+    
+    def connections(self):
+        self.addButton.clicked.connect(lambda: win.controller.model.addPlayer(self.scoreNameEdit.text()))
 
 app = QApplication(sys.argv)
 win = Window()

@@ -563,9 +563,10 @@
    <addaction name="actionLoad"/>
    <addaction name="actionSave"/>
    <addaction name="actionSave_Blank"/>
-   <addaction name="actionAbout"/>
    <addaction name="action_Rank_Thresholds"/>
    <addaction name="actionHints"/>
+   <addaction name="actionAbout"/>
+   <addaction name="actionScoreboard"/>
   </widget>
   <action name="actionLoad">
    <property name="icon">
@@ -646,6 +647,10 @@
    </property>
   </action>
   <action name="actionScoreboard">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/Scoreboard.png</normaloff>icons/Scoreboard.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Scoreboard</string>
    </property>
@@ -680,8 +685,8 @@
      <y>338</y>
     </hint>
     <hint type="destinationlabel">
-     <x>268</x>
-     <y>378</y>
+     <x>239</x>
+     <y>395</y>
     </hint>
    </hints>
   </connection>
