@@ -204,6 +204,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.encrypt = False
     
     def randomView(self):
+        if self.controller.model.getPuzzle().isNotNull():
+            dialog = scoreAddDialog(self)
+            dialog.exec()
         self.controller.random()
         self.currentRank.setText(self.getCurrentScoreType()+"")
         loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
@@ -253,6 +256,9 @@ class Window(QMainWindow, Ui_MainWindow):
             self.wrongInputLabel.setText("Decryption was unsuccessful.")
     
     def startView(self, newWord):
+        if self.controller.model.getPuzzle().isNotNull():
+            dialog = scoreAddDialog(self)
+            dialog.exec()
         if self.controller.model.has_7_unique_letters(newWord) and self.controller.model.isValid(newWord):
             self.controller.start(newWord)
             loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
