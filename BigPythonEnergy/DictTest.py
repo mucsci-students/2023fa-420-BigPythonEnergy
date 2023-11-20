@@ -33,7 +33,7 @@ def test_has_7_unique_letters_returns_bool():
 def test_has_7_unique_letters_with_valid_input():
     # Test with valid words that have 7 unique letters
     assert has_7_unique_letters("abcdefg") is True
-    assert has_7_unique_letters("bromines") is True
+    assert has_7_unique_letters("bromines") is False
     assert has_7_unique_letters("pythoni") is True
 
 def test_has_7_unique_letters_with_invalid_input():
