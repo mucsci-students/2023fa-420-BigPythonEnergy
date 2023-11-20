@@ -1,33 +1,47 @@
-"""
-This script contains a comprehensive suite of unit tests for the 'puzzle' class, a critical component of a word puzzle game. The unit tests are designed to rigorously evaluate various aspects of the 'puzzle' class, ensuring its functionality and reliability.
-
-The 'puzzle' class represents the core logic of the word puzzle game, handling essential operations such as initialization, score calculation, rank determination, score thresholds, and the management of found words. These unit tests aim to validate that the 'puzzle' class behaves as expected across a range of scenarios.
-
-Here's an overview of the main test cases included in this suite:
-
-1. Initialization Test:
-   - Validates that a 'puzzle' instance is correctly initialized with the specified parameters, such as a set of letters, a special letter, and an initial score.
-
-2. Score Calculation Test:
-   - Verifies that the 'addScore' method accurately calculates and updates the current score when points are added.
-
-3. Rank Calculation Test:
-   - Ensures that the 'getCurrentScoreType' method correctly determines the player's rank based on their current score.
-
-4. Score Thresholds Test:
-   - Validates that the 'getScoreThresholds' method generates accurate score thresholds for different ranks, such as "Queen Bee," "Genius," "Amazing," and more.
-
-5. Found Words Management Test:
-   - Tests the functionality of adding and retrieving found words, confirming that words are correctly added to the list and can be retrieved when needed.
-
-These unit tests serve as a crucial component of the development process, helping maintain code quality and reliability as new features are added or modifications are made to the 'puzzle' class.
-
-To execute the tests, run this script as the main program. If all tests pass successfully, it indicates that the 'puzzle' class is functioning as intended. Any failures or errors will be reported, aiding in the identification and resolution of issues.
-
-Note: Ensure that the 'puzzle' class implementation in the 'puzzle.py' file remains consistent with the expectations defined in these tests to maintain game integrity.
-"""
 import unittest
 from Puzzle import puzzle
+from DictInterface import *
+import pytest
+
+def test_has_7_unique_letters_returns_bool():
+    word = "Bromine"
+    result = has_7_unique_letters(word)
+    assert isinstance(result, bool)
+
+def test_has_7_unique_letters_with_valid_input():
+    # Test with valid words that have 7 unique letters
+    assert has_7_unique_letters("abcdefg") is True
+    assert has_7_unique_letters("bromines") is False
+    assert has_7_unique_letters("pythoni") is True
+
+def test_has_7_unique_letters_with_invalid_input():
+    # Test with words that do not have 7 unique letters
+    assert has_7_unique_letters("hello") is False  # 4 unique letter
+    assert has_7_unique_letters("abc") is False  # Less than 7 letters
+
+def test_has_7_unique_letters_with_empty_input():
+    # Test with an empty string
+    assert has_7_unique_letters("") is False
+
+def test_has_7_unique_letters_with_whitespace_input():
+    # Test with a word containing whitespace
+    assert has_7_unique_letters("        ") is False
+
+def test_randomWord_returns_string():
+    word = randomWord()
+    assert isinstance(word, str)
+
+def test_randomWord_returns_7_unique_letter_word():
+    word = randomWord()
+    assert len(set(word)) >= 7
+
+def test_isValid_returns_bool():
+    result = isValid("lump")
+    assert isinstance(result, bool)
+
+def test_findValid_returns_set():
+    result = findValid('r','bromine' )
+    assert isinstance(result, set)
 
 class TestPuzzle(unittest.TestCase):
     
