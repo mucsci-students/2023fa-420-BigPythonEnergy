@@ -23,8 +23,8 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        coverage run -m pytest BigPythonEnergy\DictTest.py
-        coverage run -m pytest BigPythonEnergy\PuzzleTest.py
+        coverage run -m pytest DictTest.py
+        coverage run -m pytest PuzzleTest.py
         coverage xml -o coverage.xml
 
     - name: Upload coverage to Codecov
