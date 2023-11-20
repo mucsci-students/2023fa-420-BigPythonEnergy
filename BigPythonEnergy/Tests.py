@@ -43,6 +43,25 @@ def test_findValid_returns_set():
     result = findValid('r','bromine' )
     assert isinstance(result, set)
 
+def test_countPangram_returns_int():
+    result = countPangram("r", "bromine")
+    assert isinstance(result, int)
+
+def test_countPerfect_retuns_int():
+    result = countPerfect("r", "bromine")
+    assert isinstance(result, int)
+
+def test_countPangramAndPerfect_retuns_list():
+    result = countPangramAndPerfect("r", "bromine")
+    assert isinstance(result, list)
+
+def test_bingoHint_returns_list():
+    result = bingoHint("r", "bromine")
+    assert isinstance(result, list)
+
+def test_isPangram():
+    result = isPangram("bromine", "romineb")
+    assert isinstance(result, bool)
 class TestPuzzle(unittest.TestCase):
     
     def setUp(self):
