@@ -31,10 +31,10 @@ if is_gui_supported():
     if str(len(sys.argv) > 1 and sys.argv[1]) == "--cli":
         exec(open("BigPythonEnergy/MainCLI.py").read())
 
-    if str(len(sys.argv) > 1 and sys.argv[1]) == "--gui":
-        exec(open("BigPythonEnergy/MainUI.py").read())
+    elif str(len(sys.argv) > 1 and sys.argv[1]) == "--gui":
+        exec(open("BigPythonEnergy/ViewGUI.py").read())
 
-
-    exec(open("BigPythonEnergy/MainUI.py").read())
-
-exec(open("BigPythonEnergy/MainCLI.py").read())
+    else:
+        exec(open("BigPythonEnergy/ViewGUI.py").read())
+else:
+    exec(open("BigPythonEnergy/MainCLI.py").read())

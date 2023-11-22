@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/gameBox.ui'
+# Form implementation generated from reading ui file 'ui\gameBox.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -16,6 +16,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         MainWindow.setMinimumSize(QtCore.QSize(800, 600))
+        MainWindow.setMaximumSize(QtCore.QSize(800, 600))
         MainWindow.setSizeIncrement(QtCore.QSize(1, 1))
         MainWindow.setBaseSize(QtCore.QSize(800, 600))
         icon = QtGui.QIcon()
@@ -271,6 +272,11 @@ class Ui_MainWindow(object):
         icon10.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/HintsLightbulb.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionHints.setIcon(icon10)
         self.actionHints.setObjectName("actionHints")
+        self.actionScoreboard = QtWidgets.QAction(MainWindow)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap("BigPythonEnergy/ui/icons/Scoreboard.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionScoreboard.setIcon(icon11)
+        self.actionScoreboard.setObjectName("actionScoreboard")
         self.menu_File.addAction(self.action_New)
         self.menu_File.addAction(self.actionLoad)
         self.menu_File.addAction(self.actionSave)
@@ -279,6 +285,7 @@ class Ui_MainWindow(object):
         self.menu_Help.addAction(self.actionAbout)
         self.menu_Help.addAction(self.action_Rank_Thresholds)
         self.menu_Help.addAction(self.actionHints)
+        self.menu_Help.addAction(self.actionScoreboard)
         self.menu_Help.addAction(self.action_About)
         self.menu_Help.addAction(self.action_CC_Attributions)
         self.menubar.addAction(self.menu_File.menuAction())
@@ -287,13 +294,12 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionLoad)
         self.toolBar.addAction(self.actionSave)
         self.toolBar.addAction(self.actionSave_Blank)
-        self.toolBar.addAction(self.actionAbout)
         self.toolBar.addAction(self.action_Rank_Thresholds)
         self.toolBar.addAction(self.actionHints)
+        self.toolBar.addAction(self.actionAbout)
+        self.toolBar.addAction(self.actionScoreboard)
 
         self.retranslateUi(MainWindow)
-        self.shuffleButton.clicked.connect(self.shuffle)
-        self.addWordButton.clicked.connect(self.submit)
         self.letter1.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter1.text()))
         self.letter2.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter2.text()))
         self.letter3.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter3.text()))
@@ -302,7 +308,9 @@ class Ui_MainWindow(object):
         self.letter6.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.letter6.text()))
         self.specialLetter.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text() + self.specialLetter.text()))
         self.backspaceButton.clicked.connect(lambda: self.addWordLE.setText(self.addWordLE.text()[:-1]))
-        self.actionLoad.triggered.connect(self.load)
+        self.shuffleButton.clicked.connect(self.shuffle)
+        self.addWordButton.clicked.connect(self.submitView)
+        self.actionLoad.triggered.connect(self.loadView)
         self.addWordButton.clicked.connect(self.addWordLE.clear) # type: ignore
         self.addWordLE.returnPressed.connect(self.addWordButton.click) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -321,11 +329,12 @@ class Ui_MainWindow(object):
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.actionLoad.setText(_translate("MainWindow", "&Load"))
         self.actionSave.setText(_translate("MainWindow", "&Save"))
-        self.actionAbout.setText(_translate("MainWindow", "&Help Menu"))
+        self.actionAbout.setText(_translate("MainWindow", "Help &Menu"))
         self.action_About.setText(_translate("MainWindow", "&About"))
         self.actionSave_Blank.setText(_translate("MainWindow", "Save &Blank"))
         self.action_Rank_Thresholds.setText(_translate("MainWindow", "&Rank Thresholds"))
         self.action_Exit.setText(_translate("MainWindow", "&Exit"))
         self.action_New.setText(_translate("MainWindow", "&New"))
         self.action_CC_Attributions.setText(_translate("MainWindow", "&CC Attributions"))
-        self.actionHints.setText(_translate("MainWindow", "Hints"))
+        self.actionHints.setText(_translate("MainWindow", "&Hints"))
+        self.actionScoreboard.setText(_translate("MainWindow", "&Scoreboard"))

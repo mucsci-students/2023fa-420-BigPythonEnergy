@@ -16,6 +16,12 @@
     <height>600</height>
    </size>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
   <property name="sizeIncrement">
    <size>
     <width>1</width>
@@ -512,6 +518,7 @@
     <addaction name="actionAbout"/>
     <addaction name="action_Rank_Thresholds"/>
     <addaction name="actionHints"/>
+    <addaction name="actionScoreboard"/>
     <addaction name="action_About"/>
     <addaction name="action_CC_Attributions"/>
    </widget>
@@ -556,9 +563,10 @@
    <addaction name="actionLoad"/>
    <addaction name="actionSave"/>
    <addaction name="actionSave_Blank"/>
-   <addaction name="actionAbout"/>
    <addaction name="action_Rank_Thresholds"/>
    <addaction name="actionHints"/>
+   <addaction name="actionAbout"/>
+   <addaction name="actionScoreboard"/>
   </widget>
   <action name="actionLoad">
    <property name="icon">
@@ -584,7 +592,7 @@
      <normaloff>icons/Help.png</normaloff>icons/Help.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Help Menu</string>
+    <string>Help &amp;Menu</string>
    </property>
   </action>
   <action name="action_About">
@@ -635,7 +643,16 @@
      <normaloff>icons/HintsLightbulb.png</normaloff>icons/HintsLightbulb.png</iconset>
    </property>
    <property name="text">
-    <string>Hints</string>
+    <string>&amp;Hints</string>
+   </property>
+  </action>
+  <action name="actionScoreboard">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/Scoreboard.png</normaloff>icons/Scoreboard.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Scoreboard</string>
    </property>
   </action>
  </widget>
@@ -668,8 +685,8 @@
      <y>338</y>
     </hint>
     <hint type="destinationlabel">
-     <x>268</x>
-     <y>378</y>
+     <x>239</x>
+     <y>395</y>
     </hint>
    </hints>
   </connection>

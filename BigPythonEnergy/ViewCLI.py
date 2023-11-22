@@ -18,11 +18,12 @@ import os
 from typing import Iterable
 
 from prompt_toolkit.document import Document
-from Puzzle import *
+import Model
 import sys
 import prompt_toolkit
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import CompleteEvent, Completer, Completion
+import platform
 
 class CustomCompleter(Completer):
     def __init__(self, completions):
@@ -47,17 +48,25 @@ def entryDisplay():
     print('Created by Big Python Energy')
     print('--------------------------------')
 
-def mainGameDisplay(puzzle):
-    options = ["/words", "/shuffle", "/rank", "/thresholds", "/save", "/quit", "/hints"]
+def getAllLetters(model):
+        letterList = model.getPuzzle().getLetterList()
+        allLetters = "| "
+        for i in range(6):
+            allLetters = allLetters + letterList[i] + " | "
+        allLetters = allLetters + letterList[6] + " |"
+        return allLetters
+
+def mainGameDisplay(model):
+    options = ["/words", "/shuffle", "/rank", "/thresholds", "/save", "/quit", "/hints", "/scoreboard", "/addplayer"]
     custom_completer = CustomCompleter(options)
     print('LETTERS:')
     print('-----------------')
-    print(puzzle.getAllLetters() + "\n")
-    print('Must Contain: ' + puzzle.specialLetter)
+    print(getAllLetters(model) + "\n")
+    print('Must Contain: ' + model.getPuzzle().getSpecialLetter())
     print('-----------------\n')
     print('Score:')
-    print(puzzle.getCurrentScore())
-    print('\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nEnter /save to save your progress, \nor \nEnter /hints to display all puzzle hints \n')
+    print(model.getPuzzle().getCurrentScore())
+    print('\nYou may also:\nEnter /words for a list of words, \nEnter /shuffle to shuffle the letters, \nEnter /rank to see your rank, \nEnter /thresholds to see rank thresholds, \nEnter /quit to quit the program, \nEnter /save or /blanksave to save your progress, \nEnter /hints to display all puzzle hints \nEnter /scoreboard to see the scoreboard \nor /addplayer to add yourself to the scoreboard\n')
     opt = prompt("\nEnter your guess below!\n", completer=custom_completer)
     return opt
 
@@ -90,19 +99,20 @@ def helpMenuDisplay():
 def returnGuessing():
     print('Press any key to return to guessing.')
 
-def getWords(puzzle):
-    print ('Words found:')
-    for i in puzzle.getFoundWordList():
+def getWords(model):
+    print ('Words found so far:')
+    for i in model.getPuzzle().getFoundWordList():
         print (i)
 
-def getBingo(puzzle):
+def getBingo(model):
     
-    bingo = DictInterface.bingoHint(puzzle.getSpecialLetter(), puzzle.getLetters())
+    bingo = model.getBingoHint()
     column_widths = [max(len(str(item)) for item in col) for col in zip(*bingo)]
     totalWords = bingo[8][13]
-    pangramCount = DictInterface.countPangram(puzzle.getSpecialLetter(), puzzle.getLetters())
-    perfectCount = DictInterface.countPangram(puzzle.getSpecialLetter(), puzzle.getLetters())
-    points = puzzle.getTotalScore()
+    pangramNumbers = model.getPangramNumbers()
+    pangramCount = pangramNumbers[0]
+    perfectCount = pangramNumbers[1]
+    points = model.getPuzzle().getTotalScore()
     returnString = ("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount) + " (Perfect: " + str(perfectCount) + ")" + "\n\n")
 
     for row in bingo:
@@ -110,15 +120,59 @@ def getBingo(puzzle):
 
     returnString = returnString + ("\n" + "Two Letter List:  ")
 
-    validWords = DictInterface.findValid(puzzle.getSpecialLetter(), puzzle.getLetters())
+    validWords = model.getValidWordList()
     starters = set()
     for word in validWords:
         starter = word[:2]
         starters.add(starter)
 
     for tup in starters:
-        count = DictInterface.findStartingWith(tup, puzzle.getLetters(), puzzle.getSpecialLetter())
+        count = model.getEachStartingWith(tup)
         if count != 0:
             returnString = returnString + (str(tup).upper() + ": " + str(count) + "   ")
 
     return returnString
+
+def getCurrentScoreType(model):
+    percentage = model.getPuzzle().getCurrentScore() / model.getPuzzle().getTotalScore()
+
+    if(percentage == 1):
+        return "Queen Bee"
+    elif(0.7 <= percentage < 1):
+        return "Genius"
+    elif(0.5 <= percentage < 0.7):
+        return "Amazing"
+    elif(0.4 <= percentage < 0.5):
+        return "Great"
+    elif(0.25 <= percentage < 0.4):
+        return "Nice"
+    elif(0.15 <= percentage < 0.25):
+        return "Solid"
+    elif(0.08 <= percentage < 0.15):
+        return "Good"
+    elif(0.05 <= percentage < 0.08):
+        return "Moving Up"
+    elif(0.02 <= percentage < 0.05):
+        return "Good Start"
+    else:
+        return "Beginner"
+    
+def getScoreThresholds(model):
+    queenBee = "Queen Bee: " + str(model.getPuzzle().getTotalScore())
+    genius = "Genius: " + str(int((model.getPuzzle().getTotalScore() * 0.7) + 0.99999999))
+    amazing = "Amazing: " + str(int((model.getPuzzle().getTotalScore() * 0.5) + 0.99999999))
+    great = "Great: " + str(int((model.getPuzzle().getTotalScore() * 0.4) + 0.99999999))
+    nice = "Nice: " + str(int((model.getPuzzle().getTotalScore() * 0.25) + 0.99999999))
+    solid = "Solid: " + str(int((model.getPuzzle().getTotalScore() * 0.15) + 0.99999999))
+    good = "Good: " + str(int((model.getPuzzle().getTotalScore() * 0.08) + 0.99999999))
+    movingUp = "Moving Up: " + str(int((model.getPuzzle().getTotalScore() * 0.05) + 0.99999999))
+    goodStart = "Good Start: " + str(int((model.getPuzzle().getTotalScore() * 0.02) + 0.99999999))
+    beginner = "Beginner: 0"
+
+    return "Rank thresholds:\n\n" + queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
+    
+def getSaveType():
+    clearScreen()
+    print("Enter 'yes' to save with encryption: ")
+    option = input()
+    return option

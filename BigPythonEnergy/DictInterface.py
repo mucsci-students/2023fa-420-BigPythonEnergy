@@ -34,7 +34,7 @@ df = pd.read_json("words.json")
 
 # Simple helper function to ensure 7 unique characters
 def has_7_unique_letters(word):
-    return len(set(word)) >= 7
+    return len(set(word)) == 7
 
 # Function to choose a random word for the user
 def randomWord():
@@ -362,3 +362,9 @@ def countPerfect(required, letters):
             count += 1
 
     return count
+
+def countPangramAndPerfect(required, letters):
+    pTypes = []
+    pTypes.append(countPangram(required, letters))
+    pTypes.append(countPerfect(required, letters))
+    return pTypes
