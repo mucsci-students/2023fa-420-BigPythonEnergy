@@ -78,17 +78,29 @@ Outside of these two files, MainCLI and MainGameCLI handle controller for the co
 6. State (Behavioral): A variable that exists in the ViewGUI file that, when changed, causes our GUI view to switch to a secret congratulatory game state for those who find all words in a puzzle. This is used within our program for when the game is completely finished to inform users that they have won and to keep them from making guesses.
 
 
-Code Map:
+Code Map (UML):
+
 
 Entry point -> execute66.py
+
 GUI ->
+
     View -> ViewGUI.py (main) -> MainWindowUI.py
+
     Controller -> MainUI.py
+
 CLI ->
+
     View -> View.py -> ViewCLI.py
+
     Controller -> MainCLI.py (main) -> MainGameCLI.py
+
 Model ->
+
     Model.py ->
+
         DictInterface.py, Puzzle.py -> PuzzleBuilder.py, scoreboard.py
+
 Tests ->
+
     Tests.py
