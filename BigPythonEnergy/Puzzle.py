@@ -72,7 +72,7 @@ class puzzle:
 
     # Used to set all found words in case of loading a puzzle.
     def setFoundWord(self, wordList):
-        self.setFoundWord(wordList)
+        self.puzzleBuilt.setFoundWord(wordList)
 
     def shuffleLetterList(self):
         self.puzzleBuilt.shuffleLetterList()

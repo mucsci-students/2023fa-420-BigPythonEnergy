@@ -26,7 +26,7 @@ class Model(metaclass=Singleton):
         else:
             self.puzzle = puzzle()
 
-    def setPuzzle(self, letters, specialLetter=None, currentScore=None, foundWords=None, totalWords=None):
+    def setPuzzle(self, letters=None, specialLetter=None, currentScore=None, foundWords=None, totalWords=None):
         newPuzzle = puzzle(letters, specialLetter, currentScore, foundWords, totalWords)
         self.puzzle = newPuzzle
     

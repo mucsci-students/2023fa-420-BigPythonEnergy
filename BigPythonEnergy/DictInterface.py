@@ -129,7 +129,7 @@ def isValid(guess):
         # if the guess is 13 letters
         case 13:
             thirteens = df['thirteens'].dropna()
-            if guess in thirteens.values():
+            if guess in thirteens.values:
                 return True
             
         # if the guess is 14 letters
@@ -148,6 +148,8 @@ def isValid(guess):
         # Default case: the word was too long or too short, or was not found
         case _:
             return False
+        
+    return False
         
 
 # tup is the starting letters we want to look for

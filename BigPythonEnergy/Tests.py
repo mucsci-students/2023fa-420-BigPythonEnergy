@@ -8,11 +8,16 @@ import pandas as pd
 
 class TestModel(unittest.TestCase):
 
+    model = Model()
+
     def setUp(self):
-        self.model = Model()
+        letters = {"b", "r", "o", "m", "i", "n", "e"}
+        specialLetter = "r"
+        self.model.setPuzzle(letters, specialLetter)
 
     def test_puzzle_null(self):
-        assert isinstance(self.model.getPuzzle(), puzzle)
+        self.model.setPuzzle()
+        self.assertTrue(isinstance(self.model.getPuzzle(), puzzle))
         self.assertEqual(self.model.getPuzzle().isNotNull(), False)
         self.assertEqual(self.model.getPuzzle().getCurrentScore(), None)
         self.assertEqual(self.model.getPuzzle().getFoundWordList(), None)
@@ -22,10 +27,10 @@ class TestModel(unittest.TestCase):
         self.assertEqual(self.model.getPuzzle().getSpecialLetter(), None)
         self.assertEqual(self.model.getPuzzle().getTotalScore(), None)
         self.assertEqual(self.model.getPuzzle().getTotalWordList(), None)
-        self.assertEqual(self.model.getPuzzle().setFoundWord(), None)
-        self.assertEqual(self.model.getPuzzle().addFoundWord(), None)
-        self.assertEqual(self.model.getPuzzle().addScore(), None)
-        self.assertEqual(self.model.getPuzzle().setScore(), None)
+        self.assertEqual(self.model.getPuzzle().setFoundWord(set()), None)
+        self.assertEqual(self.model.getPuzzle().addFoundWord("word"), None)
+        self.assertEqual(self.model.getPuzzle().addScore(5), None)
+        self.assertEqual(self.model.getPuzzle().setScore(5), None)
         self.assertEqual(self.model.getPuzzle().shuffleLetterList(), None)
 
     def test_puzzle_instantiation(self):
@@ -61,8 +66,11 @@ class TestModel(unittest.TestCase):
         self.assertEqual(self.model.getPuzzle().getTotalWordList(), {"moorier", "onerier", "romeo", "ribbie", "imbiber", "bireme", "brin", "reno", "boomier", "rimmer", "brinier", "birr", "roomier", "ronin", "bomber", "boron", "robbin", "miner", "renin", "emir", "bromo", "merrier", "ronion", "brrr", "bren", "nooner", "noniron", "borer", "erne", "niner", "remember", "robin", "ornerier", "ironer", "mooner", "brim", "broom", "emmer", "enrobe", "bier", "bonnier", "ribbier", "briber", "mere", "merino", "broo", "omber", "reborn", "berme", "bribe", "nobbier", "bore", "bree", "beer", "oorie", "berberin", "ionomer", "inner", "enorm", "brio", "merer", "brome", "bonier", "norm", "briner", "moonier", "iron", "brie", "berber", "mirier", "eerie", "miri", "morn", "moor", "moire", "monomer", "nori", "berberine", "mirin", "more", "brier", "rebore", "enrober", "morro", "ironmen", "broomier", "rimier", "ermine", "berm", "roomer", "minor", "brine", "inborn", "orbier", "omer", "ember", "inro", "boor", "noir", "irone", "bemire", "ribber", "bobber", "moron", "borne", "bibber", "renminbi", "robber", "beriberi", "merbromin", "bromin", "brimmer", "emeer", "ormer", "biner", "rebbe", "berime", "nonmember", "rein", "rime", "boomer", "mimer", "mobber", "bribee", "morrion", "mire", "mirror", "ribier", "beerier", "rimer", "robe", "morion", "born", "oribi", "boreen", "ribbon", "memoir", "roomie", "mermen", "error", "rennin", "ombre", "room", "eerier", "bromine", "member", "moreen", "rememberer", "boner"})
         
     def test_bingo_pangram_hints(self):
+        letters = {"b", "r", "o", "m", "i", "n", "e"}
+        specialLetter = "r"
+        self.model.setPuzzle(letters, specialLetter)
         bingo = self.model.getBingoHint()
-        self.assertEqual(isinstance(bingo, str), True)
+        self.assertTrue(isinstance(bingo, list))
         self.assertEqual(self.model.getPangramNumbers(), [2, 1])
 
     def test_7_unique_letters(self):
@@ -99,16 +107,24 @@ class TestModel(unittest.TestCase):
         self.assertEqual(self.model.isValid("hippopotomonstrosesquippedaliophobia"), False)
 
     def test_each_starting_with(self):
+        letters = {"b", "r", "o", "m", "i", "n", "e"}
+        specialLetter = "r"
+        self.model.setPuzzle(letters, specialLetter)
         self.assertEqual(isinstance(self.model.getEachStartingWith("br"), int), True)
         self.assertEqual(self.model.getEachStartingWith("br"), 22)
 
     def test_shuffle_letter_list(self):
-        letterList = self.model.getPuzzle().getLetterList()
+        letterList = []
+        for i in self.model.getPuzzle().getLetterList():
+            letterList.append(i)
         self.model.shuffleLetterList()
         self.assertNotEqual(letterList, self.model.getPuzzle().getLetterList())
         self.assertEqual(set(letterList),set(self.model.getPuzzle().getLetterList()))
 
     def test_add_found_word(self):
+        letters = {"b", "r", "o", "m", "i", "n", "e"}
+        specialLetter = "r"
+        self.model.setPuzzle(letters, specialLetter)
         self.model.addFoundWord("boner")
         self.assertIn("boner", self.model.getPuzzle().getFoundWordList())
         self.model.addFoundWord("")
@@ -134,11 +150,11 @@ class TestModel(unittest.TestCase):
         self.assertTrue(result)
         self.assertTrue(result2)
         self.assertNotEqual(self.model.getScoreboard(), "There is no scoreboard for this puzzle yet.")
-        self.assertTrue(inScoreboard({"a", "b", "c", "d", "e", "f", "g"}, "a", randomName))
-        self.assertTrue(inScoreboard({"a", "b", "c", "d", "e", "f", "g"}, "a", extendedRandomName[0:32]))
+        self.assertTrue(inScoreboard("abcdefg", "a", randomName))
+        self.assertTrue(inScoreboard("abcdefg", "a", extendedRandomName[0:32]))
 
     def test_encrypted_data(self):
-        self.assertTrue(isinstance(self.model.getEncryptedData, bytes))
+        self.assertTrue(isinstance(self.model.getEncryptedData(), bytes))
 
 if __name__ == '__main__':
     unittest.main()
