@@ -10,7 +10,8 @@ Use our build system to run the game!
 
 Instructions for setting up the build system:
 
-    1. After pulling the repository from GitHub, navigate to the main project directory in a command line terminal. The main directory contains 'BigPythonEnergy', 'requirements.txt', etc... Now the first step is to set up a virtual environment (if you do not already have one set up). To do this, simply run
+    1. After pulling the repository from GitHub, navigate to the main project directory in a command line terminal. The main directory contains 'BigPythonEnergy', 'requirements.txt', etc... 
+    Now the first step is to set up a virtual environment (if you do not already have one set up). To do this, simply run
         > python -m venv venv
 
 
