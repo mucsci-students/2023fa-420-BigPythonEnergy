@@ -82,7 +82,7 @@ def startPage():
                         view.clearScreen()
                         print('Decryption Failed!!!')
                         startPage()
-            model.setPuzzle(letters, special_letter, score, words)
+            model.setPuzzle(set(letters), special_letter, score, set(words))
             view.clearScreen()
             print('Loaded save')
             startGame(model, view)
@@ -126,7 +126,7 @@ def startPage():
                         startPage()
 
 
-            model.setPuzzle(letters, special_letter, score, words)
+            model.setPuzzle(set(letters), special_letter, score, set(words))
             view.clearScreen()
             print('Loaded save')
             startGame(model, view)

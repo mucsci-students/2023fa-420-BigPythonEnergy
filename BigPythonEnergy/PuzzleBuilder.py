@@ -157,6 +157,8 @@ class PuzzleFull:
                 self.totalScore += 1
             elif len(i) > 4:
                 self.totalScore += len(i)
+                if len(set(i)) == 7:
+                    self.totalScore += 7
 
     def isNotNull(self):
         return True
@@ -199,4 +201,6 @@ class PuzzleFull:
         self.listOfFoundWords = wordList
 
     def shuffleLetterList(self):
-        random.shuffle(self.letterList)
+        oldLL = self.letterList
+        while (self.letterList == oldLL):
+            random.shuffle(self.letterList)
