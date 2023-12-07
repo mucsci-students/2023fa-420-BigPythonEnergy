@@ -8,9 +8,8 @@ import pandas as pd
 
 class TestModel(unittest.TestCase):
 
-    model = Model()
-
     def setUp(self):
+        self.model = Model()
         letters = {"b", "r", "o", "m", "i", "n", "e"}
         specialLetter = "r"
         self.model.setPuzzle(letters, specialLetter)
@@ -59,6 +58,10 @@ class TestModel(unittest.TestCase):
         self.assertEqual(self.model.getPuzzle().getSpecialLetter(), "r")
         self.assertEqual(self.model.getPuzzle().getTotalScore(), 5)
         self.assertEqual(self.model.getPuzzle().getTotalWordList(), {"brine"})
+        self.model.setPuzzle(letters)
+        self.assertTrue(isinstance(self.model.getPuzzle().getSpecialLetter(), str))
+        self.model.getPuzzle().setFoundWord({"brine"})
+        self.assertIn("brine", self.model.getPuzzle().getFoundWordList())
         self.model.setPuzzle(letters, specialLetter)
         self.assertEqual(self.model.getPuzzle().getCurrentScore(), 0)
         self.assertEqual(self.model.getPuzzle().getFoundWordList(), set())
@@ -152,6 +155,7 @@ class TestModel(unittest.TestCase):
         self.assertNotEqual(self.model.getScoreboard(), "There is no scoreboard for this puzzle yet.")
         self.assertTrue(inScoreboard("abcdefg", "a", randomName))
         self.assertTrue(inScoreboard("abcdefg", "a", extendedRandomName[0:32]))
+        self.assertFalse(inScoreboard("abcdefg", "a", "bob33"))
 
     def test_encrypted_data(self):
         self.assertTrue(isinstance(self.model.getEncryptedData(), bytes))
