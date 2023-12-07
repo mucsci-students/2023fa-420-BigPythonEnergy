@@ -77,10 +77,18 @@ def test_valid_word_list():
     assert model.getValidWordList() == {"moorier", "onerier", "romeo", "ribbie", "imbiber", "bireme", "brin", "reno", "boomier", "rimmer", "brinier", "birr", "roomier", "ronin", "bomber", "boron", "robbin", "miner", "renin", "emir", "bromo", "merrier", "ronion", "brrr", "bren", "nooner", "noniron", "borer", "erne", "niner", "remember", "robin", "ornerier", "ironer", "mooner", "brim", "broom", "emmer", "enrobe", "bier", "bonnier", "ribbier", "briber", "mere", "merino", "broo", "omber", "reborn", "berme", "bribe", "nobbier", "bore", "bree", "beer", "oorie", "berberin", "ionomer", "inner", "enorm", "brio", "merer", "brome", "bonier", "norm", "briner", "moonier", "iron", "brie", "berber", "mirier", "eerie", "miri", "morn", "moor", "moire", "monomer", "nori", "berberine", "mirin", "more", "brier", "rebore", "enrober", "morro", "ironmen", "broomier", "rimier", "ermine", "berm", "roomer", "minor", "brine", "inborn", "orbier", "omer", "ember", "inro", "boor", "noir", "irone", "bemire", "ribber", "bobber", "moron", "borne", "bibber", "renminbi", "robber", "beriberi", "merbromin", "bromin", "brimmer", "emeer", "ormer", "biner", "rebbe", "berime", "nonmember", "rein", "rime", "boomer", "mimer", "mobber", "bribee", "morrion", "mire", "mirror", "ribier", "beerier", "rimer", "robe", "morion", "born", "oribi", "boreen", "ribbon", "memoir", "roomie", "mermen", "error", "rennin", "ombre", "room", "eerier", "bromine", "member", "moreen", "rememberer", "boner"}
     
 def test_is_valid():
-    assert model.isValid("bromine")
     assert model.isValid("cats")
-    assert model.isValid("merbromin")
+    assert model.isValid("brine")
     assert model.isValid("lovely")
+    assert model.isValid("bromine")
+    assert model.isValid("bitrates")
+    assert model.isValid("merbromin")
+    assert model.isValid("combusting")
+    assert model.isValid("contingency")
+    assert model.isValid("missionaries")
+    assert model.isValid("instantaneous")
+    assert model.isValid("parallelograms")
+    assert model.isValid("pharmacotherapy")
     assert model.isValid("cat") is False
     assert model.isValid("") is False
     assert model.isValid("aaaaaa") is False
@@ -127,3 +135,19 @@ def test_add_player():
 
 def test_encrypted_data():
     assert isinstance(model.getEncryptedData, bytes)
+
+if __name__ == '__main__':
+    test_puzzle_null()
+    test_puzzle_instantiation()
+    test_bingo_pangram_hints()
+    test_7_unique_letters()
+    test_random_word()
+    test_valid_word_list()
+    test_is_valid()
+    test_each_starting_with()
+    test_shuffle_letter_list()
+    test_add_found_word()
+    test_add_score()
+    test_get_scoreboard()
+    test_add_player()
+    test_encrypted_data()
