@@ -6,9 +6,7 @@ import pytest
 import pandas as pd
 
 
-class TestPuzzle(unittest.TestCase):
-
-    model = None
+class TestModel(unittest.TestCase):
 
     def setUp(self):
         self.model = Model()
