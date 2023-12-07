@@ -8,7 +8,10 @@ import pandas as pd
 
 class TestPuzzle(unittest.TestCase):
 
-    model = Model()
+    model = None
+
+    def setUp(self):
+        self.model = Model()
 
     def test_puzzle_null(self):
         assert isinstance(self.model.getPuzzle(), puzzle)
