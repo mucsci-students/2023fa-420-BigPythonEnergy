@@ -140,4 +140,4 @@ class TestPuzzle(unittest.TestCase):
         self.assertTrue(isinstance(self.model.getEncryptedData, bytes))
 
 if __name__ == '__main__':
-    pytest.main()
+    unittest.main()
