@@ -74,4 +74,20 @@ Outside of these two files, MainCLI and MainGameCLI handle controller for the co
 
 5. Singleton (Creational): A class that exists only as a single instance that is globally accessible. In our project, this is used with our Model class to ensure that there are no duplicate puzzles or duplicate instantiations of the facade (DictInterface). This keeps there from being multiple puzzles or multiple points of entry to interfacing the dictionary, things that could be very confusing to keep track of and would not be necessary for this game.
 
-4. State (Behavioral): A variable that exists in the ViewGUI file that, when changed, causes our GUI view to switch to a secret congratulatory game state for those who find all words in a puzzle. This is used within our program for when the game is completely finished to inform users that they have won and to keep them from making guesses.
+6. State (Behavioral): A variable that exists in the ViewGUI file that, when changed, causes our GUI view to switch to a secret congratulatory game state for those who find all words in a puzzle. This is used within our program for when the game is completely finished to inform users that they have won and to keep them from making guesses.
+
+
+Code Map:
+
+Entry point -> execute66.py
+GUI ->
+    View -> ViewGUI.py (main) -> MainWindowUI.py
+    Controller -> MainUI.py
+CLI ->
+    View -> View.py -> ViewCLI.py
+    Controller -> MainCLI.py (main) -> MainGameCLI.py
+Model ->
+    Model.py ->
+        DictInterface.py, Puzzle.py -> PuzzleBuilder.py, scoreboard.py
+Tests ->
+    Tests.py
