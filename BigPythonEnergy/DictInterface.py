@@ -19,8 +19,6 @@ The script is intended for word-related tasks and games, including word guessing
 
 import pandas as pd
 import random
-import os
-import platform
 
 df = pd.read_json("words.json")
 
@@ -344,6 +342,8 @@ def countPangram(required, letters):
     
     return count
 
+# driver function to iterate through valid words,
+# checking if they are perfect pangrams and return the number of them
 def countPerfect(required, letters):
     count = 0
     validWords = findValid(required, letters)
@@ -353,6 +353,7 @@ def countPerfect(required, letters):
 
     return count
 
+# Runs both countPangram and countPerfect and returns the results of both in an ordered list.
 def countPangramAndPerfect(required, letters):
     pTypes = []
     pTypes.append(countPangram(required, letters))

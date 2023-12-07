@@ -1,6 +1,7 @@
 import random
 import DictInterface
 
+# Chooses whether to create a null puzzle or a regular puzzle.
 class PuzzleAbstract:
     puzzlePieces = None
     def __init__(self, check, sL, cS, fW, tW):
@@ -51,7 +52,7 @@ class PuzzleAbstract:
     def isNotNull(self):
         return self.puzzlePieces.isNotNull()
 
-
+# Builds a puzzle where every variable is None, every function returns None, and isNotNull() returns False.
 class PuzzleNull:
     def __init__(self):
 
@@ -106,34 +107,42 @@ class PuzzleNull:
     def shuffleLetterList(self):
         return None
 
+# Returns a function where every parameter is set for the puzzle based on inputs.
+# Each function here works as described in the main Puzzle class.
 class PuzzleFull:
     def __init__(self, letters, specialLetter, currentScore, foundWords, totalWords):
 
+        # Sets the letter set, which must not be None if this point has been reached.
         self.letters = None
         self.letters = set()
         self.letters = letters
 
+        # Creates a list of letters based on the letter set.
         self.letterList = None
         self.letterList = []
         for i in letters:
             self.letterList.append(i)
 
+        # Either sets the special letter or chooses a random one if none exists.
         if specialLetter is not None:
             self.specialLetter = specialLetter
         if specialLetter is None:
             self.specialLetter = random.choice(tuple(letters))
 
+        # Creates a set of all letters except the special letter.
         self.normalLetters = None
         self.normalLetters = set()
         for i in letters:
             self.normalLetters.add(i)
         self.normalLetters.remove(self.specialLetter)
 
+        # Sets the current score to currentScore on load or 0 on new game.
         if currentScore is not None:
             self.currentScore = currentScore
         else:
             self.currentScore = 0
 
+        # Sets the list of all possible words on load or generates it on new game.
         if totalWords is not None:
             self.listOfTotalWords = None
             self.listOfTotalWords = set()
@@ -143,6 +152,7 @@ class PuzzleFull:
             self.listOfTotalWords = set()
             self.listOfTotalWords = DictInterface.findValid(self.specialLetter, self.letterList)
 
+        # Sets the list of found words on load or creates a blank set on new game.
         if foundWords is not None:
             self.listOfFoundWords = None
             self.listOfFoundWords = set()
@@ -151,6 +161,7 @@ class PuzzleFull:
             self.listOfFoundWords = None
             self.listOfFoundWords = set()
 
+        # Generates the total score based on the list of all possible words.
         self.totalScore = 0
         for i in self.listOfTotalWords:
             if len(i) == 4:

@@ -1,17 +1,3 @@
-"""
-This script is the graphical user interface (GUI) component of a Spelling Bee game application. It provides a visual interface for players to interact with the game, including starting new games, saving progress, submitting words, shuffling letters, and viewing various game-related information.
-
-- `clearScreen()`: A helper function to clear the CLI screen.
-- `Window`: The main GUI window class, which extends QMainWindow and incorporates the game's visual elements and interactions.
-    - Handles menu actions like starting new games, displaying help and about dialogs, saving progress, shuffling letters, and more.
-    - Manages UI elements for displaying current game state, letters, special letter, and found words.
-    - Connects UI elements to corresponding actions and functions.
-- Dialog classes (`helpDialog`, `aboutDialog`, `saveDialog`, `blankSaveDialog`, `newGameDialog`, `thresholdDialog`, `ccDialog`): These classes define various dialogs for displaying help, about, save, and other information to the player.
-- GUI initialization (`if __name__ == "__main__"`): Sets up the GUI application, creates the main window, and starts the event loop.
-
-This script integrates the graphical interface with the Spelling Bee game logic and provides an interactive experience for players.
-"""
-
 import sys
 import time
 
@@ -35,15 +21,20 @@ from MainWindowUI import Ui_MainWindow
 
 class MainUI():
 
+    # Constructor for this controller that creates a model for which to interface with.
     def __init__(self):
         self.model = Model()
     
-    def isValidLetter(self, letter):
+    # Checks if a letter is not valid.
+    def isNotValidLetter(self, letter):
         if letter in self.model.getPuzzle().getLetters():
             return False
         else:
             return True
 
+    # Saves a blank copy of the current game.
+    # If there is no game, it does nothing and returns a special string.
+    # If the save name is blank or does not work, it does nothing and returns a special string.
     def savedBlank(self, saveName, encrypt):
         if self.model.getPuzzle().isNotNull():
             if encrypt is True:
@@ -73,12 +64,15 @@ class MainUI():
                         json.dump(save, outfile)
                 except:
                     return "Not a valid save name."
-                return "Saved succesfully!"
+                return "Saved successfully!"
             else:
                 return "Not a valid save name."
         else:
             return "Please start a new puzzle before attempting to save!"
 
+    # Saves a copy of the current game.
+    # If there is no game, it does nothing and returns a special string.
+    # If the save name is blank or does not work, it does nothing and returns a special string.
     def saved(self, saveName, encrypt):
         if self.model.getPuzzle().isNotNull():
             if encrypt is True:
@@ -114,17 +108,25 @@ class MainUI():
         else:
             return "Please start a new puzzle before attempting to save!"
 
+    # Generates a new random puzzle.
     def random(self):
         word = self.model.getRandomWord()
         uniqueCharacters = set(word)
         self.model.setPuzzle(uniqueCharacters)
 
-    def start(self, newWord):
+    # Starts a new game based on a given word and, optionally, special letter.
+    def start(self, newWord, specialLetter=None):
         uniqueCharacters = set()
         for i in newWord:
             uniqueCharacters.add(i)
         self.model.setPuzzle(uniqueCharacters)
+        if specialLetter is not None:
+            self.model.setPuzzle(uniqueCharacters, specialLetter)
     
+    # Loads a new game from a file.
+    # If no file is chosen, returns 0.
+    # If the author is wrong in the case of decryption, returns -1.
+    # If the load is successful, sets puzzle and returns 1.
     def load(self):
         root = tk.Tk()
         root.withdraw()
@@ -152,6 +154,11 @@ class MainUI():
             return 1
         return 0
 
+    # Checks a submitted result.
+    # If the puzzle is null, this does nothing and returns a special string.
+    # If the word is not in the dictionary or is not in the found words list, this does nothing and returns a special string.
+    # If the word has a wrong letter or does not have the special letter, this does nothing and returns a special string.
+    # If the guess is correct, the correct amount of points is added and the word is added to the found words list.
     def submit(self, result):
         if self.model.getPuzzle().isNotNull():
             letterList = self.model.getPuzzle().getLetterList()

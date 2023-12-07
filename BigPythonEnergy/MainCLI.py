@@ -10,13 +10,11 @@ This script is the main entry point for a Spelling Bee game application. It prov
 This script acts as the user interface for the Spelling Bee game and coordinates interactions with other modules and game logic.
 """
 
-import os
 import re
 import json
 from Model import Model
 from View import View
 from MainGameCLI import startGame
-import sys
 
 # Main screen loop for getting the user around the application, can go to the start screen, the help screen, or quit the application.
 def inputCheck():
