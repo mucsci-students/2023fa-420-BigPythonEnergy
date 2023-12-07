@@ -25,6 +25,7 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import CompleteEvent, Completer, Completion
 import platform
 
+# Class that handles the tab completion.
 class CustomCompleter(Completer):
     def __init__(self, completions):
         self.completions = completions
@@ -35,6 +36,7 @@ class CustomCompleter(Completer):
             if c.startswith(wordIn):
                 yield Completion(c, start_position= -len(wordIn))
 
+# Clears the screen
 def clearScreen():
     system_platform = platform.system()
     if system_platform == "Windows":
@@ -42,12 +44,14 @@ def clearScreen():
     else:
         os.system("clear")  # Clear screen on macOS and Linux
 
+# Shows the first entry display.
 def entryDisplay():
     print('--------------------------------')
     print('Welcome to Spelling Bee!')
     print('Created by Big Python Energy')
     print('--------------------------------')
 
+# Shows a nice representation of all letters in the puzzle.
 def getAllLetters(model):
         letterList = model.getPuzzle().getLetterList()
         allLetters = "| "
@@ -56,6 +60,7 @@ def getAllLetters(model):
         allLetters = allLetters + letterList[6] + " |"
         return allLetters
 
+# Shows everything needed for the main game functionality.
 def mainGameDisplay(model):
     options = ["/words", "/shuffle", "/rank", "/thresholds", "/save", "/quit", "/hints", "/scoreboard", "/addplayer"]
     custom_completer = CustomCompleter(options)
@@ -70,17 +75,21 @@ def mainGameDisplay(model):
     opt = prompt("\nEnter your guess below!\n", completer=custom_completer)
     return opt
 
+# Shows the first menu prompt.
 def startMenuDisplay():
     print('Please enter "Start" to begin a game, "Help" for a help page, or "Quit" to leave the game.')
 
+# Shows the new game prompt.
 def newGameDisplay():
     print('Welcome to the start page, enter "Random" to start from a random word, "Load" to start from a normal save file, "Blank Load" to load from a blank save file, or "Choose" to get started from your own chosen word.')
     print('You may also enter "Back" to go back to the start page')
 
+# States that a command is unrecognzied.
 def unrecognizedCommand():
     clearScreen()
     print('Unrecognized command, please try again:')
 
+# Shows the help menu.
 def helpMenuDisplay():
     clearScreen()
     print('---------------------------------------------------------------------------------------------------------------------')
@@ -96,14 +105,17 @@ def helpMenuDisplay():
     print('---------------------------------------------------------------------------------------------------------------------\n')
     print('Press enter to continue!')
 
+# Prompts the user to press a key to return to guessing.
 def returnGuessing():
     print('Press any key to return to guessing.')
 
+# Shows the found words list.
 def getWords(model):
     print ('Words found so far:')
     for i in model.getPuzzle().getFoundWordList():
         print (i)
 
+# Creates a textual representation of the bingo and other hints.
 def getBingo(model):
     
     bingo = model.getBingoHint()
@@ -113,11 +125,15 @@ def getBingo(model):
     pangramCount = pangramNumbers[0]
     perfectCount = pangramNumbers[1]
     points = model.getPuzzle().getTotalScore()
+    
+    # Turns the number of words, points, and pangrams in the puzzle into a string.
     returnString = ("Words: " + str(totalWords) + " Points: " + str(points) + " Pangrams: " + str(pangramCount) + " (Perfect: " + str(perfectCount) + ")" + "\n\n")
 
+    # Adds the bingo 2D array to the string.
     for row in bingo:
         returnString = returnString + ("  ".join(str(item).rjust(width) for item, width in zip(row, column_widths))) + "\n"
 
+    # Places all two letter values with 1 or more words into a list and adds them to the string.
     returnString = returnString + ("\n" + "Two Letter List:  ")
 
     validWords = model.getValidWordList()
@@ -133,6 +149,7 @@ def getBingo(model):
 
     return returnString
 
+# Returns the current word display for the score.
 def getCurrentScoreType(model):
     percentage = model.getPuzzle().getCurrentScore() / model.getPuzzle().getTotalScore()
 
@@ -157,6 +174,7 @@ def getCurrentScoreType(model):
     else:
         return "Beginner"
     
+# Returns the points needed to get each score.
 def getScoreThresholds(model):
     queenBee = "Queen Bee: " + str(model.getPuzzle().getTotalScore())
     genius = "Genius: " + str(int((model.getPuzzle().getTotalScore() * 0.7) + 0.99999999))
@@ -170,7 +188,8 @@ def getScoreThresholds(model):
     beginner = "Beginner: 0"
 
     return "Rank thresholds:\n\n" + queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
-    
+
+# Shows a prompt for save encryption.
 def getSaveType():
     clearScreen()
     print("Enter 'yes' to save with encryption: ")

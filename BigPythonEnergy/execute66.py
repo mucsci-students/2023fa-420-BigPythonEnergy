@@ -8,6 +8,7 @@ If neither argument is provided, it defaults to running the GUI.
 import sys
 import platform
 
+# Checks if GUI is supported.
 def is_gui_supported():
     system = platform.system()
     

@@ -4,6 +4,7 @@ import platform
 
 scoreboard = pd.read_json("scoreboard.json")
 
+# Gets the scoreboard based on the current game's letters and special letter.
 def getScoreboard(letters, rletter):
     scoreboard = pd.read_json("scoreboard.json")
     sorted = scoreboard.sort_values(by='score', ascending=False)
@@ -13,6 +14,7 @@ def getScoreboard(letters, rletter):
         return "There is no scoreboard for this puzzle yet."
     return secondresult.head(10).to_string(index=False)
 
+# Adds a player to the scoreboard with a name and score for specifically the current puzzle.
 def addScore(name, score, letters, rletter):
     if len(name) > 32:
         name = name[0:32]
@@ -23,6 +25,7 @@ def addScore(name, score, letters, rletter):
     scoreboard.to_json("scoreboard.json")
     return True
 
+# Checks if a particular name is in the scoreboard for a puzzle, specifically for testing purposes.
 def inScoreboard(letters, rletter, name):
     scoreboard = pd.read_json("scoreboard.json")
     sorted = scoreboard.sort_values(by='score', ascending=False)

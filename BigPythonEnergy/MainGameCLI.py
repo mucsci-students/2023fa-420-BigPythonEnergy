@@ -11,9 +11,6 @@ This script is the core of a Spelling Bee game application, handling the main ga
 This script integrates game logic with player interactions, making it the central component of the Spelling Bee game.
 """
 
-import os
-import random
-import re
 import json
 from Model import Model
 from View import View
@@ -85,6 +82,7 @@ def startGame(model, view):
         print('Game saved.')
         startGame(model, view)
 
+    # Saves a blank copy of the game to a save file.
     if guess == "/blanksave":
         saveType = view.getSaveType()
         view.clearScreen()
@@ -156,6 +154,7 @@ def startGame(model, view):
         view.clearScreen()
         startGame(model, view)
 
+    # Shows the bingo, pangram, and first two letters hints.
     if guess == "/hints":
         view.clearScreen()
         print(view.getBingo(model))
@@ -164,6 +163,7 @@ def startGame(model, view):
         view.clearScreen()
         startGame(model, view)
 
+    # Shows the scoreboard for the current game.
     if guess == "/scoreboard":
         view.clearScreen()
         df = model.getScoreboard()

@@ -34,15 +34,24 @@ from PyQt5.uic import loadUi
 
 from MainWindowUI import Ui_MainWindow
 
+# Main class for interfacing with the auto-generated MainWindowUI.py
 class Window(QMainWindow, Ui_MainWindow):
+
+    # Sets up the connection to each dialog window, the main window itself, and a few necessary variables.
     def __init__(self, parent=None):
         super().__init__(parent)
         self.controller = MainUI()
         self.setupUi(self)
         self.connections()
+
+        # Checks whether or not a file should be encrypted. Reset every time a save is successful or the save prompt is closed.
         self.encrypt = False
+
+        # Will become 1 if a game is completed.
         self._state = 0
     
+    # Connections to each separate window based on actions buttons.
+    # Also, a connection to the keyboard input checker when a key is used for input.
     def connections(self):
         self.action_Exit.triggered.connect(self.close)
         self.action_New.triggered.connect(self.newGameMenu)
@@ -56,6 +65,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.actionScoreboard.triggered.connect(self.scoreMenu)
         self.addWordLE.textEdited.connect(lambda: self.checkKeyboardInput())
 
+    # If there is a puzzle, pops up the add to scoreboard dialog first.
+    # If scoreboard dialog is canceled, the main window does not close.
+    # If X is pressed or a score is successfully added, the main window closes.
     def closeEvent(self, event):
         if self.controller.model.getPuzzle().isNotNull():
             dialog = scoreAddDialog(self)
@@ -65,11 +77,15 @@ class Window(QMainWindow, Ui_MainWindow):
             else:
                 event.ignore()
     
+    # Prevents the player from typing any letter that is not in the word.
     def checkKeyboardInput(self):
         if self.controller.model.getPuzzle().isNotNull() and self._state == 0:
             if (len(self.addWordLE.text()) > 0 and self.addWordLE.text() != ""):
-                if (self.controller.isValidLetter(self.addWordLE.text()[-1])):
+                if (self.controller.isNotValidLetter(self.addWordLE.text()[-1])):
                     self.addWordLE.setText(self.addWordLE.text()[:-1])
+
+    # Menus: Connections to dialog boxes, defined below.
+    # --------------------------------------------------
 
     def helpMenu(self):
         dialog = helpDialog(self)
@@ -106,10 +122,9 @@ class Window(QMainWindow, Ui_MainWindow):
     def scoreMenu(self):
         dialog = scoreDialog(self)
         dialog.exec()
-
-    def getHintsUIDisplay(self):
-        return self.controller.model.getBingoHint()
     
+    # Returns the entire bingo, pangram, and two letter hint display.
+    # For more documentation, see ViewCLI, where the function is implemented the exact same way.
     def getBingo(self):
     
         bingo = self.controller.model.getBingoHint()
@@ -139,6 +154,7 @@ class Window(QMainWindow, Ui_MainWindow):
 
         return returnString
     
+    # Returns the list of scores needed for each score type.
     def getScoreThresholds(self):
         queenBee = "Queen Bee: " + str(self.controller.model.getPuzzle().getTotalScore())
         genius = "Genius: " + str(int((self.controller.model.getPuzzle().getTotalScore() * 0.7) + 0.99999999))
@@ -153,6 +169,7 @@ class Window(QMainWindow, Ui_MainWindow):
 
         return "Rank thresholds:\n\n" + queenBee + "\n" + genius + "\n" + amazing + "\n" + great + "\n" + nice + "\n" + solid + "\n" + good + "\n" + movingUp + "\n" + goodStart + "\n" + beginner
     
+    # Returns the current textual score type.
     def getCurrentScoreType(self):
         percentage = self.controller.model.getPuzzle().getCurrentScore() / self.controller.model.getPuzzle().getTotalScore()
 
@@ -177,9 +194,11 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             return "Beginner"
         
+    # Puts the current score into a points textbox.
     def setCurrentPoints(self):
         self.pointsGained.setText(str(self.controller.model.getPuzzle().getCurrentScore()))
 
+    # Puts a found word into the found words display widget.
     def addFoundWords(self, text):
         item = QtWidgets.QListWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignVCenter)
@@ -191,19 +210,25 @@ class Window(QMainWindow, Ui_MainWindow):
         item.setText(text)
         self.foundWords.sortItems()
 
+    # Clears all found words from the display widget.
     def remFoundWords(self):
         self.foundWords.clear()
 
+    # Handles the view updates for saving a new blank game.
+    # Resets encrypt boolean.
     def savedBlankView(self, text, encrypt):
         checker = self.controller.savedBlank(text, encrypt)
         self.wrongInputLabel.setText(checker)
         self.encrypt = False
     
+    # Handles the view updates for saving the game.
+    # Resets encrypt boolean.
     def savedView(self, text, encrypt):
         checker = self.controller.saved(text, encrypt)
         self.wrongInputLabel.setText(checker)
         self.encrypt = False
     
+    # Handles the view updates for starting a new random game.
     def randomView(self):
         if self.controller.model.getPuzzle().isNotNull():
             dialog = scoreAddDialog(self)
@@ -225,7 +250,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.wrongInputLabel.setText("New game set! Have fun!")
         self.setCurrentPoints()
         self.remFoundWords()
+        self._state = 0
     
+    # Handles the view updates for loading a game.
     def loadView(self):
         if self.controller.model.getPuzzle().isNotNull():
             dialog = scoreAddDialog(self)
@@ -254,6 +281,7 @@ class Window(QMainWindow, Ui_MainWindow):
             for i in self.controller.model.getPuzzle().getFoundWordList():
                 self.addFoundWords(i)
             
+            self._state = 0
             if self.controller.model.getPuzzle().getCurrentScore() == self.controller.model.getPuzzle().getTotalScore():
                 self.stateChange()
 
@@ -263,6 +291,7 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             self.wrongInputLabel.setText("Decryption was unsuccessful.")
     
+    # Handles the view updates for starting a game from a word.
     def startView(self, newWord):
         if self.controller.model.getPuzzle().isNotNull():
             dialog = scoreAddDialog(self)
@@ -284,10 +313,13 @@ class Window(QMainWindow, Ui_MainWindow):
             self.wrongInputLabel.setText("New game set! Have fun!")
             self.setCurrentPoints()
             self.remFoundWords()
+            self._state = 0
 
         else:
             self.wrongInputLabel.setText("Not a valid starting word.")
     
+    # Handles the view updates from submission of a word.
+    # Will not allow submission of a word at all if the game is completed.
     def submitView(self):
         if self._state == 0:
             result = self.addWordLE.text()
@@ -304,6 +336,8 @@ class Window(QMainWindow, Ui_MainWindow):
                 if self.controller.model.getPuzzle().getCurrentScore() == self.controller.model.getPuzzle().getTotalScore():
                     self.stateChange()
     
+    # Handles the view updates for shuffling letters.
+    # Will not allow shuffling if the game is completed.
     def shuffle(self):
         if self.controller.model.getPuzzle().isNotNull() and self._state == 0:
             loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
@@ -318,12 +352,16 @@ class Window(QMainWindow, Ui_MainWindow):
             self.letter5.setText(addLetters[4])
             self.letter6.setText(addLetters[5])
         
+    # Flips the encryption boolean. to its opposite value.
     def encryptSwap(self):
         if self.encrypt is True:
             self.encrypt = False
         else:
             self.encrypt = True
 
+    # Changes the state to a completed game (1).
+    # Is only triggered when the current score is equal to the total score.
+    # Changes text and background to show a completed game.
     def stateChange(self):
         self._state = 1
         self.wrongInputLabel.setText("CONGRATULATIONS! You won! Start a new game to play again.")
@@ -346,16 +384,20 @@ class Window(QMainWindow, Ui_MainWindow):
         self.widget.setGraphicsEffect(self.opacity_effect)
     
 
+# Shows the help menu.
 class helpDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/helpMenu.ui", self)
 
+# Shows the about menu.
 class aboutDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/about.ui", self)
 
+# Shows the save menu, allows for saving from this menu.
+# Resets encrypt boolean on close.
 class saveDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -369,6 +411,8 @@ class saveDialog(QDialog):
     def closeEvent(self, event):
         win.encrypt = False
 
+# Shows the blank save menu, allows for saving from this menu.
+# Resets encrypt boolean on close.
 class blankSaveDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -382,6 +426,7 @@ class blankSaveDialog(QDialog):
     def closeEvent(self, event):
         win.encrypt = False
 
+# Prompts for a new game.
 class newGameDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -392,6 +437,7 @@ class newGameDialog(QDialog):
         self.randomButton.clicked.connect(lambda: win.randomView())
         self.startButton.clicked.connect(lambda: win.startView(self.newWord.text()))
 
+# Shows score thresholds.
 class thresholdDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -399,6 +445,7 @@ class thresholdDialog(QDialog):
         if win.controller.model.getPuzzle().isNotNull():
             self.threshText.setText(win.getScoreThresholds())
 
+# Shows all hints in textual format.
 class hintDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -406,11 +453,13 @@ class hintDialog(QDialog):
         if win.controller.model.getPuzzle().isNotNull():
             self.threshText.setText(win.getBingo())
 
+# Shows all Creative Commons licensing.
 class ccDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("BigPythonEnergy/ui/ccAttributions.ui", self)
-    
+
+# Shows scoreboard for the current game.
 class scoreDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -418,6 +467,7 @@ class scoreDialog(QDialog):
         if win.controller.model.getPuzzle().isNotNull():
             self.scoreText.setText(win.controller.model.getScoreboard())
 
+# Shows prompt to add a score to the scoreboard.
 class scoreAddDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)

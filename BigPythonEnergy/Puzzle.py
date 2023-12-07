@@ -31,30 +31,39 @@ class puzzle:
 
     # ------ Getter Methods ------
     
+    # Returns False if null, True if not.
     def isNotNull(self):
         return self.puzzleBuilt.isNotNull()
 
+    # Returns letter set.
     def getLetters(self):
         return self.puzzleBuilt.getLetters()
     
+    # Returns letter list.
     def getLetterList(self):
         return self.puzzleBuilt.getLetterList()
 
+    # Returns letter set without the special letter.
     def getNormalLetters(self):
         return self.puzzleBuilt.getNormalLetters()
     
+    # Returns the special letter.
     def getSpecialLetter(self):
         return self.puzzleBuilt.getSpecialLetter()
     
+    # Returns the player score.
     def getCurrentScore(self):
         return self.puzzleBuilt.getCurrentScore()
     
+    # Returns the total possible game score.
     def getTotalScore(self):
         return self.puzzleBuilt.getTotalScore()
     
+    # Returns the list of found words.
     def getFoundWordList(self):
         return self.puzzleBuilt.getFoundWordList()
     
+    # Returns the list of all possible word answers for the puzzle.
     def getTotalWordList(self):
         return self.puzzleBuilt.getTotalWordList()
     
@@ -64,9 +73,11 @@ class puzzle:
     def setScore(self, score):
         self.puzzleBuilt.setScore(score)
 
+    # Adds an int to the score.
     def addScore(self, score):
         self.puzzleBuilt.addScore(score)
     
+    # Adds a string to the found words list.
     def addFoundWord(self, word):
         self.puzzleBuilt.addFoundWord(word)
 
@@ -74,5 +85,6 @@ class puzzle:
     def setFoundWord(self, wordList):
         self.puzzleBuilt.setFoundWord(wordList)
 
+    # Shuffles the letter list order.
     def shuffleLetterList(self):
         self.puzzleBuilt.shuffleLetterList()
