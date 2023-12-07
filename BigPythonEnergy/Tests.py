@@ -137,17 +137,4 @@ def test_encrypted_data():
     assert isinstance(model.getEncryptedData, bytes)
 
 if __name__ == '__main__':
-    test_puzzle_null()
-    test_puzzle_instantiation()
-    test_bingo_pangram_hints()
-    test_7_unique_letters()
-    test_random_word()
-    test_valid_word_list()
-    test_is_valid()
-    test_each_starting_with()
-    test_shuffle_letter_list()
-    test_add_found_word()
-    test_add_score()
-    test_get_scoreboard()
-    test_add_player()
-    test_encrypted_data()
+    unittest.main()
