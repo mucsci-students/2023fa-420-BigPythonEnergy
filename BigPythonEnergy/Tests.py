@@ -117,9 +117,13 @@ def test_add_player():
     model.setPuzzle({"a", "b", "c", "d", "e", "f", "g"}, "a", 5, {"badge"}, {"badge"})
     randomName = model.getRandomWord()
     result = model.addPlayer(randomName)
+    extendedRandomName = randomName + randomName + randomName + randomName + randomName
+    result2 = model.addPlayer(extendedRandomName)
     assert result
+    assert result2
     assert model.getScoreboard() != "There is no scoreboard for this puzzle yet."
     assert inScoreboard({"a", "b", "c", "d", "e", "f", "g"}, "a", randomName)
+    assert inScoreboard({"a", "b", "c", "d", "e", "f", "g"}, "a", extendedRandomName[0:32])
 
 def test_encrypted_data():
     assert isinstance(model.getEncryptedData, bytes)

@@ -26,7 +26,7 @@ import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
 
-    QApplication, QDialog, QMainWindow
+    QApplication, QDialog, QMainWindow, QGraphicsOpacityEffect, QGraphicsEffect
 
 )
 
@@ -41,6 +41,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.connections()
         self.encrypt = False
+        self._state = 0
     
     def connections(self):
         self.action_Exit.triggered.connect(self.close)
@@ -65,7 +66,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 event.ignore()
     
     def checkKeyboardInput(self):
-        if self.controller.model.getPuzzle().isNotNull():
+        if self.controller.model.getPuzzle().isNotNull() and self._state == 0:
             if (len(self.addWordLE.text()) > 0 and self.addWordLE.text() != ""):
                 if (self.controller.isValidLetter(self.addWordLE.text()[-1])):
                     self.addWordLE.setText(self.addWordLE.text()[:-1])
@@ -226,6 +227,10 @@ class Window(QMainWindow, Ui_MainWindow):
         self.remFoundWords()
     
     def loadView(self):
+        if self.controller.model.getPuzzle().isNotNull():
+            dialog = scoreAddDialog(self)
+            dialog.exec()
+
         checker = self.controller.load()
 
         if checker == 1:
@@ -248,6 +253,9 @@ class Window(QMainWindow, Ui_MainWindow):
             self.remFoundWords()
             for i in self.controller.model.getPuzzle().getFoundWordList():
                 self.addFoundWords(i)
+            
+            if self.controller.model.getPuzzle().getCurrentScore() == self.controller.model.getPuzzle().getTotalScore():
+                self.stateChange()
 
         elif checker == 0:
             self.wrongInputLabel.setText("Game did not load succesfully.")
@@ -281,20 +289,23 @@ class Window(QMainWindow, Ui_MainWindow):
             self.wrongInputLabel.setText("Not a valid starting word.")
     
     def submitView(self):
-        result = self.addWordLE.text()
-        checker = self.controller.submit(result)
-        if checker == "Not a valid word.":
-            self.wrongInputLabel.setText("Not a valid word.")
-        elif checker == "Start a puzzle from the 'new' menu first!":
-            self.wrongInputLabel.setText("Start a puzzle from the 'new' menu first!")
-        else:
-            self.addFoundWords(result)
-            self.currentRank.setText(self.getCurrentScoreType()+"")
-            self.setCurrentPoints()
-            self.wrongInputLabel.setText("You just gained " + checker + " points!")
+        if self._state == 0:
+            result = self.addWordLE.text()
+            checker = self.controller.submit(result)
+            if checker == "Not a valid word.":
+                self.wrongInputLabel.setText("Not a valid word.")
+            elif checker == "Start a puzzle from the 'new' menu first!":
+                self.wrongInputLabel.setText("Start a puzzle from the 'new' menu first!")
+            else:
+                self.addFoundWords(result)
+                self.currentRank.setText(self.getCurrentScoreType()+"")
+                self.setCurrentPoints()
+                self.wrongInputLabel.setText("You just gained " + checker + " points!")
+                if self.controller.model.getPuzzle().getCurrentScore() == self.controller.model.getPuzzle().getTotalScore():
+                    self.stateChange()
     
     def shuffle(self):
-        if self.controller.model.getPuzzle().isNotNull():
+        if self.controller.model.getPuzzle().isNotNull() and self._state == 0:
             loopedLetters = self.controller.model.getPuzzle().getNormalLetters()
             addLetters = []
             for i in loopedLetters:
@@ -312,6 +323,28 @@ class Window(QMainWindow, Ui_MainWindow):
             self.encrypt = False
         else:
             self.encrypt = True
+
+    def stateChange(self):
+        self._state = 1
+        self.wrongInputLabel.setText("CONGRATULATIONS! You won! Start a new game to play again.")
+        self.letter1.setText("!")
+        self.letter2.setText("!")
+        self.letter3.setText("!")
+        self.letter4.setText("!")
+        self.letter5.setText("!")
+        self.letter6.setText("!")
+        self.specialLetter.setText("!")
+        stylesheet = """
+            background-image: url("BigPythonEnergy/ui/icons/BirthdayCakeBackgroundCCFree.png"); 
+            background-repeat: no-repeat; 
+            background-position: center;
+            opacity: 0.2;
+        """
+        self.widget.setStyleSheet(stylesheet)
+        self.opacity_effect = QGraphicsOpacityEffect()
+        self.opacity_effect.setOpacity(0.2)
+        self.widget.setGraphicsEffect(self.opacity_effect)
+    
 
 class helpDialog(QDialog):
     def __init__(self, parent=None):

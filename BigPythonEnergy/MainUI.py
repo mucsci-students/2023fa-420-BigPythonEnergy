@@ -34,6 +34,7 @@ from PyQt5.uic import loadUi
 from MainWindowUI import Ui_MainWindow
 
 class MainUI():
+
     def __init__(self):
         self.model = Model()
     
