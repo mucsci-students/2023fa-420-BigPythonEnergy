@@ -201,6 +201,4 @@ class PuzzleFull:
         self.listOfFoundWords = wordList
 
     def shuffleLetterList(self):
-        oldLL = self.letterList
-        while (self.letterList == oldLL):
-            random.shuffle(self.letterList)
+        random.shuffle(self.letterList)
