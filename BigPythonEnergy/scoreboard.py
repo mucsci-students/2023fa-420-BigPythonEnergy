@@ -2,13 +2,6 @@ import pandas as pd
 import os
 import platform
 
-def clearScreen():
-    system_platform = platform.system()
-    if system_platform == "Windows":
-        os.system("cls")  # Clear screen on Windows
-    else:
-        os.system("clear")  # Clear screen on macOS and Linux
-
 scoreboard = pd.read_json("scoreboard.json")
 
 def getScoreboard(letters, rletter):
@@ -28,3 +21,14 @@ def addScore(name, score, letters, rletter):
     # Concatenate the new DataFrame with the existing DataFrame
     scoreboard = pd.concat([scoreboard, new_row], ignore_index=True)
     scoreboard.to_json("scoreboard.json")
+    return True
+
+def inScoreboard(letters, rletter, name):
+    scoreboard = pd.read_json("scoreboard.json")
+    sorted = scoreboard.sort_values(by='score', ascending=False)
+    firstresult = sorted.loc[sorted['letters'] == letters]
+    secondresult = firstresult.loc[firstresult['special letter'] == rletter]
+    thirdresult = secondresult.loc[secondresult['name'] == name]
+    if thirdresult.empty:
+        return False
+    return True

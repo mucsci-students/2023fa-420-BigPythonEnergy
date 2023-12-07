@@ -34,6 +34,7 @@ from PyQt5.uic import loadUi
 from MainWindowUI import Ui_MainWindow
 
 class MainUI():
+
     def __init__(self):
         self.model = Model()
     
@@ -147,7 +148,7 @@ class MainUI():
                 else:
                     if (author != "BigPythonEnergy"):
                         return -1
-            self.model.setPuzzle(set(letters), special_letter, score, words)
+            self.model.setPuzzle(set(letters), special_letter, score, set(words))
             return 1
         return 0
 

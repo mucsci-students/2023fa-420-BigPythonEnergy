@@ -22,14 +22,6 @@ import random
 import os
 import platform
 
-# Helper function for clearing the CLI Screen.
-def clearScreen():
-    system_platform = platform.system()
-    if system_platform == "Windows":
-        os.system("cls")  # Clear screen on Windows
-    else:
-        os.system("clear")  # Clear screen on macOS and Linux
-
 df = pd.read_json("words.json")
 
 # Simple helper function to ensure 7 unique characters
@@ -155,8 +147,6 @@ def isValid(guess):
             
         # Default case: the word was too long or too short, or was not found
         case _:
-            clearScreen()
-            print("The word you entered is not in the dictionary")
             return False
         
 
